@@ -21,13 +21,20 @@ printMap(X,Y) :- isStore(X,Y), write('S'), X1 is X+1, printMap(X1, Y).
 printMap(X,Y) :- \+isLimitBawah(X,Y), \+isLimitAtas(X,Y), \+isLimitKiri(X,Y), \+isLimitKanan(X,Y), write('-'), X2 is X+1, printMap(X2,Y).
 
 w :- posX(X), posY(Y), Y2 is Y-1, (isLimitBawah(X,Y2); isLimitAtas(X,Y2); isLimitKiri(X,Y2); isLimitKanan(X,Y2)), write('ada tembok'), !.
-w :- posX(X), posY(Y), Y2 is Y-1, \+isLimitBawah(X,Y), \+isLimitAtas(X,Y), \+isLimitKiri(X,Y), \+isLimitKanan(X,Y), retract(posY(_)), asserta(posY(Y2)), !.
+w :- posX(X), posY(Y), Y2 is Y-1, isStore(X,Y2), write('Gunakan store. untuk membuka store.'), retract(posY(_)), asserta(posY(Y2)), !.
+w :- posX(X), posY(Y), Y2 is Y-1, \+isStore(X,Y2), \+isLimitBawah(X,Y2), \+isLimitAtas(X,Y), \+isLimitKiri(X,Y), \+isLimitKanan(X,Y), retract(posY(_)), asserta(posY(Y2)), !.
+
 s :- posX(X), posY(Y), Y2 is Y+1, (isLimitBawah(X,Y2); isLimitAtas(X,Y2); isLimitKiri(X,Y2); isLimitKanan(X,Y2)), write('ada tembok'), !.
-s :- posX(X), posY(Y), Y2 is Y+1, \+isLimitBawah(X,Y), \+isLimitAtas(X,Y), \+isLimitKiri(X,Y), \+isLimitKanan(X,Y), retract(posY(_)), asserta(posY(Y2)), !.
+s :- posX(X), posY(Y), Y2 is Y+1, isStore(X,Y2), write('Gunakan store. untuk membuka store.'), retract(posY(_)), asserta(posY(Y2)), !.
+s :- posX(X), posY(Y), Y2 is Y+1, \+isStore(X,Y2), \+isLimitBawah(X,Y2), \+isLimitAtas(X,Y), \+isLimitKiri(X,Y), \+isLimitKanan(X,Y), retract(posY(_)), asserta(posY(Y2)), !.
+
 a :- posX(X), posY(Y), X2 is X-1, (isLimitBawah(X2,Y); isLimitAtas(X2,Y); isLimitKiri(X2,Y); isLimitKanan(X2,Y)), write('ada tembok'), !.
-a :- posX(X), posY(Y), X2 is X-1, \+isLimitBawah(X,Y), \+isLimitAtas(X,Y), \+isLimitKiri(X,Y), \+isLimitKanan(X,Y), retract(posX(_)), asserta(posX(X2)), !.
+a :- posX(X), posY(Y), X2 is X-1, isStore(X2,Y), write('Gunakan store. untuk membuka store.'), retract(posX(_)), asserta(posX(X2)), !.
+a :- posX(X), posY(Y), X2 is X-1, \+isStore(X2,Y), \+isLimitBawah(X2,Y), \+isLimitAtas(X,Y), \+isLimitKiri(X,Y), \+isLimitKanan(X,Y), retract(posX(_)), asserta(posX(X2)), !.
+
 d :- posX(X), posY(Y), X2 is X+1, (isLimitBawah(X2,Y); isLimitAtas(X2,Y); isLimitKiri(X2,Y); isLimitKanan(X2,Y)), write('ada tembok'), !.
-d :- posX(X), posY(Y), X2 is X+1, \+isLimitBawah(X,Y), \+isLimitAtas(X,Y), \+isLimitKiri(X,Y), \+isLimitKanan(X,Y), retract(posX(_)), asserta(posX(X2)), !.
+d :- posX(X), posY(Y), X2 is X+1, isStore(X2,Y), write('Gunakan store. untuk membuka store.'), retract(posX(_)), asserta(posX(X2)), !.
+d :- posX(X), posY(Y), X2 is X+1, \+isStore(X2,Y), \+isLimitBawah(X2,Y), \+isLimitAtas(X,Y), \+isLimitKiri(X,Y), \+isLimitKanan(X,Y), retract(posX(_)), asserta(posX(X2)), !.
 
 map :- printMap(0,0),!.
 
