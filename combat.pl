@@ -24,6 +24,7 @@ fightmenu:- /* menu waktu fight */
     write('- attack.'),nl,
     write('- specialAttack.'),nl,
     write('- usePotion.'),nl,
+    write('- flee.'),nl,
     !.    
 
 fight:- /* Baru ketemu enemy, fight */
@@ -62,10 +63,10 @@ enemyStats :- /* Stats enemy abis player attack, continuing to enemy turn if ene
 /* enemyStats :- /* if enemy s ded */
 
 enemyTurn :- /* Turn enemy */
-    random(0,1,skillgakya),
-    (skillgakya =:= 0
+    random(1,6,skillgakya),
+    (skillgakya < 6
         -> enemyAttack
-        ;  enemySkill
+        ;  enemySpecial
     ),!.
 
 enemyAttack :- /* Enemy normal attack */
@@ -86,6 +87,7 @@ playerStats :- /* Stats player abis turn enemy */
     write('Now tis ur turn'),nl,
     fightmenu,!.
     
+
 
 
 
