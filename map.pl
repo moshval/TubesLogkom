@@ -14,6 +14,7 @@ isStore(X,Y) :- X=:=7, Y=:=8.
 isBoss(X,Y) :- X=:=5, Y=:=4.
 isBoss(X,Y) :- X=:=11, Y=:=12.
 isBoss(X,Y) :- X=:=15, Y=:=3.
+isQuest(X,Y) :- X=:=9, Y=:=9.
 isTembok(X,Y) :-
 	tembok(X1,Y1,X2,Y2,X3,Y3,X4,Y4,X5,Y5,X6,Y6,X7,Y7,X8,Y8,X9,Y9,X10,Y10,X11,Y11,X12,Y12,X13,Y13,X14,Y14),
 	((X=:=X1,Y=:=Y1);(X=:=X2,Y=:=Y2);(X=:=X3,Y=:=Y3);(X=:=X4,Y=:=Y4);(X=:=X5,Y=:=Y5);(X=:=X6,Y=:=Y6);(X=:=X7,Y=:=Y7);
@@ -27,6 +28,7 @@ printMap(X,Y) :- isLimitAtas(X,Y), write('#'), X2 is X+1, printMap(X2,Y).
 printMap(X,Y) :- isTembok(X,Y), write('#'), X2 is X+1, printMap(X2,Y).
 printMap(X,Y) :- isBoss(X,Y), write('B'), X2 is X+1, printMap(X2,Y).
 printMap(X,Y) :- isPlayer(X,Y), write('P'), X1 is X+1, printMap(X1, Y).
+printMap(X,Y) :- isQuest(X,Y), write('Q'), X1 is X+1, printMap(X1, Y).
 printMap(X,Y) :- isStore(X,Y), write('S'), X1 is X+1, printMap(X1, Y).
 printMap(X,Y) :- \+isLimitBawah(X,Y), \+isLimitAtas(X,Y), \+isLimitKiri(X,Y), \+isLimitKanan(X,Y), write('-'), X2 is X+1, printMap(X2,Y).
 
@@ -54,6 +56,7 @@ legend :-
 	write('Map Legends:'), nl,
 	write('P = Player'), nl,
 	write('S = Store'), nl,
+	write('Q = Quest'), nl,
 	write('B = Boss Enemy'), nl,
 	write('# = Wall'), nl.
 

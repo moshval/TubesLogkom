@@ -64,7 +64,8 @@ status :- init(_), playerStatus,!.
 
 quit :- \+init(_), write('Game has not started yet!'),!.
 quit :- init(_),
-	write('bye'),
+	write('Thank you for you adventure, '), pemain(Nama), write(Nama), write('!'), nl,
+	write('You will be missed.'),
 	retract(posX(_)),
 	retract(posY(_)),
 	retract(lebar(_)),
