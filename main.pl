@@ -16,14 +16,14 @@ title :-
 	write('quit. - quit game').
 
 initPemain :-
-	write('\n\nWrite your name\n'),
+	write('\n\nWrite your name\nName (lowercase): '),
 	read(Nama),
 	asserta(pemain(Nama)),
 	write('\nHello, '), write(Nama), write('\n'),
 	write('Job List:\n'),
-	write('1. swordsman\n'),
-	write('2. archer\n'),
-	write('3. sorcerer\n\nChoose one: '),
+	write('1. Swordsman\n'),
+	write('2. Archer\n'),
+	write('3. Sorcerer\n\nChoose one (lowercase): '),
 	read(Job),
 	initPlayer(Job),
 	write('\nYou choose '), write(Job),
