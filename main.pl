@@ -16,6 +16,7 @@ title :-
 	write('| start. - start the game    |\n'),
 	write('| help. - see the cmd        |\n'),
 	write('| w. a. s. d. - move         |\n'),
+	write('| status. - see your status  |\n'),
 	write('| map. - open map            |\n'),
 	write('| quit. - quit game          |\n'),
 	write('------------------------------\n').
@@ -25,6 +26,7 @@ help :-
 	write('| start. - start the game    |\n'),
 	write('| help. - see the cmd        |\n'),
 	write('| w. a. s. d. - move         |\n'),
+	write('| status. - see your status  |\n'),
 	write('| map. - open map            |\n'),
 	write('| quit. - quit game          |\n'),
 	write('------------------------------\n').
