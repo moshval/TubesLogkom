@@ -1,5 +1,5 @@
 :- dynamic(enemy/11).  /* enemy(ID,Name,Type,MaxHealth,Level,Health,Attack,Defense,Special,Exp,Gold) */ /*Boss or nah */
-:- dynamic(me/9). /* basically player but dynamic */
+/*** player(Job, MaxHealth, Level, Health, Attack, Defense, Exp, Gold) ***/
 :- dynamic(canFlee/1). 
 :- dynamic(isEnemyAlive/1).
 :- dynamic(isFighting/1).
@@ -12,7 +12,7 @@
 /* ---------- FIGHT CMDS ----------- */
 /* Encountered an enemy (blm ditambah leveler) */
 foundEnemy:-
-    random(1,3,ID),
+    random(1,10,ID),
     mobdata(ID,Name,Type,MaxHealth,Level,Attack,Defense,Special,Exp,Gold),
     Health is MaxHealth,
     asserta(enemy(ID,Name,Type,MaxHealth,Level,Health,Attack,Defense,Special,Exp,Gold)),
@@ -39,6 +39,35 @@ fight:- /* Blm ketemu enemy */
     \+ isEnemyAlive(_),
     write('No enemy here, go somewhere else.'),nl,!.
 
+flee:- /*Kaburr,flee successful , blm diapply move di map*/
+    isEnemyAlive(_),
+    player(_, PMaxHealth, _, PHealth, _, _, _, _, _),
+    F is (PMaxHealth * 0.1),
+    PHealth > F,
+    write('You unleashed ur secret special technique : Nigerundayo '),nl,
+    write('Flee successful'),nl,
+    retract(isEnemyAlive(_)),
+    ( enemyCanUseSkill(_) -> retract(enemyCanUseSkill(_))
+        ; Dummy is 0
+        ),
+    !.
+
+flee:- /*Kabur, but failed*/
+    isEnemyAlive(_),
+    player(_, PMaxHealth, _, PHealth, _, _, _, _, _),
+    F is (PMaxHealth * 0.1),
+    PHealth =< F,
+    write('You unleashed ur secret special technique : Nigerundayo'),nl,
+    write('....but unssuccessful'),nl,
+    fight,!.
+
+flee:- /*Kabur while blm ketemu enemy */
+    \+ isEnemyAlive(_),
+    \+ isFighting(_),
+    write('Running from this sekai? No u dont'),!.
+
+
+
 attack:- /*Blm ada yg bisa di attack */
     \+ isEnemyAlive(_),
     write('Nothing to be attacked. U cannot attack urself'),nl,!.
@@ -61,7 +90,11 @@ enemyStats :- /* Stats enemy abis player attack, continuing to enemy turn if ene
     write('Now tis enemy turn'),nl,
     enemyTurn,!.
 
-/* enemyStats :- /* if enemy s ded */
+enemyStats :- /* if enemy s ded */
+    enemy(_,EName,_,_,_,EHealth,_,_,_,_,_),
+    EHealth =< 0,
+    write(EName),write(' is now dead.'),nl,
+    retract(isEnemyAlive(_)),retract(isFighting(_)),!.
 
 enemyTurn :- /* Turn enemy */
     random(1,6,Skillgakya),
@@ -87,6 +120,12 @@ playerStats :- /* Stats player abis turn enemy */
     write('Your health is '),write(PHealth),nl,
     write('Now tis ur turn'),nl,
     fightmenu,!.
+
+playerStats :- /* Player ded */
+    player(_, _, _, PHealth,_, _, _, _, _),
+    PHealth =< 0,
+    write('You just died (again). Maybe this sekai aint for u.'),nl,
+    quit,!.
     
 
 

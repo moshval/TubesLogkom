@@ -24,7 +24,7 @@ playerStatus :-
     write('Attack   : '), write(Attack), nl,
     write('Defense  : '), write(Defense), nl,
     write('Exp      : '), write(Exp), nl,
-    write('Gold     : '), write(Gold), nl.
+    write('Gold     : '), write(Gold), nl,!.
 
 
 /** Inventory **/

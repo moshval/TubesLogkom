@@ -5,9 +5,9 @@ validJob(swordsman).
 validJob(archer).
 validJob(sorcerer).
 
-role(swordsman, 300, 1, 30, 20, 70).
-role(archer, 300, 1, 30, 20, 70).
-role(sorcerer, 300, 1, 30, 20, 70).
+role(swordsman, 500, 1, 80, 30, 90).
+role(archer, 400, 1, 90, 20, 100).
+role(sorcerer, 400, 1, 70, 35, 120).
 
 /*** item(ID, Name, Job, Type, Health, Attack, Defense) ***/
 /* item swordsman */
