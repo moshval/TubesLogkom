@@ -6,6 +6,7 @@
 :- include('role.pl').
 :- include('player.pl').
 :- include('store.pl').
+:- include('combat.pl').
 
 title :-
 	write('Welcome to Bensin Impek!\n'),
@@ -57,9 +58,13 @@ start :- init(_), write('Game has already started!'),!.
 start :-
 	\+init(_),
 	title,
-	asserta(init(1)),
 	initGame,
-	initPemain, !.
+	initPemain, 
+	asserta(init(1)),
+	!.
+
+status :- \+init(_), write('Game has not started yet!'),!.
+status :- init(_), playerStatus,!.
 
 quit :- \+init(_), write('Game has not started yet!'),!.
 quit :- init(_),
