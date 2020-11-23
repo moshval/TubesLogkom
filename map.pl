@@ -1,8 +1,7 @@
 :- dynamic(posX/1).
 :- dynamic(posY/1).
-
-lebar(10).
-panjang(10).
+:- dynamic(lebar/1).
+:- dynamic(panjang/1).
 
 isLimitAtas(_,Y) :- Y=:=0.
 isLimitBawah(_,Y) :- lebar(L), Limit is L+1, Y =:= Limit.
@@ -38,4 +37,5 @@ d :- posX(X), posY(Y), X2 is X+1, \+isStore(X2,Y), \+isLimitBawah(X2,Y), \+isLim
 
 map :- printMap(0,0),!.
 
+initMap :- asserta(lebar(10)), asserta(panjang(10)),!.
 initP :- asserta(posX(1)), asserta(posY(1)),!.
