@@ -39,8 +39,14 @@ d :- posX(X), posY(Y), X2 is X+1, (isLimitBawah(X2,Y); isLimitAtas(X2,Y); isLimi
 d :- posX(X), posY(Y), X2 is X+1, isStore(X2,Y), write('Write `store.` to see store menu.'), retract(posX(_)), asserta(posX(X2)), !.
 d :- posX(X), posY(Y), X2 is X+1, \+isStore(X2,Y), \+isLimitBawah(X2,Y), \+isLimitAtas(X,Y), \+isLimitKiri(X,Y), \+isLimitKanan(X,Y), retract(posX(_)), asserta(posX(X2)), !.
 
+legend :-
+	write('Map Legends:'), nl,
+	write('P = Player'), nl,
+	write('S = Store'), nl,
+	write('# = Wall').
+
 map :- \+init(_), write('Game has not started yet!') ,!.
-map :- init(_), printMap(0,0),!.
+map :- init(_), printMap(0,0), nl, legend, !.
 
 initMap :- asserta(lebar(10)), asserta(panjang(10)),!.
 initP :- asserta(posX(1)), asserta(posY(1)),!.

@@ -11,13 +11,15 @@ initPlayer(Job) :-
     role(Job, MaxHealth, Level, Attack, Defense, Special),
     initGold(Gold),
     initExp(Exp),
-    asserta(player(Job, MaxHealth, Level, Attack, Defense, Special, Exp, Gold)),
+    Health is MaxHealth,
+    asserta(player(Job, MaxHealth, Level, Health, Attack, Defense, Special, Exp, Gold)),
     addItem(99,Job,5),
     !.
 playerStatus :-
     init(_),
-    player(Job, _, Level, Attack, Defense, _, Exp, Gold),
+    player(Job, _, Level, Health, Attack, Defense, _, Exp, Gold),
     write('Job      : '), write(Job), nl,
+    write('Health   : '), write(Health), nl,
     write('Level    : '), write(Level), nl,
     write('Attack   : '), write(Attack), nl,
     write('Defense  : '), write(Defense), nl,
