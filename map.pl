@@ -59,9 +59,9 @@ d :- isEnemyAlive(_),write('Oh no u cant, there is still an enemy to fight with'
 legend :-
 	write('Map Legends:'), nl,
 	write('P = Player'), nl,
-    write('S = Store'), nl,
-    write('Q = Quest'), nl,
-	write('B = Boss Enemy'), nl,
+	write('S = Store'), nl,
+	write('Q = Quest'), nl,
+	write('D = Dungeon'), nl,
 	write('# = Wall'), nl.
 
 map :- \+init(_), write('Game has not started yet!') ,!.

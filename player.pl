@@ -1,7 +1,7 @@
 :- dynamic(player/9).
 :- dynamic(inventory/8). 
 
-/*** player(Job, MaxHealth, Level, Health, Attack, Defense, Exp, Gold) ***/
+/*** player(Job, MaxHealth, Level, Health, Attack, Defense, Sepcial, Exp, Gold) ***/
 
 maxInventory(100).
 initGold(1000).

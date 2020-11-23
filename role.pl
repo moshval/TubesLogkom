@@ -9,6 +9,7 @@ role(swordsman, 99900, 1, 7000, 30, 90).
 role(archer, 400, 1, 90, 20, 100).
 role(sorcerer, 400, 1, 70, 35, 120).
 
+maxExp(100).
 /*** item(ID, Name, Job, Type, Health, Attack, Defense) ***/
 /* item swordsman */
 item(1,sapujagad, swordsman, equipment, 0, 20, 0).

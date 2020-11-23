@@ -80,7 +80,7 @@ foundDungeon:- /* Encountered a dungeon */
 notenterD:- /* not entering */
     a,!.
 
-enterD:- /* enter dungeon */
+enterD:- /* enter dungeon, masi blm fi fix krn ini baru sequencenya */
     write('Entering dungeon.......'),nl,
     foundEliteOne,
     \+ isEnemyAlive(_),
