@@ -3,25 +3,33 @@
 
 :- include('map.pl').
 :- include('mobdata.pl').
-:- include('player.pl').
 :- include('role.pl').
+:- include('player.pl').
 :- include('store.pl').
 
 title :-
 	write('welcome\n'),
-	write('start. - memulai permainan\n'),
-	write('help. - liat-liat perintah\n'),
-	write('w. a. s. d. - berpindah\n'),
-	write('map. - liat map\n'),
+	write('start. - start the game\n'),
+	write('help. - see the cmd\n'),
+	write('w. a. s. d. - move\n'),
+	write('map. - open map\n'),
 	write('quit. - quit game').
 
 initPemain :-
-	write('\n\nMasukkan nama\n'),
+	write('\n\nWrite your name\n'),
 	read(Nama),
 	asserta(pemain(Nama)),
-	write('\nHalo, '), write(Nama), write('\n'),
-	write('Pilih kelas\n'),
-	write('1,2,3'),!.
+	write('\nHello, '), write(Nama), write('\n'),
+	write('Job List:\n'),
+	write('1. swordsman\n'),
+	write('2. archer\n'),
+	write('3. sorcerer\n\nChoose one: '),
+	read(Job),
+	initPlayer(Job),
+	write('\nYou choose '), write(Job),
+	write('!\nHere is your stat\n\n'),
+	playerStatus,
+	!.
 
 initGame :- 
 	initMap,
