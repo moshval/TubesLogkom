@@ -19,6 +19,7 @@ playerStatus :-
     init(_),
     player(Job, _, Level, Attack, Defense, _, Exp, Gold),
     write('Job      : '), write(Job), nl,
+    write('Health   : '), write(Health), nl,
     write('Level    : '), write(Level), nl,
     write('Attack   : '), write(Attack), nl,
     write('Defense  : '), write(Defense), nl,
