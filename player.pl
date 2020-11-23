@@ -16,13 +16,13 @@ initPlayer(Job) :-
     !.
 playerStatus :-
     init(_),
-    player(Job, _, Level, Health, Attack, Defense, _, Exp, Gold),
-    write('Job      :'), write(Job), nl,
-    write('Level    :'), write(Level), nl,
-    write('Attack   :'), write(Attack), nl,
-    write('Defense  :'), write(Defense), nl,
-    write('Exp      :'), write(Exp), nl,
-    write('Gold     :'), write(Gold), nl.
+    player(Job, _, Level, Attack, Defense, _, Exp, Gold),
+    write('Job      : '), write(Job), nl,
+    write('Level    : '), write(Level), nl,
+    write('Attack   : '), write(Attack), nl,
+    write('Defense  : '), write(Defense), nl,
+    write('Exp      : '), write(Exp), nl,
+    write('Gold     : '), write(Gold), nl.
 
 
 /** Inventory **/
