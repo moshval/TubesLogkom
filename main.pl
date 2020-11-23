@@ -12,14 +12,7 @@ title :-
 	write('Welcome to Bensin Impek!\n'),
 	write('You got hit by truck and dead, now you are reincarnated to another world!\n'),
 	write('Here is the list of commands that may be useful for your new life!\n'),
-	write('------------------------------\n'),
-	write('| start. - start the game    |\n'),
-	write('| help. - see the cmd        |\n'),
-	write('| w. a. s. d. - move         |\n'),
-	write('| status. - see your status  |\n'),
-	write('| map. - open map            |\n'),
-	write('| quit. - quit game          |\n'),
-	write('------------------------------\n').
+	help.
 
 help :-
 	write('------------------------------\n'),
