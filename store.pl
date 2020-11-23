@@ -7,35 +7,33 @@ store :- init(_), posX(X), posY(Y), isStore(X,Y), write('Welcome to The Store \n
 
 gacha :- \+init(_), write('Game has not started yet'),!.
 gacha :- init(_), posX(X), posY(Y), \+isStore(X,Y), write('You are not in the store position!'),!.
-gacha :- player(Job, MaxHealth, Level, Attack, Defense, Exp, Gold),
-         NewGold is Gold - 1000,
+
+gacha :- player(_,_,_,_,_,_,_,_,SGold),
+         item(_,_,SJob,_,_,_,_),
+         NewGold is SGold - 1000,
+         NewGold >= 0,
+         random(1,3,Randomize),
+         addItem(Randomize,SJob,1),
+         asserta(player(_,_,_,_,_,_,_,_,NewGold)),!.
+
+gacha :- player(_,_,_,_,_,_,_,_,SGold),
+         NewGold is SGold - 1000,
          NewGold < 0,
          write('Insufficient amount of gold'),!.
 
-gacha :- player(Job, MaxHealth, Level, Attack, Defense, Exp, Gold),
-         NewGold is Gold - 1000,
-         NewGold > 0,
-         random(1,3,Randomize),
-         addItem(Randomize,Job,1),
-         asserta(player(Job, MaxHealth, Level, Attack, Defense, Exp, NewGold)),
-         write("Congratulation, you've got ", item(Randomize, Name, Job, Type, Health, Attack, Defense)),!.
-
 potion :- \+init(_), write('Game has not started yet'),!.
 potion :- init(_), posX(X), posY(Y), \+isStore(X,Y), write('You are not in the store position!'),!.
-potion :- write('How many potion do you want to buy ?'),
+potion :- write('How many potion do you want to buy ? \n'),
           read(BanyakPotion),
-          player(Job, MaxHealth, Level, Attack, Defense, Exp, Gold),
-          NewGold is Gold - BanyakPotion*100,
-          NewGold < 0,
-          write('Insufficient amount of gold'),!.
+          player(_,_,_,_,_,_,_,_, SGold),
+          item(_,_,SJob,_,_,_,_),
+          NewGold is SGold - BanyakPotion*100,
+          NewGold >= 0,
+          addItem(99,SJob,BanyakPotion),
+          asserta(player(_,_,_,_,_,_,_,_, NewGold)),!.
+potion :- write('Insufficient amount of gold'),!.
 
-potion :- write('How many potion do you want to buy ?'),
-          read(BanyakPotion),
-          player(Job, MaxHealth, Level, Attack, Defense, Exp, Gold),
-          NewGold is Gold - BanyakPotion*100,
-          NewGold > 0,
-          addItem(99,Job,BanyakPotion),
-          asserta(player(Job, MaxHealth, Level, Attack, Defense, Exp, NewGold)),!.
+
 
 
 
