@@ -1,5 +1,5 @@
 :- dynamic(enemy/11).  /* enemy(ID,Name,Type,MaxHealth,Level,Health,Attack,Defense,Special,Exp,Gold) */ /*Boss or nah */
-/*** player(Job, MaxHealth, Level, Health, Attack, Defense, Exp, Gold) ***/
+/*** player(Job, MaxHealth, Level, Health, Attack, Defense, Special, Exp, Gold) ***/
 :- dynamic(canFlee/1). 
 :- dynamic(isEnemyAlive/1).
 :- dynamic(isFighting/1).

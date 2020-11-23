@@ -7,6 +7,7 @@
 :- include('player.pl').
 :- include('store.pl').
 :- include('combat.pl').
+:- include('level.pl').
 
 title :-
 	write('Welcome to Bensin Impek!\n'),
