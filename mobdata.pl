@@ -13,6 +13,7 @@ mobdata(7,cultist,mob,400,5,120,40,200,250,200).
 mobdata(8,orc,mob,400,5,120,40,150,250,200).
 mobdata(9,boar,mob,100,1,60,10,150,150,150).
 mobdata(10,bonus_enemy,mob,5,1,0,0,0,0,0).
+
 /* TBA */
 /* BOSSU Lv 10 for example */
 mobdata(50,doragon,boss,4000,10,800,300,950,1000,5000).

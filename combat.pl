@@ -12,6 +12,7 @@
 /* ---------- FIGHT CMDS ----------- */
 
 foundEnemy:- /* Encountered an enemy (blm ditambah leveler) */
+    /*player(_,_,PLevel,_, _, _, _, _, _), */
     random(1,10,ID),
     mobdata(ID,Name,Type,MaxHealth,Level,Attack,Defense,Special,Exp,Gold),
     Health is MaxHealth,
@@ -66,8 +67,9 @@ attack:- /*Blm ada yg bisa di attack */
     \+ isEnemyAlive(_),
     write('Nothing to be attacked. U cannot attack urself (especially if u r dead)'),nl,!.
 
-attack:- /* Scheme Attack, Incomplete, */
+attack:- /* Scheme Attack, Incomplete, Skill on CD */
     isEnemyAlive(_),
+    playerSkillCD(X),
     player(_, _, _, _, PAttack, _, _, _, _),
     enemy(_,EName,_,_,_,EHealth,_,EDefense,_,_,_),
     TmpDamage is (PAttack - EDefense),
@@ -77,9 +79,22 @@ attack:- /* Scheme Attack, Incomplete, */
     retract(enemy(EID,EName,EType,EMaxHealth,ELevel,EHealth,EAttack,EDefense,ESpecial,EExp,EGold)),
     asserta(enemy(EID,EName,EType,EMaxHealth,ELevel,CurrEHealth,EAttack,EDefense,ESpecial,EExp,EGold)),
     write('Player dealt '),write(PDamage),write(' damage '),write('to '),write(EName),nl,
-    playerSkillCD(X),
     (X < 3 -> P is X+1,retract(playerSkillCD(X)),asserta(playerSkillCD(P)) 
       ;retract(playerSkillCD(X)),asserta(playerCanUseSkill(1))),
+    enemyStats,!.
+
+attack:- /* Scheme Attack, Incomplete, Skill not on CD */
+    isEnemyAlive(_),
+    \+playerSkillCD(_),
+    player(_, _, _, _, PAttack, _, _, _, _),
+    enemy(_,EName,_,_,_,EHealth,_,EDefense,_,_,_),
+    TmpDamage is (PAttack - EDefense),
+    (TmpDamage >= 0 -> PDamage is TmpDamage
+        ;PDamage is 0),
+    CurrEHealth is (EHealth - PDamage),
+    retract(enemy(EID,EName,EType,EMaxHealth,ELevel,EHealth,EAttack,EDefense,ESpecial,EExp,EGold)),
+    asserta(enemy(EID,EName,EType,EMaxHealth,ELevel,CurrEHealth,EAttack,EDefense,ESpecial,EExp,EGold)),
+    write('Player dealt '),write(PDamage),write(' damage '),write('to '),write(EName),nl,
     enemyStats,!.
 
 enemyStats :- /* Stats enemy abis player attack, continuing to enemy turn if enemy still alive */
@@ -124,7 +139,7 @@ enemyAttack :- /* Enemy normal attack */
 playerStats :- /* Stats player abis turn enemy */
     player(_, _, _, PHealth,_, _, _, _, _),
     PHealth > 0,
-    write('Your health is '),write(PHealth),nl,
+    write('Your health is '),write(PHealth),nl,nl,
     write('Now tis ur turn'),nl,
     fightmenu,!.
 
@@ -168,9 +183,14 @@ specialAttack:- /*player special atk, can only be used every 3 turns, CD resets 
     enemyStats,!.
 
 specialAttack:- /* player special atk is in CD */
+    isEnemyAlive(_),
     \+ playerCanUseSkill(_),
     write('Special attack is in cooldown'),nl,
     fightmenu,!.
+
+specialAttack:- /*outside combat */
+    \+ isEnemyAlive(_),
+    write('Nothing to be attacked. U cannot attack urself (especially if u r dead)'),nl,!.
 
 
 
