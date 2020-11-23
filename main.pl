@@ -28,20 +28,25 @@ help :-
 	write('| quit. - quit game          |\n'),
 	write('------------------------------\n').
 
+/* loop ref: https://stackoverflow.com/questions/29857372/how-to-go-back-to-repeat-in-prolog */
 initPemain :-
 	write('\n\nWrite your name, traveler!\nName (lowercase): '),
 	read(Nama),
 	asserta(pemain(Nama)),
 	write('\nHello, '), write(Nama), write('\n'),
+	repeat, nl,
 	write('Here is Job List for you to choose\n'),
 	write('1. Swordsman\n'),
 	write('2. Archer\n'),
 	write('3. Sorcerer\n\nChoose one (lowercase): '),
 	read(Job),
-	initPlayer(Job),
-	write('\nYou choose '), write(Job),
-	write('!\nGood luck on your new life, Traveler!\nHere is your status\n\n'),
-	playerStatus,
+     	(    \+validJob(Job) -> write('\nWrong input!'), fail
+     	;    validJob(Job) -> (
+		initPlayer(Job),
+		write('\nYou choose '), write(Job),
+		write('!\nGood luck on your new life, Traveler!\nHere is your status\n\n'),
+		playerStatus),  !
+     	     ),
 	!.
 
 initGame :- 

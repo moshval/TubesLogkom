@@ -1,6 +1,10 @@
 /*** Facts & Rules tiap Role ***/
 /*** role(Job, MaxHealth, Level, Attack, Defense, Special) ***/
 
+validJob(swordsman).
+validJob(archer).
+validJob(sorcerer).
+
 role(swordsman, 300, 1, 30, 20, 70).
 role(archer, 300, 1, 30, 20, 70).
 role(sorcerer, 300, 1, 30, 20, 70).
