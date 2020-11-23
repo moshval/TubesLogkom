@@ -33,7 +33,7 @@ list_sum([H | T], S) :-
 
 banyakItem(Amount) :-
     findall(Amount, inventory(_,_,_,_,Amount,_,_,_), ListAmount),
-    sum(ListAmount, Amount).
+    list_sum(ListAmount, Amount).
     
 isFull :-
     banyakItem(Amount),
