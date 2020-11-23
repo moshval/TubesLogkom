@@ -3,8 +3,9 @@
 
 :- include('map.pl').
 :- include('mobdata.pl').
-/*:- include('player.pl').*/
+:- include('player.pl').
 :- include('role.pl').
+:- include('store.pl').
 
 title :-
 	write('welcome\n'),

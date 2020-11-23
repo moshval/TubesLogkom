@@ -17,7 +17,7 @@ initPlayer(Job) :-
     !.
 playerStatus :-
     init(_),
-    player(Job, _, Level, Health, Attack, Defense, _, Exp, Gold)
+    player(Job, _, Level, Health, Attack, Defense, _, Exp, Gold),
     write('Job      :'), write(Job), nl,
     write('Level    :'), write(Level), nl,
     write('Health   :'), write(Health), nl,

@@ -1,12 +1,9 @@
 /* Fact and Rules */
 
 
-:- include('role.pl').
-:- include('player.pl').
-
-
-store :- write('Welcome to The Store \n What do you want to buy \n 1. Gacha (1000 gold)\n 2. Health Potion (100 gold)\n').
-         write('3. I want to sell my items').
+store :- \+init(_), write('Game has not started yet'),!.
+store :- init(_), posX(X), posY(Y), \+isStore(X,Y), write('You are not in the store position!'),!.
+store :- init(_), posX(X), posY(Y), isStore(X,Y), write('Welcome to The Store \n What do you want to buy \n 1. Gacha (1000 gold)\n 2. Health Potion (100 gold)\n 3. I want to sell my items'), !.
 
 gacha :- player(Job, MaxHealth, Level, Health, Attack, Defense, Exp, Gold),
          NewGold is Gold - 1000,
