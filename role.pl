@@ -5,7 +5,7 @@ validJob(swordsman).
 validJob(archer).
 validJob(sorcerer).
 
-role(swordsman, 500, 1, 80, 30, 90).
+role(swordsman, 99900, 1, 7000, 30, 90).
 role(archer, 400, 1, 90, 20, 100).
 role(sorcerer, 400, 1, 70, 35, 120).
 

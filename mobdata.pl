@@ -45,3 +45,4 @@ specialdata(demonlord_paimon,how_about_we_explore_the_area_ahead_of_us_later).
 specialdata(secret_boss,getrekt).
 
 
+/* Secret boss diakhir abis ngalahin paimon bakalan mirror dari player itu sendiri */
