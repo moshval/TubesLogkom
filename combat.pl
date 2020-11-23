@@ -1,4 +1,5 @@
 :- dynamic(enemy/11).  /* enemy(ID,Name,Type,MaxHealth,Level,Health,Attack,Defense,Special,Exp,Gold) */ /*Boss or nah */
+:- dynamic(me/9). /* basically player but dynamic */
 :- dynamic(canFlee/1). 
 :- dynamic(isEnemyAlive/1).
 :- dynamic(isFighting/1).
@@ -56,15 +57,15 @@ attack:- /* Scheme Attack, Incomplete, */
 enemyStats :- /* Stats enemy abis player attack, continuing to enemy turn if enemy still alive */
     enemy(_,EName,_,_,_,EHealth,_,_,_,_,_),
     EHealth > 0,
-    write(Ename),write(' health is '),write(EHealth),nl,
+    write(EName),write(' health is '),write(EHealth),nl,
     write('Now tis enemy turn'),nl,
     enemyTurn,!.
 
 /* enemyStats :- /* if enemy s ded */
 
 enemyTurn :- /* Turn enemy */
-    random(1,6,skillgakya),
-    (skillgakya < 6
+    random(1,6,Skillgakya),
+    (Skillgakya < 6
         -> enemyAttack
         ;  enemySpecial
     ),!.
