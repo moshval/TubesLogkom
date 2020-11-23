@@ -11,7 +11,9 @@ isLimitKiri(X,_) :- X=:=0.
 isLimitKanan(X,_) :- panjang(L), Limit is L+1, X =:= Limit.
 isPlayer(X,Y) :- posX(X1), posY(Y1), X=:=X1, Y=:=Y1.
 isStore(X,Y) :- X=:=7, Y=:=8.
+isBoss(X,Y) :- X=:=5, Y=:=4.
 isBoss(X,Y) :- X=:=11, Y=:=12.
+isBoss(X,Y) :- X=:=15, Y=:=3.
 isTembok(X,Y) :-
 	tembok(X1,Y1,X2,Y2,X3,Y3,X4,Y4,X5,Y5,X6,Y6,X7,Y7,X8,Y8,X9,Y9,X10,Y10,X11,Y11,X12,Y12,X13,Y13,X14,Y14),
 	((X=:=X1,Y=:=Y1);(X=:=X2,Y=:=Y2);(X=:=X3,Y=:=Y3);(X=:=X4,Y=:=Y4);(X=:=X5,Y=:=Y5);(X=:=X6,Y=:=Y6);(X=:=X7,Y=:=Y7);
