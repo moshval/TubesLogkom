@@ -11,7 +11,8 @@ initPlayer(Job) :-
     role(Job, MaxHealth, Level, Attack, Defense, Special),
     initGold(Gold),
     initExp(Exp),
-    asserta(player(Job, MaxHealth, Level, Attack, Defense, Special, Exp, Gold)),
+    Health is MaxHealth,
+    asserta(player(Job, MaxHealth, Level, Health, Attack, Defense, Special, Exp, Gold)),
     addItem(99,Job,5),
     !.
 playerStatus :-
