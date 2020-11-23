@@ -19,6 +19,15 @@ title :-
 	write('| quit. - quit game          |\n'),
 	write('------------------------------\n').
 
+help :-
+	write('------------------------------\n'),
+	write('| start. - start the game    |\n'),
+	write('| help. - see the cmd        |\n'),
+	write('| w. a. s. d. - move         |\n'),
+	write('| map. - open map            |\n'),
+	write('| quit. - quit game          |\n'),
+	write('------------------------------\n').
+
 initPemain :-
 	write('\n\nWrite your name, traveler!\nName (lowercase): '),
 	read(Nama),
