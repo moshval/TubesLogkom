@@ -10,9 +10,7 @@
 
 title :-
 	write('Welcome to Bensin Impek!\n'),
-	write('You got hit by truck and dead, now you are reincarnated to another world!\n'),
-	write('Here is the list of commands that may be useful for your new life!\n'),
-	help.
+	write('You got hit by truck and dead, now you are reincarnated to another world!').
 
 help :-
 	write('------------------------------\n'),
@@ -41,8 +39,11 @@ initPemain :-
 		initPlayer(Job),
 		write('\nYou choose '), write(Job),
 		write('!\nGood luck on your new life, Traveler!\nHere is your status\n\n'),
-		playerStatus),  !
-     	     ),
+		playerStatus,
+		write('\n\nHere is the list of commands that may be useful for your new life!\n'),
+		help
+	     ),  !
+     	),
 	!.
 
 initGame :- 
@@ -53,9 +54,9 @@ start :- init(_), write('Game has already started!'),!.
 start :-
 	\+init(_),
 	title,
+	asserta(init(1)),
 	initGame,
 	initPemain, 
-	asserta(init(1)),
 	!.
 
 status :- \+init(_), write('Game has not started yet!'),!.
