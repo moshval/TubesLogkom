@@ -125,6 +125,11 @@ fight:- /* Baru ketemu enemy, fight */
     asserta(playerCanUseSkill(1)),
     fightmenu,!.
 
+fight:- /*still in fight, redirected after fightmenu */
+    isFighting(_),
+    isEnemyAlive(_),
+    fightmenu,!.
+
 fight:- /* Blm ketemu enemy */
     \+ isEnemyAlive(_),
     write('No enemy here, go somewhere else.'),nl,!.
@@ -147,8 +152,7 @@ flee:- /*Kabur, but failed*/
     PHealth =< F,
     write('You unleashed ur secret special technique : Nigerundayo'),nl,
     write('....but unssuccessful'),nl,
-    (isFighting(_) -> fightmenu
-        ;fight),!.
+    fight,!.
 
 flee:- /*Kabur while blm ketemu enemy */
     \+ isEnemyAlive(_),
@@ -158,8 +162,7 @@ flee:- /*Kabur while blm ketemu enemy */
 flee:- /* flee while fighting boss */
     isFightingBoss(_),
     write('CANT RUN. MUST FACE.'),
-    (isFighting(_) -> fightmenu
-    ;fight),!.
+    fight,!.
 
 
 attack:- /*Blm ada yg bisa di attack */
@@ -240,7 +243,7 @@ playerStats :- /* Stats player abis turn enemy */
     PHealth > 0,
     write('Your health is '),write(PHealth),nl,nl,
     write('Now tis ur turn'),nl,
-    fightmenu,!.
+    fight,!.
 
 playerStats :- /* Player ded */
     player(_, _, _, PHealth,_, _, _, _, _),
@@ -285,7 +288,7 @@ specialAttack:- /* player special atk is in CD */
     isEnemyAlive(_),
     \+ playerCanUseSkill(_),
     write('Special attack is in cooldown'),nl,
-    fightmenu,!.
+    fight,!.
 
 specialAttack:- /*outside combat */
     \+ isEnemyAlive(_),

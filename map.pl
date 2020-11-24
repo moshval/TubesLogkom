@@ -40,7 +40,7 @@ w :- posX(X), posY(Y), Y2 is Y-1,\+ isEnemyAlive(_), isQuest(X,Y2), retract(posY
 w :- posX(X), posY(Y), Y2 is Y-1,\+ isEnemyAlive(_), isBoss(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, foundBoss, !.
 w :- posX(X), posY(Y), Y2 is Y-1,\+ isEnemyAlive(_), isDungeon(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, foundDungeon, !.
 w :- posX(X), posY(Y), Y2 is Y-1,\+ isEnemyAlive(_),\+isStore(X,Y2), \+isLimitBawah(X,Y2), \+isLimitAtas(X,Y), \+isLimitKiri(X,Y), \+isLimitKanan(X,Y), retract(posY(_)), asserta(posY(Y2)),map,enemySpawner, !.
-w :- isEnemyAlive(_),write('Oh no u cant, there is still an enemy to fight with'),nl,fightmenu,!.
+w :- isEnemyAlive(_),write('Oh no u cant, there is still an enemy to fight with. But lets try fleeing'),nl,flee,!.
 
 s :- \+init(_), write('Game has not started yet!') ,!.
 s :- posX(X), posY(Y), Y2 is Y+1,\+ isEnemyAlive(_), (isTembok(X,Y2); isLimitBawah(X,Y2); isLimitAtas(X,Y2); isLimitKiri(X,Y2); isLimitKanan(X,Y2)), map, write('\n\nThere is wall, unable to move.\n\n'), !.
@@ -49,7 +49,7 @@ s :- posX(X), posY(Y), Y2 is Y+1,\+ isEnemyAlive(_), isQuest(X,Y2), retract(posY
 s :- posX(X), posY(Y), Y2 is Y+1,\+ isEnemyAlive(_), isBoss(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, foundBoss, !.
 s :- posX(X), posY(Y), Y2 is Y+1,\+ isEnemyAlive(_), isDungeon(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, foundDungeon, !.
 s :- posX(X), posY(Y), Y2 is Y+1,\+ isEnemyAlive(_), \+isStore(X,Y2), \+isLimitBawah(X,Y2), \+isLimitAtas(X,Y), \+isLimitKiri(X,Y), \+isLimitKanan(X,Y), retract(posY(_)), asserta(posY(Y2)),map,enemySpawner, !.
-s :- isEnemyAlive(_),write('Oh no u cant, there is still an enemy to fight with'),nl,fightmenu,!.
+s :- isEnemyAlive(_),write('Oh no u cant, there is still an enemy to fight with.  But lets try fleeing'),nl,flee,!.
 
 a :- \+init(_), write('Game has not started yet!') ,!.
 a :- posX(X), posY(Y), X2 is X-1,\+ isEnemyAlive(_), (isTembok(X2,Y); isLimitBawah(X2,Y); isLimitAtas(X2,Y); isLimitKiri(X2,Y); isLimitKanan(X2,Y)), map, write('\n\nThere is wall, unable to move.\n\n'), !.
@@ -58,7 +58,7 @@ a :- posX(X), posY(Y), X2 is X-1,\+ isEnemyAlive(_), isQuest(X2,Y), retract(posX
 a :- posX(X), posY(Y), X2 is X-1,\+ isEnemyAlive(_), isBoss(X2,Y), retract(posX(_)), asserta(posX(X2)), map, foundBoss, !.
 a :- posX(X), posY(Y), X2 is X-1,\+ isEnemyAlive(_), isDungeon(X2,Y), retract(posX(_)), asserta(posX(X2)), map, foundDungeon, !.
 a :- posX(X), posY(Y), X2 is X-1,\+ isEnemyAlive(_), \+isStore(X2,Y), \+isLimitBawah(X2,Y), \+isLimitAtas(X,Y), \+isLimitKiri(X,Y), \+isLimitKanan(X,Y), retract(posX(_)), asserta(posX(X2)),map,enemySpawner, !.
-a :- isEnemyAlive(_),write('Oh no u cant, there is still an enemy to fight with'),nl,fightmenu,!.
+a :- isEnemyAlive(_),write('Oh no u cant, there is still an enemy to fight with.  But lets try fleeing'),nl,flee,!.
 
 d :- \+init(_), write('Game has not started yet!') ,!.
 d :- posX(X), posY(Y), X2 is X+1,\+ isEnemyAlive(_), (isTembok(X2,Y); isLimitBawah(X2,Y); isLimitAtas(X2,Y); isLimitKiri(X2,Y); isLimitKanan(X2,Y)), map, write('\n\nThere is wall, unable to move.\n\n'), !.
@@ -67,7 +67,7 @@ d :- posX(X), posY(Y), X2 is X+1,\+ isEnemyAlive(_), isQuest(X2,Y), retract(posX
 d :- posX(X), posY(Y), X2 is X+1,\+ isEnemyAlive(_), isBoss(X2,Y), retract(posX(_)), asserta(posX(X2)), map, foundBoss, !.
 d :- posX(X), posY(Y), X2 is X+1,\+ isEnemyAlive(_), isDungeon(X2,Y), retract(posX(_)), asserta(posX(X2)), map, foundDungeon, !.
 d :- posX(X), posY(Y), X2 is X+1,\+ isEnemyAlive(_), \+isStore(X2,Y), \+isLimitBawah(X2,Y), \+isLimitAtas(X,Y), \+isLimitKiri(X,Y), \+isLimitKanan(X,Y), retract(posX(_)), asserta(posX(X2)),map,enemySpawner, !.
-d :- isEnemyAlive(_),write('Oh no u cant, there is still an enemy to fight with'),nl,fightmenu,!.
+d :- isEnemyAlive(_),write('Oh no u cant, there is still an enemy to fight with.  But lets try fleeing'),nl,flee,!.
 
 legend :-
 	write('Map Legends:'), nl,
