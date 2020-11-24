@@ -48,7 +48,7 @@ addItem(_,_,Qty) :-
     NewAmount is Amount + Qty,
     maxInventory(Max),
     NewAmount >= Max,
-    write('Udah kepenuhan gan, pake dulu yang ada!'),
+    write('The inventory is full!'),
     !,fail.
 
 addItem(ID,Job,Qty) :-
@@ -66,7 +66,7 @@ addItem(ID,Job,Qty) :-
 
 delItem(ID,Job) :-
     \+inventory(ID,_,Job,_,_,_,_,_),
-    write('Barangnya gaada ngab, masa di hapus..'),
+    write('There is no such item in your inventory!'),
     !,fail.
 
 delItem(ID,Job) :-

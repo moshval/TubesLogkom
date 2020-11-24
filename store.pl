@@ -9,7 +9,7 @@ gacha :- \+init(_), write('Game has not started yet'),!.
 gacha :- init(_), posX(X), posY(Y), \+isStore(X,Y), write('You are not in the store position!'),!.
 
 gacha :- player(_, _, _, _, _, _, _, _, SGold),
-         NewGold is SGold - 1000,
+         NewGold is SGold - 100,
          NewGold >= 0,
          random(1,3,RandomJob),
          random(1,5,Randomize),
@@ -21,7 +21,7 @@ gacha :- player(_, _, _, _, _, _, _, _, SGold),
          asserta(player(Job, MaxHealth, Level, Health, Attack, Defense, Sepcial, Exp, NewGold)),!.
 
 gacha :- player(_,_,_,_,_,_,_,_,SGold),
-         NewGold is SGold - 1000,
+         NewGold is SGold - 100,
          NewGold < 0,
          write('Insufficient amount of gold'),!.
 
