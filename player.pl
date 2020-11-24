@@ -1,5 +1,6 @@
 :- dynamic(player/9).
-:- dynamic(inventory/8). 
+:- dynamic(inventory/8).
+:- dynamic(equipped/8). 
 
 /*** player(Job, MaxHealth, Level, Health, Attack, Defense, Sepcial, Exp, Gold) ***/
 
@@ -105,10 +106,10 @@ showInventory :-
     write('Your inventory: '),nl,
     listInventory(ListItem,ListJob,ListAmount),
     showInven(ListItem,ListJob,ListAmount).
-
+/* BELOM WORK KALO AMER KOSONG */
 usePotion :-
-    inventory(99, Name, Job, _, _, _, _, _),
-    \+ cekItemAda(Name,Job),
+    inventory(99, Name, _, _, _, _, _, _),
+    \+ cekItemAda(Name,_),
     write('You have no Amer left.'),
     !, fail.
 
@@ -128,3 +129,28 @@ usePotion :-
     retract(player(Job, MaxHealth, Level, HP, Attack, Defense, Sepcial, Exp, Gold)),
     asserta(player(Job, MaxHealth, Level, NewHP, Attack, Defense, Sepcial, Exp, Gold)),
     write('By the power of AMER, you gained 80 extra HP...').
+
+/* BELOM WORK */
+equip(Name) :-
+    inventory(_, Name, _, _, _, _, _, _),
+    \+ cekItemAda(Name,_),
+    write('Equipment not found!'),
+    !, fail.
+
+equip(Name) :-
+    player(PJob, _, _, _, _, _, _, _, _),
+    inventory(_, Name, Job, _, _, _, _, _),
+    PJob \== Job,
+    write('You are unable to equip this item!'),
+    !, fail.
+
+equip(Name) :-
+    player(_, MaxHealth, _, HP, Att, Def, _, _, _),
+    inventory(_, Name, Job, _, _, Health, Attack, Defense),
+    NewHP is HP + Health,
+    NewAtt is Att + Attack,
+    NewDef is Def + Defense,
+    delItem(Name,Job),
+    retract(player(Job, MaxHealth, Level, HP, Attack, Defense, Sepcial, Exp, Gold)),
+    asserta(player(Job, MaxHealth, Level, NewHP, NewAtt, NewDef, Sepcial, Exp, Gold)),
+    write('Item successfully equipped.').
