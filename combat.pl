@@ -4,6 +4,10 @@
 :- dynamic(isEnemyAlive/1).
 :- dynamic(isFighting/1).
 :- dynamic(isFightingBoss/1).
+:- dynamic(winEliteOne/1).
+:- dynamic(winEliteTwo/1).
+:- dynamic(winEliteThree/1).
+:- dynamic(winPaimon/1).
 :- dynamic(playerCanUseSkill/1).
 :- dynamic(playerSkillCD/1).
 
@@ -29,11 +33,20 @@ foundEliteOne:- /* Encountered elite enemy,wave 1 (in dungeon) */
     mobdata(ID,Name,Type,MaxHealth,Level,Attack,Defense,Special,Exp,Gold),
     Health is MaxHealth,
     asserta(enemy(ID,Name,Type,MaxHealth,Level,Health,Attack,Defense,Special,Exp,Gold)),nl,
-    write('A/An '),write(Name),write(' is approaching you'),nl,
+    write('A/An Elite '),write(Name),write(' is approaching you'),nl,
+    write('After you win (if you win, ofc), type cont1 to continue'),nl,
     write('What will u do? '),nl,
     write('- fight.'),nl,
     asserta(isFightingBoss(1)),
     asserta(isEnemyAlive(1)),!.
+
+cont1:-
+    \+ isEnemyAlive(_),
+    retract(isFightingBoss(_)),
+    write('You win against the first one. But can you pass this? '),nl,
+    asserta(winEliteOne(1)),
+    foundEliteTwo,!.
+
 
 foundEliteTwo:- /* Encountered elite enemy, wave 2 (in dungeon) */
     random(52,53,ID),
@@ -41,21 +54,45 @@ foundEliteTwo:- /* Encountered elite enemy, wave 2 (in dungeon) */
     Health is MaxHealth,
     asserta(enemy(ID,Name,Type,MaxHealth,Level,Health,Attack,Defense,Special,Exp,Gold)),nl,
     write('A/An '),write(Name),write(' is approaching you'),nl,
+    write('After you win (if you win, ofc), type cont2 to continue'),nl,
     write('What will u do? '),nl,
     write('- fight.'),nl,
     asserta(isFightingBoss(1)),
     asserta(isEnemyAlive(1)),!.
+
+cont2 :-
+    \+ isEnemyAlive(_),
+    winEliteOne(_),
+    retract(isFightingBoss(_)),
+    write('What a surprise, you can go this far. Now face me! '),nl,
+    asserta(winEliteTwo(1)),
+    foundBoss,!.
 
 foundBoss :- /* Encountered the 'final' boss , Demon Lord Paimon */
     posX(X), posY(Y), (isBoss(X,Y); isDungeon(X,Y)),
     mobdata(66,Name,Type,MaxHealth,Level,Attack,Defense,Special,Exp,Gold),
     Health is MaxHealth,
     asserta(enemy(66,Name,Type,MaxHealth,Level,Health,Attack,Defense,Special,Exp,Gold)),nl,
-    write('A/An '),write(Name),write(' is approaching you'),nl,
+    write('This is it. '),write(Name),write(' is approaching you'),nl,
+    write('After you win (if you win, ofc), type cont3 to continue(wait what, this aint the end?)'),nl,
     write('What will u do? '),nl,
     write('- fight.'),nl,
     asserta(isFightingBoss(1)),
     asserta(isEnemyAlive(1)),!.
+
+cont3:-
+    \+ isEnemyAlive(_),
+    winEliteOne(_),
+    winEliteTwo(_),
+    retract(isFightingBoss(_)),
+    write('What....u can win against me...'),nl,
+    write('...............'),nl,
+    write('Echoing voice is being heard in the air. Suddenly someone claps'),nl,
+    write('<< Grreatt Jobbu >>'),nl,
+    write('That someone is....... yourself'),nl,
+    write('Now face urself to win THIS GAME !'),nl,
+    asserta(winEliteThree(1)),
+    foundYourself,!.
 
 foundYourself :- /*Encountered final boss, yourself */
     player(_, PMaxHealth, PLevel,_, PAttack, PDefense,PSpecial, PExp, PGold),
@@ -65,10 +102,22 @@ foundYourself :- /*Encountered final boss, yourself */
     EDefense is (PDefense * 0.7),
     asserta(enemy(99,yourself,boss,EMaxHealth,PLevel,EHealth,EAttack,EDefense,PSpecial,PExp,PGold)),
     write('This is yourself. '),nl,
+    write('After you win (if you win, ofc), type cont4 to continue(trust me, this is the end)'),nl,
     write('What will u do? '),nl,
     write('- fight.'),nl,
     asserta(isFightingBoss(1)),
     asserta(isEnemyAlive(1)),!.
+
+cont4 :-
+    \+ isEnemyAlive(_),
+    winEliteOne(_),
+    winEliteOne(_),
+    winEliteThree(_),
+    retract(isFightingBoss(_)),
+    write('YOU WIN. YOUVE COME THIS FAR TO THIS EXTENT TO THIS WORLD TO FACE YOURSELF IN THE END.'),nl,
+    write('NOW YOU ARE WORTHY'),nl,
+    write('Zlrprpspspsps....(Teleporting back to original world)'),nl,
+    quit,!.
 
 foundDungeon:- /* Encountered a dungeon */
     posX(X), posY(Y), isDungeon(X,Y),
@@ -84,30 +133,7 @@ notenterD:- /* not entering */
 
 enterD:- /* enter dungeon, masi blm fi fix krn ini baru sequencenya */
     write('Entering dungeon.......'),nl,
-    foundEliteOne,
-    \+ isEnemyAlive(_),
-    retract(isFightingBoss(_)),
-    write('You win against the first one. But can you pass this? '),nl,
-    foundEliteTwo,
-    \+ isEnemyAlive(_),
-    retract(isFightingBoss(_)),
-    write('What a surprise, you can go this far. Now face me! '),nl,
-    foundBoss,
-    \+ isEnemyAlive(_),
-    retract(isFightingBoss(_)),
-    write('What....u can win against me...'),nl,
-    write('...............'),nl,
-    write('Echoing voice is being heard in the air. Suddenly someone claps'),nl,\
-    write('<< Grreatt Jobbu >>'),nl,
-    write('That someone is....... yourself'),nl,
-    write('Now face urself to win THIS GAME !'),nl,
-    foundYourself,
-    \+ isEnemyAlive(_),
-    retract(isFightingBoss(_)),
-    write('YOU WIN. YOUVE COME THIS FAR TO THIS EXTENT TO THIS WORLD TO FACE YOURSELF IN THE END.'),nl,
-    write('NOW YOU ARE WORTHY'),nl,
-    write('Zlrprpspspsps....(Teleporting back to original world)'),nl,
-    quit,!.
+    foundEliteOne,!.
 
 
 
@@ -221,6 +247,7 @@ enemyStats :- /* if enemy s ded */
     NewPExp is (PExp + EExp) , NewPGold is (PGold + EGold),
     retract(player(PJob, PMaxHealth, PLevel, PHealth, PAttack, PDefense, PSpecial, PExp, PGold)),
     asserta(player(PJob, PMaxHealth, PLevel, PHealth, PAttack, PDefense, PSpecial, NewPExp, NewPGold)),
+    retract(enemy(_,_,_,_,_,_,_,_,_,_,_)),
     (playerCanUseSkill(_)-> retract(playerCanUseSkill(_))
         ; EHealth is EHealth),
     retract(isEnemyAlive(_)),retract(isFighting(_)),!.
