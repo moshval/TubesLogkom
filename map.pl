@@ -15,7 +15,7 @@ isBoss(X,Y) :- X=:=5, Y=:=4.
 isBoss(X,Y) :- X=:=15, Y=:=3.
 isDungeon(X,Y) :- X=:=11, Y=:=12.
 isQuest(X,Y) :- X=:=9, Y=:=9.
-isMedusa(X,Y) :- isQuest1(_),X=:=5, Y=:=1.
+isMedusa(X,Y) :- isQuest1(_),X=:=3, Y=:=15.
 isHydra(X,Y) :- isQuest1(_),X=:=1, Y=:=4.
 isCerberus(X,Y) :- isQuest1(_),X=:=8, Y=:=1.
 isTembok(X,Y) :-
@@ -96,14 +96,30 @@ d :- posX(X), posY(Y), X2 is X+1,\+ isEnemyAlive(_), isDungeon(X2,Y), retract(po
 d :- posX(X), posY(Y), X2 is X+1,\+ isEnemyAlive(_), \+isStore(X2,Y), \+isLimitBawah(X2,Y), \+isLimitAtas(X,Y), \+isLimitKiri(X,Y), \+isLimitKanan(X,Y), retract(posX(_)), asserta(posX(X2)),map,enemySpawner, !.
 d :- isEnemyAlive(_),write('Oh no u cant, there is still an enemy to fight with.  But lets try fleeing'),nl,flee,!.
 
-legend :-
-	write('Map Legends:'), nl,
-	write('P = Player'), nl,
-	write('S = Store'), nl,
-	write('Q = Quest'), nl,
-	write('B = Boss'), nl,
-	write('D = Dungeon'), nl,
-	write('# = Wall'), nl.
+legend :- \+ isQuest1(_),
+		write('~~~~~~~~~~~~~~~'),nl,
+		write('Map Legends:'), nl,
+		write('P = Player'), nl,
+		write('S = Store'), nl,
+		write('Q = Quest'), nl,
+		write('B = Boss'), nl,
+		write('D = Dungeon'), nl,
+		write('# = Wall'), nl,
+		write('~~~~~~~~~~~~~~~'),nl.
+
+legend :-isQuest1(_),
+		write('~~~~~~~~~~~~~~~'),nl,
+		write('Map Legends:'), nl,
+		write('M = Medusa'), nl,
+		write('H = Hydra'), nl,
+		write('C = Cerberus'), nl,
+		write('P = Player'), nl,
+		write('S = Store'), nl,
+		write('Q = Quest'), nl,
+		write('B = Boss'), nl,
+		write('D = Dungeon'), nl,
+		write('# = Wall'), nl,
+		write('~~~~~~~~~~~~~~~'),nl.
 
 map :- \+init(_), write('Game has not started yet!') ,!.
 map :- init(_), printMap(0,0), nl, legend, !.
