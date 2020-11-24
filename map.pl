@@ -20,6 +20,15 @@ isTembok(X,Y) :-
 	((X=:=X1,Y=:=Y1);(X=:=X2,Y=:=Y2);(X=:=X3,Y=:=Y3);(X=:=X4,Y=:=Y4);(X=:=X5,Y=:=Y5);(X=:=X6,Y=:=Y6);(X=:=X7,Y=:=Y7);
 	(X=:=X8,Y=:=Y8);(X=:=X9,Y=:=Y9);(X=:=X10,Y=:=Y10);(X=:=X11,Y=:=Y11);(X=:=X12,Y=:=Y12);(X=:=X13,Y=:=Y13);(X=:=X14,Y=:=Y14)).
 
+jumpTo(_, _) :- \+godMode(_), write('You can not use teleport because you have not reached God Mode yet, Traveler!'),!.
+jumpTo(X,Y) :- godMode(_), isTembok(X,Y), write('You can not teleport into wall!'),!.
+jumpTo(X,Y) :- godMode(_), \+isTembok(X,Y), retract(posX(_)), retract(posY(_)), asserta(posX(X)), asserta(posY(Y)), map, 
+		( (isStore(X,Y) -> write('\n\nWrite `store.` to see store menu.\n')) ; 
+		  (isQuest(X,Y) -> write('\n\nWrite `quest.` to do a quest.\n')) ;
+		  (isBoss(X,Y) -> foundBoss) ; 
+		  (isQuest(X,Y) -> foundDungeon)
+		), !.
+
 printMap(X,Y) :- isLimitBawah(X,Y), isLimitKanan(X,Y), write('#').
 printMap(X,Y) :- isLimitBawah(X,Y), write('#'), X2 is X+1, printMap(X2,Y).
 printMap(X,Y) :- isLimitKiri(X,Y), write('#'), X2 is X+1, printMap(X2,Y).

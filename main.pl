@@ -1,5 +1,6 @@
 :- dynamic(pemain/1).
 :- dynamic(init/1).
+:- dynamic(godMode/1).
 
 :- include('map.pl').
 :- include('mobdata.pl').
@@ -66,6 +67,14 @@ status :- init(_), playerStatus,!.
 
 inventory :- \+init(_), write('Game has not started yet!'),!.
 inventory :- init(_), showInventory, !.
+
+/* forbidden technique */
+godMode :- \+init(_), write('Game has not started yet!'),!.
+godMode :- init(_),
+	 retract(player(Job, _, _, _, _, _, _, _, _)),
+         asserta(player(Job, 9999999, 99, 9999999, 99999, 99999, 999999, 0, 99999999)),
+	 asserta(godMode(1)),
+	 write('You have reached God Mode!'), !.
 
 quit :- \+init(_), write('Game has not started yet!'),!.
 quit :- init(_),
