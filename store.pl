@@ -20,8 +20,8 @@ gacha :- player(SJob, _, _, _, _, _, _, _, SGold),
          NewGold is SGold - 200,
          NewGold >= 0,
 	 random(1,5,Randomize),
-         /*random(1,3,RandomJob),
-         jobID(SJob,RandomJob),*/
+         random(1,3,RandomJob),
+         jobID(SJob,RandomJob),
          addItem(Randomize,SJob,1),
 	 item(Randomize, Name, SJob, _,_,_,_),
          nl,
@@ -70,16 +70,17 @@ sell :- init(_), posX(X), posY(Y), \+isStore(X,Y), write('You are not in the sto
 sell :- inventory, nl,
 		player(Job, _, _, _, _, _, _, _, Duit),
 		write('What do yo want to sell, Traveler?'), nl,
-		write('Item ID: '), read(ItemID), nl,
-		( /* masih buggy nunggu fungsi cek item */
-		(\+delItem(ItemID, Job) -> nl, write('Please check again!\n'));
-		(delItem(ItemID, Job) -> (
-			NewGold is Duit+500,
+		write('Item name (lowercase) : '), read(ItemName), nl,
+		( 
+		(\+cekItemAda(ItemName, _) -> nl, write('Please check again!\n'));
+		(cekItemAda(ItemName, _) -> (
+            inventory(_,ItemName,ItemJob,_,_,_,_,_),
+			NewGold is Duit+300,
 			retract(player(Job, MaxHealth, Level, Health, Attack, Defense, Sepcial, Exp, _)),
         		asserta(player(Job, MaxHealth, Level, Health, Attack, Defense, Sepcial, Exp, NewGold)),
-			addItem(ItemID, Job, 1), /* biar nambah 1 soalnya kekurang 2x pas proses */
+			delItem(ItemName, ItemJob),
 			write('****************************************************\n'),
-			write('Your item has been sold for 500 gold!\n'),
+			write('Your item has been sold for 300 gold!\n'),
 			write('****************************************************\n')
 			)
 		)

@@ -64,20 +64,28 @@ addItem(ID,Job,Qty) :-
     asserta(inventory(ID, Name, Job, Type, Qty, Health, Attack, Defense)),
     !.
 
-delItem(ID,Job) :-
-    \+inventory(ID,_,Job,_,_,_,_,_),
+cekItemAda(Name,Job) :-
+    \+ inventory(_,Name,Job,_,_,_,_,_),
+    fail.
+
+cekItemAda(Name,Job) :-
+    inventory(_,Name,Job,_,_,_,_,_).
+
+delItem(Name,Job) :-
+    \+inventory(_,Name,Job,_,_,_,_,_),
     write('There is no such item in your inventory!'),
     !,fail.
 
-delItem(ID,Job) :-
+delItem(Name,Job) :-
     inventory(ID, Name, Job, Type, Amount, Health, Attack, Defense),
     NewAmount is Amount - 1,
-    retract(inventory(ID,_,_,_,_,_,_,_)),
+    NewAmount > 0,
+    retract(inventory(_,Name,Job,_,_,_,_,_)),
     asserta(inventory(ID, Name, Job, Type, NewAmount, Health, Attack, Defense)),
     !.
 
-delItem(ID,Job) :-
-    retract(inventory(ID,_,Job,_,_,_,_,_)),
+delItem(Name,Job) :-
+    retract(inventory(_,Name,Job,_,_,_,_,_)),
     !.
 
 listInventory(ListItem,ListJob,ListAmount) :-
@@ -94,7 +102,6 @@ showInven([Name|X],[Job|Y],[Amount|Z]) :-
 
 showInventory :-
     init(_),
-    write('Your inventory: '),nl,nl,
+    write('Your inventory: '),nl,
     listInventory(ListItem,ListJob,ListAmount),
     showInven(ListItem,ListJob,ListAmount).
-
