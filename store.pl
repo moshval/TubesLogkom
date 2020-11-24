@@ -16,19 +16,19 @@ store :- init(_), posX(X), posY(Y), isStore(X,Y),
 gacha :- \+init(_), write('Game has not started yet'),!.
 gacha :- init(_), posX(X), posY(Y), \+isStore(X,Y), write('You are not in the store position!'),!.
 
-gacha :- player(_, _, _, _, _, _, _, _, SGold),
+gacha :- player(SJob, _, _, _, _, _, _, _, SGold),
          NewGold is SGold - 200,
          NewGold >= 0,
-         random(1,3,RandomJob),
-         random(1,5,Randomize),
-         jobID(SJob,RandomJob),
+	 random(1,5,Randomize),
+         /*random(1,3,RandomJob),
+         jobID(SJob,RandomJob),*/
          addItem(Randomize,SJob,1),
-	     item(Randomize, Name, SJob, _,_,_,_),
+	 item(Randomize, Name, SJob, _,_,_,_),
          nl,
          write('****************************************************\n'), 
          write('Congratulation! You got '), write(Name), write('!\n'),
          write('****************************************************\n'),
-	     retract(player(Job, MaxHealth, Level, Health, Attack, Defense, Sepcial, Exp, _)),
+	 retract(player(Job, MaxHealth, Level, Health, Attack, Defense, Sepcial, Exp, _)),
          asserta(player(Job, MaxHealth, Level, Health, Attack, Defense, Sepcial, Exp, NewGold)),
          store,!.
 
@@ -49,7 +49,7 @@ potion :- write('How many potion do you want to buy ? \n'),
           NewGold is SGold - BanyakPotion*100,
           NewGold >= 0,
           addItem(99,SJob,BanyakPotion),
-	      retract(player(Job, MaxHealth, Level, Health, Attack, Defense, Sepcial, Exp, _)),
+	  retract(player(Job, MaxHealth, Level, Health, Attack, Defense, Sepcial, Exp, _)),
           asserta(player(Job, MaxHealth, Level, Health, Attack, Defense, Sepcial, Exp, NewGold)),
           nl,write('****************************************************\n'), 
           write('Potion has been added to your inventory\n'),
@@ -71,7 +71,7 @@ sell :- inventory, nl,
 		player(Job, _, _, _, _, _, _, _, Duit),
 		write('What do yo want to sell, Traveler?'), nl,
 		write('Item ID: '), read(ItemID), nl,
-		( 
+		( /* masih buggy nunggu fungsi cek item */
 		(\+delItem(ItemID, Job) -> nl, write('Please check again!\n'));
 		(delItem(ItemID, Job) -> (
 			NewGold is Duit+500,
