@@ -36,9 +36,9 @@ item(4,skateboardyisunshin, sorcerer, equipment, 0, 80, 0).
 item(5,armorgta,sorcerer,equipment, 0,0,50).
 
 /* potion */
-item(99,amer, swordsman, potion, 20, 0, 0).
-item(99,amer, archer, potion, 20, 0, 0).
-item(99,amer, sorcerer, potion, 20, 0, 0).
+item(99,amer, swordsman, potion, 80, 0, 0).
+item(99,amer, archer, potion, 80, 0, 0).
+item(99,amer, sorcerer, potion, 80, 0, 0).
 
 /* price */
 price(potion, 100).

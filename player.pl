@@ -66,7 +66,7 @@ addItem(ID,Job,Qty) :-
 
 cekItemAda(Name,Job) :-
     \+ inventory(_,Name,Job,_,_,_,_,_),
-    fail.
+    !,fail.
 
 cekItemAda(Name,Job) :-
     inventory(_,Name,Job,_,_,_,_,_).
@@ -105,3 +105,26 @@ showInventory :-
     write('Your inventory: '),nl,
     listInventory(ListItem,ListJob,ListAmount),
     showInven(ListItem,ListJob,ListAmount).
+
+usePotion :-
+    inventory(99, Name, Job, _, _, _, _, _),
+    \+ cekItemAda(Name,Job),
+    write('You have no Amer left.'),
+    !, fail.
+
+usePotion :-
+    player(_, MaxHealth, _, HP, _, _, _, _, _),
+    HP == MaxHealth,
+    write('You already sehat wal afiat.'), !.
+
+usePotion :-
+    player(_, MaxHealth, _, HP, _, _, _, _, _),
+    inventory(99, Name, Job, _, _, Health, _, _),
+    ( 
+        ((HP + Health) >= MaxHealth -> NewHP is MaxHealth); 
+        ((HP + Health) < MaxHealth -> NewHP is HP + Health) 
+    ),
+    delItem(Name,Job),
+    retract(player(Job, MaxHealth, Level, HP, Attack, Defense, Sepcial, Exp, Gold)),
+    asserta(player(Job, MaxHealth, Level, NewHP, Attack, Defense, Sepcial, Exp, Gold)),
+    write('By the power of AMER, you gained 80 extra HP...').
