@@ -47,6 +47,7 @@ foundEliteTwo:- /* Encountered elite enemy, wave 2 (in dungeon) */
     asserta(isEnemyAlive(1)),!.
 
 foundBoss :- /* Encountered the 'final' boss , Demon Lord Paimon */
+    posX(X), posY(Y), (isBoss(X,Y); isDungeon(X,Y)),
     mobdata(66,Name,Type,MaxHealth,Level,Attack,Defense,Special,Exp,Gold),
     Health is MaxHealth,
     asserta(enemy(66,Name,Type,MaxHealth,Level,Health,Attack,Defense,Special,Exp,Gold)),nl,
@@ -70,6 +71,7 @@ foundYourself :- /*Encountered final boss, yourself */
     asserta(isEnemyAlive(1)),!.
 
 foundDungeon:- /* Encountered a dungeon */
+    posX(X), posY(Y), isDungeon(X,Y),
     write('You sure want to enter this dungeon?'),nl,
     write('You will face 2 waves of enemies and lastly...'),nl,
     write('The Final Boss'),nl,
