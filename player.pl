@@ -14,6 +14,7 @@ initPlayer(Job) :-
     Health is MaxHealth,
     asserta(player(Job, MaxHealth, Level, Health, Attack, Defense, Special, Exp, Gold)),
     addItem(99,Job,5),
+    addItem(1,Job,1),
     !.
 playerStatus :-
     init(_),
@@ -88,12 +89,12 @@ showInven([],[],[]).
 showInven([Name|X],[Job|Y],[Amount|Z]) :-
     write(Amount), write(' '),
     write(Name), write(' '),
-    write('('),write(Job),write(')'), nl,nl,
-    stt(X,Y,Z,W).
+    write('('),write(Job),write(')'), nl,
+    showInven(X,Y,Z).
 
 showInventory :-
     init(_),
-    write('Isi dalem tas: '),nl,nl,
+    write('Your inventory: '),nl,nl,
     listInventory(ListItem,ListJob,ListAmount),
     showInven(ListItem,ListJob,ListAmount).
 
