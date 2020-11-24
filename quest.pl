@@ -45,6 +45,8 @@ quest :- isQuest1(_),
          write('| ----------------------------------------------------------|\n'),
          write('Insert your command (cancel. / dontcancel.) : '),!.
 
+accept :- \+init(_), write('Game has not started yet'),!.
+accept :- init(_), posX(X), posY(Y), \+isQuest(X,Y), write('You are not in the quest position!'),!.
 accept :- write('| ----------------------------------------------------------|\n'),
           write('|                        QUEST                              |\n'),
           write('| Find three ancient opponent on the map : Medusa, Hydra    |\n'),
@@ -55,17 +57,22 @@ accept :- write('| ----------------------------------------------------------|\n
           asserta(isMedusaAlive(1)),
           asserta(isHydraAlive(1)),
           asserta(isCerberusAlive(1)),!.
-          
+
+decline :- \+init(_), write('Game has not started yet'),!.
+decline :- init(_), posX(X), posY(Y), \+isQuest(X,Y), write('You are not in the quest position!'),!.
 decline :- write('****************************************************\n'), 
            write('Comeback whenever youre ready ! \n'),
            write('****************************************************\n\n'),!.
 
-
+cancel :- \+init(_), write('Game has not started yet'),!.
+cancel :- init(_), posX(X), posY(Y), \+isQuest(X,Y), write('You are not in the quest position!'),!.
 cancel :- retract(isQuest1(_)),
           write('****************************************************\n'), 
           write('Comeback whenever youre ready ! \n'),
           write('****************************************************\n\n'),!.
 
+dontcancel :- \+init(_), write('Game has not started yet'),!.
+dontcancel :- init(_), posX(X), posY(Y), \+isQuest(X,Y), write('You are not in the quest position!'),!.
 dontcancel :-  write('****************************************************\n'), 
                write('Go slay em !! Continue your quest \n'),
                write('****************************************************\n\n'),!.
