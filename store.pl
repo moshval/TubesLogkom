@@ -1,6 +1,5 @@
 /* Fact and Rules */
 
-
 store :- \+init(_), write('Game has not started yet'),!.
 store :- init(_), posX(X), posY(Y), \+isStore(X,Y), write('You are not in the store position!'),!.
 store :- init(_), posX(X), posY(Y), isStore(X,Y),
@@ -73,7 +72,7 @@ sell :- inventory, nl,
 		write('What do yo want to sell, Traveler?'), nl,
 		write('Item ID: '), read(ItemID), nl,
 		( 
-		(\+delItem(ItemID, Job) -> nl, write('Please check again!'));
+		(\+delItem(ItemID, Job) -> nl, write('Please check again!\n'));
 		(delItem(ItemID, Job) -> (
 			NewGold is Duit+500,
 			retract(player(Job, MaxHealth, Level, Health, Attack, Defense, Sepcial, Exp, _)),
@@ -84,4 +83,4 @@ sell :- inventory, nl,
 			write('****************************************************\n')
 			)
 		)
-		), !.
+		),store,!.
