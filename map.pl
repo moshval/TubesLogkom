@@ -26,7 +26,7 @@ jumpTo(X,Y) :- godMode(_), \+isTembok(X,Y), retract(posX(_)), retract(posY(_)), 
 		( (isStore(X,Y) -> write('\n\nWrite `store.` to see store menu.\n')) ; 
 		  (isQuest(X,Y) -> write('\n\nWrite `quest.` to do a quest.\n')) ;
 		  (isBoss(X,Y) -> foundBoss) ; 
-		  (isQuest(X,Y) -> foundDungeon)
+		  (isDungeon(X,Y) -> foundDungeon)
 		), !.
 
 printMap(X,Y) :- isLimitBawah(X,Y), isLimitKanan(X,Y), write('#').
