@@ -13,6 +13,9 @@ mobdata(7,cultist,mob,400,5,120,40,200,250,200).
 mobdata(8,orc,mob,400,5,120,40,150,250,200).
 mobdata(9,boar,mob,100,1,60,10,150,150,150).
 mobdata(10,bonus_enemy,mob,5,1,0,0,0,0,0).
+mobdata(101,medusa,quest,700,5,200,60,250,400,750).
+mobdata(102,hydra,quest,800,5,150,40,300,500,800).
+mobdata(103,cerberus,quest,600,5,200,60,300,600,1000).
 
 /* TBA */
 /* BOSSU Lv 10 for example */

@@ -15,6 +15,9 @@ isBoss(X,Y) :- X=:=5, Y=:=4.
 isBoss(X,Y) :- X=:=15, Y=:=3.
 isDungeon(X,Y) :- X=:=11, Y=:=12.
 isQuest(X,Y) :- X=:=9, Y=:=9.
+isMedusa(X,Y) :- isQuest1(_),X=:=5, Y=:=1.
+isHydra(X,Y) :- isQuest1(_),X=:=1, Y=:=4.
+isCerberus(X,Y) :- isQuest1(_),X=:=8, Y=:=1.
 isTembok(X,Y) :-
 	tembok(X1,Y1,X2,Y2,X3,Y3,X4,Y4,X5,Y5,X6,Y6,X7,Y7,X8,Y8,X9,Y9,X10,Y10,X11,Y11,X12,Y12,X13,Y13,X14,Y14),
 	((X=:=X1,Y=:=Y1);(X=:=X2,Y=:=Y2);(X=:=X3,Y=:=Y3);(X=:=X4,Y=:=Y4);(X=:=X5,Y=:=Y5);(X=:=X6,Y=:=Y6);(X=:=X7,Y=:=Y7);
@@ -40,12 +43,18 @@ printMap(X,Y) :- isDungeon(X,Y), write('D'), X2 is X+1, printMap(X2,Y).
 printMap(X,Y) :- isPlayer(X,Y), write('P'), X1 is X+1, printMap(X1, Y).
 printMap(X,Y) :- isQuest(X,Y), write('Q'), X1 is X+1, printMap(X1, Y).
 printMap(X,Y) :- isStore(X,Y), write('S'), X1 is X+1, printMap(X1, Y).
+printMap(X,Y) :- isQuest1(_),isMedusa(X,Y), write('M'), X2 is X+1, printMap(X2,Y).
+printMap(X,Y) :- isQuest1(_),isHydra(X,Y), write('H'), X1 is X+1, printMap(X1, Y).
+printMap(X,Y) :- isQuest1(_),isCerberus(X,Y), write('C'), X1 is X+1, printMap(X1, Y).
 printMap(X,Y) :- \+isLimitBawah(X,Y), \+isLimitAtas(X,Y), \+isLimitKiri(X,Y), \+isLimitKanan(X,Y), write('-'), X2 is X+1, printMap(X2,Y).
 
 w :- \+init(_), write('Game has not started yet!') ,!.
 w :- posX(X), posY(Y), Y2 is Y-1,\+ isEnemyAlive(_),(isTembok(X,Y2); isLimitBawah(X,Y2); isLimitAtas(X,Y2); isLimitKiri(X,Y2); isLimitKanan(X,Y2)), map, write('\n\nThere is wall, unable to move.\n\n'), !.
 w :- posX(X), posY(Y), Y2 is Y-1,\+ isEnemyAlive(_), isStore(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, write('\n\nWrite `store.` to see store menu.\n'), !.
 w :- posX(X), posY(Y), Y2 is Y-1,\+ isEnemyAlive(_), isQuest(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, write('\n\nWrite `quest.` to do a quest.\n'), !.
+w :- posX(X), posY(Y), Y2 is Y-1,\+ isEnemyAlive(_), isQuest1(_), isMedusa(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, write('\n\nYou just found Medusa, write `defeat.` to fight.\n'), !.
+w :- posX(X), posY(Y), Y2 is Y-1,\+ isEnemyAlive(_), isQuest1(_), isHydra(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, write('\n\nYou just found Hydra, write `defeat.` to fight.\n'), !.
+w :- posX(X), posY(Y), Y2 is Y-1,\+ isEnemyAlive(_), isQuest1(_), isCerberus(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, write('\n\nYou just found Cerberus, write `defeat.` to fight.\n'), !.
 w :- posX(X), posY(Y), Y2 is Y-1,\+ isEnemyAlive(_), isBoss(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, foundBoss, !.
 w :- posX(X), posY(Y), Y2 is Y-1,\+ isEnemyAlive(_), isDungeon(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, foundDungeon, !.
 w :- posX(X), posY(Y), Y2 is Y-1,\+ isEnemyAlive(_),\+isStore(X,Y2), \+isLimitBawah(X,Y2), \+isLimitAtas(X,Y), \+isLimitKiri(X,Y), \+isLimitKanan(X,Y), retract(posY(_)), asserta(posY(Y2)),map,enemySpawner, !.
@@ -55,6 +64,9 @@ s :- \+init(_), write('Game has not started yet!') ,!.
 s :- posX(X), posY(Y), Y2 is Y+1,\+ isEnemyAlive(_), (isTembok(X,Y2); isLimitBawah(X,Y2); isLimitAtas(X,Y2); isLimitKiri(X,Y2); isLimitKanan(X,Y2)), map, write('\n\nThere is wall, unable to move.\n\n'), !.
 s :- posX(X), posY(Y), Y2 is Y+1,\+ isEnemyAlive(_), isStore(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, write('\n\nWrite `store.` to see store menu.\n'), !.
 s :- posX(X), posY(Y), Y2 is Y+1,\+ isEnemyAlive(_), isQuest(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, write('\n\nWrite `quest.` to do a quest.\n'), !.
+s :- posX(X), posY(Y), Y2 is Y+1,\+ isEnemyAlive(_), isQuest1(_), isMedusa(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, write('\n\nYou just found Medusa, write `defeat.` to fight.\n'), !.
+s :- posX(X), posY(Y), Y2 is Y+1,\+ isEnemyAlive(_), isQuest1(_), isHydra(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, write('\n\nYou just found Hydra, write `defeat.` to fight.\n'), !.
+s :- posX(X), posY(Y), Y2 is Y+1,\+ isEnemyAlive(_), isQuest1(_), isCerberus(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, write('\n\nYou just found Cerberus, write `defeat.` to fight.\n'), !.
 s :- posX(X), posY(Y), Y2 is Y+1,\+ isEnemyAlive(_), isBoss(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, foundBoss, !.
 s :- posX(X), posY(Y), Y2 is Y+1,\+ isEnemyAlive(_), isDungeon(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, foundDungeon, !.
 s :- posX(X), posY(Y), Y2 is Y+1,\+ isEnemyAlive(_), \+isStore(X,Y2), \+isLimitBawah(X,Y2), \+isLimitAtas(X,Y), \+isLimitKiri(X,Y), \+isLimitKanan(X,Y), retract(posY(_)), asserta(posY(Y2)),map,enemySpawner, !.
@@ -64,6 +76,9 @@ a :- \+init(_), write('Game has not started yet!') ,!.
 a :- posX(X), posY(Y), X2 is X-1,\+ isEnemyAlive(_), (isTembok(X2,Y); isLimitBawah(X2,Y); isLimitAtas(X2,Y); isLimitKiri(X2,Y); isLimitKanan(X2,Y)), map, write('\n\nThere is wall, unable to move.\n\n'), !.
 a :- posX(X), posY(Y), X2 is X-1,\+ isEnemyAlive(_), isStore(X2,Y), retract(posX(_)), asserta(posX(X2)), map, write('\n\nWrite `store.` to see store menu.\n'), !.
 a :- posX(X), posY(Y), X2 is X-1,\+ isEnemyAlive(_), isQuest(X2,Y), retract(posX(_)), asserta(posX(X2)), map, write('\n\nWrite `quest.` to do a quest.\n'), !.
+a :- posX(X), posY(Y), X2 is X-1,\+ isEnemyAlive(_), isQuest1(_), isMedusa(X2,Y), retract(posX(_)), asserta(posX(X2)), map, write('\n\nYou just found Medusa, write `defeat.` to fight.\n'), !.
+a :- posX(X), posY(Y), X2 is X-1,\+ isEnemyAlive(_), isQuest1(_), isHydra(X2,Y), retract(posX(_)), asserta(posX(X2)), map, write('\n\nYou just found Hydra, write `defeat.` to fight.\n'), !.
+a :- posX(X), posY(Y), X2 is X-1,\+ isEnemyAlive(_), isQuest1(_), isCerberus(X2,Y), retract(posX(_)), asserta(posX(X2)), map, write('\n\nYou just found Cerberus, write `defeat.` to fight.\n'), !.
 a :- posX(X), posY(Y), X2 is X-1,\+ isEnemyAlive(_), isBoss(X2,Y), retract(posX(_)), asserta(posX(X2)), map, foundBoss, !.
 a :- posX(X), posY(Y), X2 is X-1,\+ isEnemyAlive(_), isDungeon(X2,Y), retract(posX(_)), asserta(posX(X2)), map, foundDungeon, !.
 a :- posX(X), posY(Y), X2 is X-1,\+ isEnemyAlive(_), \+isStore(X2,Y), \+isLimitBawah(X2,Y), \+isLimitAtas(X,Y), \+isLimitKiri(X,Y), \+isLimitKanan(X,Y), retract(posX(_)), asserta(posX(X2)),map,enemySpawner, !.
@@ -73,6 +88,9 @@ d :- \+init(_), write('Game has not started yet!') ,!.
 d :- posX(X), posY(Y), X2 is X+1,\+ isEnemyAlive(_), (isTembok(X2,Y); isLimitBawah(X2,Y); isLimitAtas(X2,Y); isLimitKiri(X2,Y); isLimitKanan(X2,Y)), map, write('\n\nThere is wall, unable to move.\n\n'), !.
 d :- posX(X), posY(Y), X2 is X+1,\+ isEnemyAlive(_), isStore(X2,Y), retract(posX(_)), asserta(posX(X2)), map, write('\n\nWrite `store.` to see store menu.\n'), !.
 d :- posX(X), posY(Y), X2 is X+1,\+ isEnemyAlive(_), isQuest(X2,Y), retract(posX(_)), asserta(posX(X2)), map, write('\n\nWrite `quest.` to do a quest.\n'), !.
+d :- posX(X), posY(Y), X2 is X+1,\+ isEnemyAlive(_), isQuest1(_), isMedusa(X2,Y), retract(posY(_)), asserta(posX(X2)), map, write('\n\nYou just found Medusa, write `defeat.` to fight.\n'), !.
+d :- posX(X), posY(Y), X2 is X+1,\+ isEnemyAlive(_), isQuest1(_), isHydra(X2,Y), retract(posY(_)), asserta(posX(X2)), map, write('\n\nYou just found Hydra, write `defeat.` to fight.\n'), !.
+d :- posX(X), posY(Y), X2 is X+1,\+ isEnemyAlive(_), isQuest1(_), isCerberus(X2,Y), retract(posY(_)), asserta(posX(X2)), map, write('\n\nYou just found Cerberus, write `defeat.` to fight.\n'), !.
 d :- posX(X), posY(Y), X2 is X+1,\+ isEnemyAlive(_), isBoss(X2,Y), retract(posX(_)), asserta(posX(X2)), map, foundBoss, !.
 d :- posX(X), posY(Y), X2 is X+1,\+ isEnemyAlive(_), isDungeon(X2,Y), retract(posX(_)), asserta(posX(X2)), map, foundDungeon, !.
 d :- posX(X), posY(Y), X2 is X+1,\+ isEnemyAlive(_), \+isStore(X2,Y), \+isLimitBawah(X2,Y), \+isLimitAtas(X,Y), \+isLimitKiri(X,Y), \+isLimitKanan(X,Y), retract(posX(_)), asserta(posX(X2)),map,enemySpawner, !.

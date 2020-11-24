@@ -9,6 +9,7 @@
 :- include('store.pl').
 :- include('combat.pl').
 :- include('level.pl').
+:- include('quest.pl').
 
 title :-
 	write('Welcome to Bensin Impek!\n'),
