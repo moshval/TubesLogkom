@@ -64,20 +64,20 @@ addItem(ID,Job,Qty) :-
     asserta(inventory(ID, Name, Job, Type, Qty, Health, Attack, Defense)),
     !.
 
-delItem(ID) :-
-    \+inventory(ID,_,_,_,_,_,_,_),
+delItem(ID,Job) :-
+    \+inventory(ID,_,Job,_,_,_,_,_),
     write('Barangnya gaada ngab, masa di hapus..'),
     !,fail.
 
-delItem(ID) :-
+delItem(ID,Job) :-
     inventory(ID, Name, Job, Type, Amount, Health, Attack, Defense),
     NewAmount is Amount - 1,
     retract(inventory(ID,_,_,_,_,_,_,_)),
     asserta(inventory(ID, Name, Job, Type, NewAmount, Health, Attack, Defense)),
     !.
 
-delItem(ID) :-
-    retract(inventory(ID,_,_,_,_,_,_,_)),
+delItem(ID,Job) :-
+    retract(inventory(ID,_,Job,_,_,_,_,_)),
     !.
 
 listInventory(ListItem,ListJob,ListAmount) :-

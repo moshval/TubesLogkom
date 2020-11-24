@@ -9,10 +9,11 @@ gacha :- \+init(_), write('Game has not started yet'),!.
 gacha :- init(_), posX(X), posY(Y), \+isStore(X,Y), write('You are not in the store position!'),!.
 
 gacha :- player(_, _, _, _, _, _, _, _, SGold),
-         item(_,_,SJob,_,_,_,_),
          NewGold is SGold - 1000,
          NewGold >= 0,
-         random(1,3,Randomize),
+         random(1,3,RandomJob),
+         random(1,5,Randomize),
+         jobID(SJob,RandomJob),
          addItem(Randomize,SJob,1),
 	 item(Randomize, Name, SJob, _,_,_,_),
 	 write('Congratulation! You got '), write(Name), write('!\n'),
