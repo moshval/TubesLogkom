@@ -19,6 +19,7 @@ help :-
 	write('| help. - see the cmd        |\n'),
 	write('| w. a. s. d. - move         |\n'),
 	write('| status. - see your status  |\n'),
+	write('| inventory. - open inventory|\n'),
 	write('| map. - open map            |\n'),
 	write('| quit. - quit game          |\n'),
 	write('------------------------------\n').
@@ -62,6 +63,9 @@ start :-
 
 status :- \+init(_), write('Game has not started yet!'),!.
 status :- init(_), playerStatus,!.
+
+inventory :- \+init(_), write('Game has not started yet!'),!.
+inventory :- init(_), showInventory, !.
 
 quit :- \+init(_), write('Game has not started yet!'),!.
 quit :- init(_),
