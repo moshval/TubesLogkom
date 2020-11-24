@@ -5,7 +5,7 @@ validJob(swordsman).
 validJob(archer).
 validJob(sorcerer).
 
-role(swordsman, 99900, 1, 7000, 30, 90).
+role(swordsman, 500, 1, 80, 30, 90).
 role(archer, 400, 1, 90, 20, 100).
 role(sorcerer, 400, 1, 70, 35, 120).
 
@@ -40,6 +40,27 @@ item(99,amer, swordsman, potion, 20, 0, 0).
 item(99,amer, archer, potion, 20, 0, 0).
 item(99,amer, sorcerer, potion, 20, 0, 0).
 
+/* price */
 price(potion, 100).
 /*** price equipment buat gacha juga ***/
-price(equipment, 1000). 
+price(equipment, 1000).
+
+/* sell price */
+sellprice(amer, 80).
+
+sellprice(armorgta, 300).
+
+sellprice(sapujagad, 300).
+sellprice(pedangberurat, 400).
+sellprice(pedangnaga, 600).
+sellprice(pedangyisunshin, 900).
+
+sellprice(panahomo, 300).
+sellprice(panaharjuna, 400).
+sellprice(panahasmara, 600).
+sellprice(panahyisunshin, 900).
+
+sellprice(sulingsakti, 300).
+sellprice(tongkatnenek, 400).
+sellprice(selendangkadita, 600).
+sellprice(skateboardyisunshin, 900).
