@@ -10,10 +10,12 @@ gacha :- init(_), posX(X), posY(Y), \+isStore(X,Y), write('You are not in the st
 
 gacha :- player(_, _, _, _, _, _, _, _, SGold),
          item(_,_,SJob,_,_,_,_),
-         NewGold is SGold - 100,
+         NewGold is SGold - 1000,
          NewGold >= 0,
          random(1,3,Randomize),
          addItem(Randomize,SJob,1),
+	 item(Randomize, Name, SJob, _,_,_,_),
+	 write('Congratulation! You got '), write(Name), write('!\n'),
 	 retract(player(Job, MaxHealth, Level, Health, Attack, Defense, Sepcial, Exp, _)),
          asserta(player(Job, MaxHealth, Level, Health, Attack, Defense, Sepcial, Exp, NewGold)),!.
 
