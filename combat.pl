@@ -142,6 +142,7 @@ flee:- /*Kaburr,flee successful , blm diapply move di map*/
     PHealth > F,
     write('You unleashed ur secret special technique : Nigerundayo '),nl,
     write('Flee successful'),nl,
+    retract(enemy(_,_,_,_,_,_,_,_,_,_,_)),
     retract(isEnemyAlive(_)),!.
 
 flee:- /*Kabur, but failed*/
@@ -164,6 +165,10 @@ flee:- /* flee while fighting boss */
     write('CANT RUN. MUST FACE.'),
     fight,!.
 
+attack :- /* if someone accidentally uses attack instead of fight */
+    isEnemyAlive(_),
+    \+ isFighting(_),
+    write('Press fight first'),!.
 
 attack:- /*Blm ada yg bisa di attack */
     \+ isEnemyAlive(_),
@@ -171,6 +176,7 @@ attack:- /*Blm ada yg bisa di attack */
 
 attack:- /* Scheme Attack, Incomplete, Skill on CD */
     isEnemyAlive(_),
+    isFighting(_),
     playerSkillCD(X),
     player(_, _, _, _, PAttack, _, _, _, _),
     enemy(_,EName,_,_,_,EHealth,_,EDefense,_,_,_),
@@ -187,6 +193,7 @@ attack:- /* Scheme Attack, Incomplete, Skill on CD */
 
 attack:- /* Scheme Attack, Incomplete, Skill not on CD */
     isEnemyAlive(_),
+    isFighting(_),
     \+playerSkillCD(_),
     player(_, _, _, _, PAttack, _, _, _, _),
     enemy(_,EName,_,_,_,EHealth,_,EDefense,_,_,_),
@@ -269,6 +276,7 @@ enemySpecial :- /* enemy special atk */
 
 specialAttack:- /*player special atk, can only be used every 3 turns, CD resets after leaving combat */
     isEnemyAlive(_),
+    isFighting(_),
     playerCanUseSkill(_),
     asserta(playerSkillCD(1)),
     player(PJob, _, _, _, _, _, PSpecial, _, _),
@@ -286,6 +294,7 @@ specialAttack:- /*player special atk, can only be used every 3 turns, CD resets 
 
 specialAttack:- /* player special atk is in CD */
     isEnemyAlive(_),
+    isFighting(_),
     \+ playerCanUseSkill(_),
     write('Special attack is in cooldown'),nl,
     fight,!.
