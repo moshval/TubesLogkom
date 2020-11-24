@@ -110,13 +110,13 @@ showInventory :-
 usePotion :-
     inventory(99, Name, _, _, _, _, _, _),
     \+ cekItemAda(Name,_),
-    write('You have no Amer left.'),
+    write('You have no Amer left.\n'),
     !, fail.
 
 usePotion :-
     player(_, MaxHealth, _, HP, _, _, _, _, _),
     HP == MaxHealth,
-    write('You already sehat wal afiat.'), !.
+    write('You already sehat wal afiat.\n'), !.
 
 usePotion :-
     player(_, MaxHealth, _, HP, _, _, _, _, _),
@@ -128,20 +128,20 @@ usePotion :-
     delItem(Name,Job),
     retract(player(Job, MaxHealth, Level, HP, Attack, Defense, Sepcial, Exp, Gold)),
     asserta(player(Job, MaxHealth, Level, NewHP, Attack, Defense, Sepcial, Exp, Gold)),
-    write('By the power of AMER, you gained 80 extra HP...').
+    write('By the power of AMER, you gained 80 extra HP...\n').
 
 /* BELOM WORK */
 equip(Name) :-
     inventory(_, Name, _, _, _, _, _, _),
     \+ cekItemAda(Name,_),
-    write('Equipment not found!'),
+    write('Equipment not found!\n'),
     !, fail.
 
 equip(Name) :-
     player(PJob, _, _, _, _, _, _, _, _),
     inventory(_, Name, Job, _, _, _, _, _),
     PJob \== Job,
-    write('You are unable to equip this item!'),
+    write('You are unable to equip this item!\n'),
     !, fail.
 
 equip(Name) :-
@@ -153,4 +153,4 @@ equip(Name) :-
     delItem(Name,Job),
     retract(player(Job, MaxHealth, Level, HP, Attack, Defense, Sepcial, Exp, Gold)),
     asserta(player(Job, MaxHealth, Level, NewHP, NewAtt, NewDef, Sepcial, Exp, Gold)),
-    write('Item successfully equipped.').
+    write('Item successfully equipped.\n').
