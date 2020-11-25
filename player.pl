@@ -19,12 +19,13 @@ initPlayer(Job) :-
     !.
 playerStatus :-
     init(_),
-    player(Job, _, Level, Health, Attack, Defense, _, Exp, Gold),
+    player(Job, _, Level, Health, Attack, Defense, Special, Exp, Gold),
     write('Job      : '), write(Job), nl,
     write('Health   : '), write(Health), nl,
     write('Level    : '), write(Level), nl,
     write('Attack   : '), write(Attack), nl,
     write('Defense  : '), write(Defense), nl,
+    write('Special   : '), write(Special), nl,
     write('Exp      : '), write(Exp), nl,
     write('Gold     : '), write(Gold), nl,!.
 
@@ -119,6 +120,7 @@ usePotion :-
     write('You already sehat wal afiat.\n'), !.
 
 usePotion :-
+    \+ isFighting(_),
     player(_, MaxHealth, _, HP, _, _, _, _, _),
     inventory(99, Name, Job, _, _, Health, _, _),
     ( 
@@ -129,6 +131,22 @@ usePotion :-
     retract(player(Job, MaxHealth, Level, HP, Attack, Defense, Sepcial, Exp, Gold)),
     asserta(player(Job, MaxHealth, Level, NewHP, Attack, Defense, Sepcial, Exp, Gold)),
     write('By the power of AMER, you gained 80 extra HP...\n').
+
+
+usePotion :-
+    isFighting(_),
+    player(_, MaxHealth, _, HP, _, _, _, _, _),
+    inventory(99, Name, Job, _, _, Health, _, _),
+    ( 
+        ((HP + Health) >= MaxHealth -> NewHP is MaxHealth); 
+        ((HP + Health) < MaxHealth -> NewHP is HP + Health) 
+    ),
+    delItem(Name,Job),
+    retract(player(Job, MaxHealth, Level, HP, Attack, Defense, Sepcial, Exp, Gold)),
+    asserta(player(Job, MaxHealth, Level, NewHP, Attack, Defense, Sepcial, Exp, Gold)),
+    write('By the power of AMER, you gained 80 extra HP...\n'),
+    enemyStats,!.
+
 
 /* BELOM WORK */
 equip(Name) :-

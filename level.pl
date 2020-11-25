@@ -1,11 +1,9 @@
 levelUp :-
-    init(_),
     player(_, _, _, _, _, _, _, Exp, _),
     maxExp(MaxExp),
     Exp =< MaxExp,
-    !,fail.
+    !.
 levelUp :-
-    init(_),
     maxExp(MaxExp),
     Exp >= MaxExp,
     player(Job, MaxHealth, Level, Health, Attack, Defense, Special, Exp, Gold),
@@ -17,6 +15,7 @@ levelUp :-
     NewSpecial is (Special + 20),
     NewExp is (Exp - MaxExp),
     NewGold is (Gold + 150),
+    write('You have leveled up'),nl,
     retract(player(Job, MaxHealth, Level, Health, Attack, Defense, Special, Exp, Gold)),
-    asserta(player(Job, NewMaxHealth, NewLevel, NewHealth, NewAttack, NewDefense, NewSpecial, NewExp, NewGold)).
+    asserta(player(Job, NewMaxHealth, NewLevel, NewHealth, NewAttack, NewDefense, NewSpecial, NewExp, NewGold)),!.
  

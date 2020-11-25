@@ -13,15 +13,18 @@ mobdata(7,cultist,mob,400,5,120,40,200,250,200).
 mobdata(8,orc,mob,400,5,120,40,150,250,200).
 mobdata(9,boar,mob,100,1,60,10,150,150,150).
 mobdata(10,bonus_enemy,mob,5,1,0,0,0,0,0).
+
+
+/* Quest Enemy */
 mobdata(101,medusa,quest,700,5,200,60,250,400,750).
 mobdata(102,hydra,quest,800,5,150,40,300,500,800).
 mobdata(103,cerberus,quest,600,5,200,60,300,600,1000).
 
 /* TBA */
 /* BOSSU Lv 10 for example */
-mobdata(50,doragon,boss,4000,10,800,300,950,1000,5000).
-mobdata(51,kerberos,boss,2000,10,700,250,1200,1000,4000).
-mobdata(52,archmage,boss,2000,10,600,150,1500,1000,5000).
+mobdata(50,doragon,boss,4000,20,800,300,950,1000,5000).
+mobdata(51,kerberos,boss,2000,20,700,250,1200,1000,4000).
+mobdata(52,archmage,boss,2000,20,600,150,1500,1000,5000).
 mobdata(53,abyssknight,boss,3000,10,750,200,1300,1000,4500).
 
 mobdata(66,demonlord_paimon,boss,6666,66,666,666,1666,6666,6666).
@@ -46,6 +49,10 @@ specialdata(archmage,adava_kedavra).
 specialdata(abyssknight,phantom_slash).
 specialdata(demonlord_paimon,how_about_we_explore_the_area_ahead_of_us_later).
 specialdata(secret_boss,getrekt).
+specialdata(you,fullcounter).
+specialdata(medusa,stone_gaze).
+specialdata(hydra,extra_heads).
+specialdata(cerberus,use_our_heads).
 
 
 /* Secret boss diakhir abis ngalahin paimon bakalan mirror dari player itu sendiri */

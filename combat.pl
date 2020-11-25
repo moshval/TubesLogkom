@@ -12,16 +12,40 @@
 :- dynamic(playerSkillCD/1).
 
 /* Help gan combat banyak betul */
-/* TBA : flee , potion , dll yg sekiranya kurang */
+/* TBA :potion , dll yg sekiranya kurang */
 
 /* ---------- FIGHT CMDS ----------- */
 
+showEnemyStatus:- /* Show enemy status , enemy still found(alive) */
+    isEnemyAlive(_),
+    enemy(_,Name,Type,_,Level,Health,Attack,Defense,Special,Exp,Gold),
+    write('Name            : '), write(Name), nl,
+    write('Type            : '), write(Type), nl,
+    write('Health          : '), write(Health), nl,
+    write('Level           : '), write(Level), nl,
+    write('Attack          : '), write(Attack), nl,
+    write('Defense         : '), write(Defense), nl,
+    write('Special Attack  : '), write(Special), nl,
+    write('Exp given       : '), write(Exp), nl,
+    write('Gold given      : '), write(Gold), nl,!.
+
+showEnemyStatus:- /* No enemy to be found */
+    \+ isEnemyAlive(_),
+    write('Whose stats to be shown? To show your own stats, use status. '),nl,!.
+
 foundEnemy:- /* Encountered an enemy (blm ditambah leveler) */
-    /*player(_,_,PLevel,_, _, _, _, _, _), */
+    player(_,_,PLevel,_, _, _, _, _, _),
     random(1,10,ID),
     mobdata(ID,Name,Type,MaxHealth,Level,Attack,Defense,Special,Exp,Gold),
-    Health is MaxHealth,
-    asserta(enemy(ID,Name,Type,MaxHealth,Level,Health,Attack,Defense,Special,Exp,Gold)),nl,
+    NMaxHealth is (MaxHealth + 10*(PLevel-1)),
+    NLevel is (Level + (PLevel//5)),
+    Health is NMaxHealth,
+    NAttack is (Attack + 5*(PLevel-1)),
+    NDefense is (Defense + 5*(PLevel-1)),
+    NSpecial is (Special + 8*(PLevel-1)),
+    NExp is (Exp + 5*(PLevel-1)),
+    NGold is (Gold + 5*(PLevel-1)),
+    asserta(enemy(ID,Name,Type,NMaxHealth,NLevel,Health,NAttack,NDefense,NSpecial,NExp,NGold)),nl,
     write('A/An '),write(Name),write(' is approaching you'),nl,
     write('What will u do? '),nl,
     write('- fight.'),nl,
@@ -96,11 +120,11 @@ cont3:-
 
 foundYourself :- /*Encountered final boss, yourself */
     player(_, PMaxHealth, PLevel,_, PAttack, PDefense,PSpecial, PExp, PGold),
-    EMaxHealth is (PMaxHealth * 0.9),
+    EMaxHealth is PMaxHealth,
     EHealth is EMaxHealth,
-    EAttack is (PAttack * 1.1),
-    EDefense is (PDefense * 0.7),
-    asserta(enemy(99,yourself,boss,EMaxHealth,PLevel,EHealth,EAttack,EDefense,PSpecial,PExp,PGold)),
+    EAttack is PAttack,
+    EDefense is PDefense,
+    asserta(enemy(99,you,boss,EMaxHealth,PLevel,EHealth,EAttack,EDefense,PSpecial,PExp,PGold)),
     write('This is yourself. '),nl,
     write('After you win (if you win, ofc), type cont4 to continue(trust me, this is the end)'),nl,
     write('What will u do? '),nl,
@@ -143,9 +167,11 @@ fightmenu:- /* menu waktu fight */
     write('- specialAttack.'),nl,
     write('- usePotion.'),nl,
     write('- flee.'),nl,
+    write('- showEnemyStatus.'),nl,
     !.    
 
 fight:- /* Baru ketemu enemy, fight */
+    \+ isFighting(_),
     asserta(isFighting(1)),
     isEnemyAlive(_),
     asserta(playerCanUseSkill(1)),
@@ -250,7 +276,7 @@ enemyStats :- /* if enemy s ded */
     retract(enemy(_,_,_,_,_,_,_,_,_,_,_)),
     (playerCanUseSkill(_)-> retract(playerCanUseSkill(_))
         ; EHealth is EHealth),
-    retract(isEnemyAlive(_)),retract(isFighting(_)),!.
+    retract(isEnemyAlive(_)),retract(isFighting(_)),levelUp,!.
 
 enemyTurn :- /* Turn enemy , enemy bisa ngeskill bebas berapa kalipun , dengan proc rate 16% */
     random(1,6,Skillgakya),
@@ -284,6 +310,7 @@ playerStats :- /* Player ded */
     PHealth =< 0,
     write('You just died (again). Maybe this sekai aint for u.'),nl,
     retract(isEnemyAlive(_)),retract(isFighting(_)),
+    retract(enemy(_,_,_,_,_,_,_,_,_,_,_)),retract(player(_, _, _, _, _, _, _, _, _)),
     quit,!.
 
 enemySpecial :- /* enemy special atk */
@@ -329,6 +356,8 @@ specialAttack:- /* player special atk is in CD */
 specialAttack:- /*outside combat */
     \+ isEnemyAlive(_),
     write('Nothing to be attacked. U cannot attack urself (especially if u r dead)'),nl,!.
+
+
 
 
 
