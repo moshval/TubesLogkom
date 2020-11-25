@@ -65,6 +65,9 @@ sellprice(tongkatnenek, 400).
 sellprice(selendangkadita, 600).
 sellprice(skateboardyisunshin, 900).
 
+
+/* playerspecial(Job,SpecialTreeLevelRequirement,SpecialName) */
+
 playerspecial(swordsman,0,triple_slash).
 playerspecial(archer,0,arrow_barrage).
 playerspecial(sorcerer,0,exproshon).
