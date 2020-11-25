@@ -50,7 +50,9 @@ addItem(_,_,Qty) :-
     NewAmount is Amount + Qty,
     maxInventory(Max),
     NewAmount >= Max,
-    write('The inventory is full!'),
+    write('****************************************************\n'), 
+    write('!! Your inventory is full !! \n'),
+    write('****************************************************\n'),
     !,fail.
 
 addItem(ID,Job,Qty) :-
@@ -75,7 +77,9 @@ cekItemAda(Name,Job) :-
 
 delItem(Name,Job) :-
     \+inventory(_,Name,Job,_,_,_,_,_),
-    write('There is no such item in your inventory!'),
+    write('****************************************************\n'), 
+    write('!! There is no such item in your inventory !! \n'),
+    write('****************************************************\n'),
     !,fail.
 
 delItem(Name,Job) :-
@@ -111,13 +115,18 @@ showInventory :-
 usePotion :-
     inventory(99, Name, _, _, _, _, _, _),
     \+ cekItemAda(Name,_),
-    write('You have no Amer left.\n'),
+    write('****************************************************\n'), 
+    write('!! You have no AMER left, buy some more at Store !! \n'),
+    write('****************************************************\n'), 
     !, fail.
 
 usePotion :-
     player(_, MaxHealth, _, HP, _, _, _, _, _),
     HP == MaxHealth,
-    write('You already sehat wal afiat.\n'), !.
+    write('****************************************************\n'), 
+    write('!! You already sehat wal afiat !! \n'),
+    write('****************************************************\n'),  
+    !.
 
 usePotion :-
     \+ isFighting(_),
@@ -130,7 +139,9 @@ usePotion :-
     delItem(Name,Job),
     retract(player(Job, MaxHealth, Level, HP, Attack, Defense, Sepcial, Exp, Gold)),
     asserta(player(Job, MaxHealth, Level, NewHP, Attack, Defense, Sepcial, Exp, Gold)),
-    write('By the power of AMER, you gained 80 extra HP...\n').
+    write('****************************************************\n'), 
+    write('!! By the power of AMER, you gained 80 extra HP... !! \n'),
+    write('****************************************************\n').
 
 
 usePotion :-
@@ -144,7 +155,9 @@ usePotion :-
     delItem(Name,Job),
     retract(player(Job, MaxHealth, Level, HP, Attack, Defense, Sepcial, Exp, Gold)),
     asserta(player(Job, MaxHealth, Level, NewHP, Attack, Defense, Sepcial, Exp, Gold)),
-    write('By the power of AMER, you gained 80 extra HP...\n'),
+    write('****************************************************\n'), 
+    write('!! By the power of AMER, you gained 80 extra HP... !! \n'),
+    write('****************************************************\n'),
     enemyStats,!.
 
 
