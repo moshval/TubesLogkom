@@ -12,6 +12,24 @@
 :- include('quest.pl').
 
 title :-
+	write('-------------------------------------------------------------'),nl,
+	write('                                                           '),nl,
+	write('         ____                  _                           '),nl,
+	write('        |  _ \\               (_)                          '),nl,
+	write('        | |_) | ___ _ __    ___ _ _ __                     '),nl,
+	write('        |  _ < / _ \\  _\\ / __| |  _\\                    '),nl,
+	write('        | |_) |  __/ | | \\__ \\ | | | |                   '),nl,
+	write('        |____/\\___|_| |_ |___/_|_| |_|                    '),nl,
+	write('                _____                       _              '),nl,
+	write('               |_   _|                     | |             '),nl,
+	write('                 | |  _ __ ___   _ __   ___| | __          '),nl,
+	write('                 | | |  _   _ \\|  _\\ / _\\ |/ /          '),nl,
+	write('                _| |_| | | | |  | |_) |  __/   <           '),nl,
+	write('               |_____|_| |_| |_ | .__/\\___|_|\\_\\        '),nl,
+	write('                           | |                             '),nl,
+	write('                           |_|                             '),nl,
+	write('                                                           '),nl,
+	write('-------------------------------------------------------------'),nl,
 	write('Welcome to Bensin Impek!\n'),
 	write('You got hit by truck and dead, now you are reincarnated to another world!').
 

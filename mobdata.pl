@@ -31,7 +31,7 @@ mobdata(66,demonlord_paimon,boss,6666,66,666,666,1666,6666,6666).
 
 mobdata(-999,secret_boss,boss,99999,99,99999,99999,99999,99999,99999).
 
-/* Special name (if needed) */
+/* Special name (if needed)  specialdata(Name,SpecialName)*/
 specialdata(slime,slime_bomb).
 specialdata(hilichurl,random_spin).
 specialdata(richgoblin,here_is_ur_gold).
