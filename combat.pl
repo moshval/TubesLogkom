@@ -53,18 +53,19 @@ foundEnemy:- /* Encountered an enemy ,enemy stats can scale (without even leveli
     asserta(isEnemyAlive(1)),!.
 
 foundEliteOne:- /* Encountered elite enemy,wave 1 (in dungeon) */
+    posX(X), posY(Y), isDungeon(X,Y),
     random(50,51,ID),
     mobdata(ID,Name,Type,MaxHealth,Level,Attack,Defense,Special,Exp,Gold),
     Health is MaxHealth,
     asserta(enemy(ID,Name,Type,MaxHealth,Level,Health,Attack,Defense,Special,Exp,Gold)),nl,
     write('An Elite '),write(Name),write(' is approaching you'),nl,
-    write('After you win (if you win, ofc), type cont1 to continue'),nl,
     write('What will u do? '),nl,
     write('- fight.'),nl,
     asserta(isFightingBoss(1)),
     asserta(isEnemyAlive(1)),!.
 
 cont1:- /* after defeating elite one in dungeon, cont1 to fight elite two */
+    posX(X), posY(Y), isDungeon(X,Y),
     \+ isEnemyAlive(_),
     retract(isFightingBoss(_)),
     write('You win against the first one. But can you pass this? '),nl,
@@ -73,18 +74,19 @@ cont1:- /* after defeating elite one in dungeon, cont1 to fight elite two */
 
 
 foundEliteTwo:- /* Encountered elite enemy, wave 2 (in dungeon) */
+    posX(X), posY(Y), isDungeon(X,Y),
     random(52,53,ID),
     mobdata(ID,Name,Type,MaxHealth,Level,Attack,Defense,Special,Exp,Gold),
     Health is MaxHealth,
     asserta(enemy(ID,Name,Type,MaxHealth,Level,Health,Attack,Defense,Special,Exp,Gold)),nl,
     write('An Elite '),write(Name),write(' is approaching you'),nl,
-    write('After you win (if you win, ofc), type cont2 to continue'),nl,
     write('What will u do? '),nl,
     write('- fight.'),nl,
     asserta(isFightingBoss(1)),
     asserta(isEnemyAlive(1)),!.
 
 cont2 :- /* after defeating elite two, cont2 to fight paimon */
+    posX(X), posY(Y), isDungeon(X,Y),
     \+ isEnemyAlive(_),
     winEliteOne(_),
     retract(isFightingBoss(_)),
@@ -98,7 +100,6 @@ foundBoss :- /* Encountered the 'not so final' boss , Demon Lord Paimon */
     Health is MaxHealth,
     asserta(enemy(66,Name,Type,MaxHealth,Level,Health,Attack,Defense,Special,Exp,Gold)),nl,
     write('This is it. '),write('Demon Lord Paimon'),write(' is approaching you'),nl,
-    write('After you win (if you win, ofc), type cont3 to continue(wait what, this aint the end?)'),nl,
     write('What will u do? '),nl,
     write('- fight.'),nl,
     asserta(isFightingBoss(1)),
@@ -118,6 +119,7 @@ foundMiniBoss :- /* Encountered Mini Boss, doragon,kerberos,archmage, or abysskn
 
 
 cont3:- /* after defeating paimon, cont3 to ehem ehem */
+    posX(X), posY(Y), isDungeon(X,Y),
     \+ isEnemyAlive(_),
     winEliteOne(_),
     winEliteTwo(_),
@@ -132,15 +134,16 @@ cont3:- /* after defeating paimon, cont3 to ehem ehem */
     foundYourself,!.
 
 foundYourself :- /*Encountered final boss, yourself */
+    posX(X), posY(Y), isDungeon(X,Y),
     player(_, PMaxHealth, PLevel,_, PAttack, PDefense,PSpecial, PExp, PGold),
     EMaxHealth is (PMaxHealth - PDefense - PAttack),
     EHealth is EMaxHealth,
     EAttack is PAttack,
     ESpecial is (PSpecial * 5),
     EDefense is 0,
-    asserta(enemy(99,you,boss,EMaxHealth,PLevel,EHealth,EAttack,EDefense,ESpecial,PExp,PGold)),
-    write('This is yourself. '),nl,
-    write('After you win (if you win, ofc), type cont4 to continue(trust me, this is the last time)'),nl,
+    pemain(NamaPemain),
+    asserta(enemy(99,NamaPemain,boss,EMaxHealth,PLevel,EHealth,EAttack,EDefense,ESpecial,PExp,PGold)),
+    write('This is yourself, mirrored. '),nl,
     write('What will u do? '),nl,
     write('- fight.'),nl,
     asserta(isFightingBoss(1)),
@@ -149,7 +152,7 @@ foundYourself :- /*Encountered final boss, yourself */
 cont4 :- /* End the game, after defeating final boss */
     \+ isEnemyAlive(_),
     winEliteOne(_),
-    winEliteOne(_),
+    winEliteTwo(_),
     winEliteThree(_),
     retract(isFightingBoss(_)),
     write('YOU WIN. YOUVE COME THIS FAR TO THIS EXTENT TO THIS WORLD TO FACE YOURSELF IN THE END.'),nl,
@@ -167,9 +170,11 @@ foundDungeon:- /* Encountered a dungeon */
     write('- notenterD.'),nl,!.
 
 notenterD:- /* not entering */
+    posX(X), posY(Y), isDungeon(X,Y),
     a,!.
 
 enterD:- /* enter dungeon, masi blm fi fix krn ini baru sequencenya */
+    posX(X), posY(Y), isDungeon(X,Y),
     write('Entering dungeon.......'),nl,
     foundEliteOne,!.
 
@@ -279,7 +284,8 @@ enemyStats :- /* Stats enemy abis player attack, continuing to enemy turn if ene
     write('Now tis enemy turn'),nl,
     enemyTurn,!.
 
-enemyStats :- /* if enemy s ded */
+enemyStats :- /* if enemy s ded , not in dungeon*/
+    posX(X), posY(Y), \+ isDungeon(X,Y),
     enemy(_,EName,_,_,_,EHealth,_,_,_,EExp,EGold),
     EHealth =< 0,
     write(EName),write(' is now dead.'),nl,
@@ -291,6 +297,74 @@ enemyStats :- /* if enemy s ded */
     (playerCanUseSkill(_)-> retract(playerCanUseSkill(_))
         ; EHealth is EHealth),
     retract(isEnemyAlive(_)),retract(isFighting(_)),levelUp,!.
+
+enemyStats :- /* if enemy s ded , in dungeon (after defeating eliteone) */
+    posX(X), posY(Y), isDungeon(X,Y),
+    \+ winEliteOne(_),
+    \+ winEliteTwo(_),
+    \+ winEliteThree(_),
+    enemy(_,EName,_,_,_,EHealth,_,_,_,EExp,EGold),
+    EHealth =< 0,
+    write(EName),write(' is now dead.'),nl,
+    player(_, _, _, _, _, _, _, PExp, PGold),
+    NewPExp is (PExp + EExp) , NewPGold is (PGold + EGold),
+    retract(player(PJob, PMaxHealth, PLevel, PHealth, PAttack, PDefense, PSpecial, PExp, PGold)),
+    asserta(player(PJob, PMaxHealth, PLevel, PHealth, PAttack, PDefense, PSpecial, NewPExp, NewPGold)),
+    retract(enemy(_,_,_,_,_,_,_,_,_,_,_)),
+    (playerCanUseSkill(_)-> retract(playerCanUseSkill(_))
+        ; EHealth is EHealth),
+    retract(isEnemyAlive(_)),retract(isFighting(_)),cont1,!.
+
+enemyStats :- /* if enemy s ded in dungeon (after defeating elitetwo) */
+    posX(X), posY(Y), isDungeon(X,Y),
+    winEliteOne(_),
+    \+ winEliteTwo(_),
+    \+ winEliteThree(_),
+    enemy(_,EName,_,_,_,EHealth,_,_,_,EExp,EGold),
+    EHealth =< 0,
+    write(EName),write(' is now dead.'),nl,
+    player(_, _, _, _, _, _, _, PExp, PGold),
+    NewPExp is (PExp + EExp) , NewPGold is (PGold + EGold),
+    retract(player(PJob, PMaxHealth, PLevel, PHealth, PAttack, PDefense, PSpecial, PExp, PGold)),
+    asserta(player(PJob, PMaxHealth, PLevel, PHealth, PAttack, PDefense, PSpecial, NewPExp, NewPGold)),
+    retract(enemy(_,_,_,_,_,_,_,_,_,_,_)),
+    (playerCanUseSkill(_)-> retract(playerCanUseSkill(_))
+        ; EHealth is EHealth),
+    retract(isEnemyAlive(_)),retract(isFighting(_)),cont2,!.
+
+enemyStats :- /* if enemy s ded,after defeating paimon */
+    posX(X), posY(Y), isDungeon(X,Y),
+    winEliteOne(_),
+    winEliteTwo(_),
+    \+ winEliteThree(_),
+    enemy(_,EName,_,_,_,EHealth,_,_,_,EExp,EGold),
+    EHealth =< 0,
+    write(EName),write(' is now dead.'),nl,
+    player(_, _, _, _, _, _, _, PExp, PGold),
+    NewPExp is (PExp + EExp) , NewPGold is (PGold + EGold),
+    retract(player(PJob, PMaxHealth, PLevel, PHealth, PAttack, PDefense, PSpecial, PExp, PGold)),
+    asserta(player(PJob, PMaxHealth, PLevel, PHealth, PAttack, PDefense, PSpecial, NewPExp, NewPGold)),
+    retract(enemy(_,_,_,_,_,_,_,_,_,_,_)),
+    (playerCanUseSkill(_)-> retract(playerCanUseSkill(_))
+        ; EHealth is EHealth),
+    retract(isEnemyAlive(_)),retract(isFighting(_)),cont3,!.
+
+enemyStats :- /* if enemy s ded, after defeating ehem ehem */
+    posX(X), posY(Y), isDungeon(X,Y),
+    winEliteOne(_),
+    winEliteTwo(_),
+    winEliteThree(_),
+    enemy(_,EName,_,_,_,EHealth,_,_,_,EExp,EGold),
+    EHealth =< 0,
+    write(EName),write(' is now dead.'),nl,
+    player(_, _, _, _, _, _, _, PExp, PGold),
+    NewPExp is (PExp + EExp) , NewPGold is (PGold + EGold),
+    retract(player(PJob, PMaxHealth, PLevel, PHealth, PAttack, PDefense, PSpecial, PExp, PGold)),
+    asserta(player(PJob, PMaxHealth, PLevel, PHealth, PAttack, PDefense, PSpecial, NewPExp, NewPGold)),
+    retract(enemy(_,_,_,_,_,_,_,_,_,_,_)),
+    (playerCanUseSkill(_)-> retract(playerCanUseSkill(_))
+        ; EHealth is EHealth),
+    retract(isEnemyAlive(_)),retract(isFighting(_)),cont4,!.
 
 enemyTurn :- /* Turn enemy , enemy bisa ngeskill bebas berapa kalipun , dengan proc rate 16% */
     random(1,6,Skillgakya),

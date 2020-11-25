@@ -95,6 +95,31 @@ godMode :- init(_),
 	 asserta(godMode(1)),
 	 write('You have reached God Mode!'), !.
 
+instaKill :- /* Might be buggy, enter next command to continue */
+	godMode(_),
+	isEnemyAlive(_),
+	isFighting(_),
+	write('Enemy instakilled successfully'),nl,
+	retract(enemy(_,_,_,_,_,_,_,_,_,_,_)),
+	retract(isEnemyAlive(_)),retract(isFighting(_)),!.
+
+instaKill :- 
+	godMode(_),
+	isEnemyAlive(_),
+	\+isFighting(_),
+	write('Enemy instakilled successfully'),nl,
+	retract(enemy(_,_,_,_,_,_,_,_,_,_,_)),
+	retract(isEnemyAlive(_)),!.
+
+instaKill:-
+	godMode(_),
+	\+ isEnemyAlive(_),
+	write('Nothing to be insta killed'),nl,!.
+
+instaKill:-
+	\+ godMode(_),
+	write('You havent reached God Mode yet.'),nl,!.
+
 quit :- \+init(_), write('Game has not started yet!'),!.
 quit :- init(_),
 	write('Thank you for you adventure, '), pemain(Nama), write(Nama), write('!'), nl,
