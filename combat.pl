@@ -64,7 +64,7 @@ foundEliteOne:- /* Encountered elite enemy,wave 1 (in dungeon) */
     asserta(isFightingBoss(1)),
     asserta(isEnemyAlive(1)),!.
 
-cont1:-
+cont1:- /* after defeating elite one in dungeon, cont1 to fight elite two */
     \+ isEnemyAlive(_),
     retract(isFightingBoss(_)),
     write('You win against the first one. But can you pass this? '),nl,
@@ -84,7 +84,7 @@ foundEliteTwo:- /* Encountered elite enemy, wave 2 (in dungeon) */
     asserta(isFightingBoss(1)),
     asserta(isEnemyAlive(1)),!.
 
-cont2 :-
+cont2 :- /* after defeating elite two, cont2 to fight paimon */
     \+ isEnemyAlive(_),
     winEliteOne(_),
     retract(isFightingBoss(_)),
@@ -92,19 +92,32 @@ cont2 :-
     asserta(winEliteTwo(1)),
     foundBoss,!.
 
-foundBoss :- /* Encountered the 'final' boss , Demon Lord Paimon */
-    posX(X), posY(Y), (isBoss(X,Y); isDungeon(X,Y)),
+foundBoss :- /* Encountered the 'not so final' boss , Demon Lord Paimon */
+    posX(X), posY(Y), isDungeon(X,Y),
     mobdata(66,Name,Type,MaxHealth,Level,Attack,Defense,Special,Exp,Gold),
     Health is MaxHealth,
     asserta(enemy(66,Name,Type,MaxHealth,Level,Health,Attack,Defense,Special,Exp,Gold)),nl,
-    write('This is it. '),write(Name),write(' is approaching you'),nl,
+    write('This is it. '),write('Demon Lord Paimon'),write(' is approaching you'),nl,
     write('After you win (if you win, ofc), type cont3 to continue(wait what, this aint the end?)'),nl,
     write('What will u do? '),nl,
     write('- fight.'),nl,
     asserta(isFightingBoss(1)),
     asserta(isEnemyAlive(1)),!.
 
-cont3:-
+foundMiniBoss :- /* Encountered Mini Boss, doragon,kerberos,archmage, or abyssknight */
+    posX(X), posY(Y), isBoss(X,Y),
+    random(50,53,ID),
+    mobdata(ID,Name,Type,MaxHealth,Level,Attack,Defense,Special,Exp,Gold),
+    Health is MaxHealth,
+    asserta(enemy(ID,Name,Type,MaxHealth,Level,Health,Attack,Defense,Special,Exp,Gold)),nl,
+    write('An Elite '),write(Name),write(' is approaching you'),nl,
+    write('What will u do? '),nl,
+    write('- fight.'),nl,
+    asserta(isFightingBoss(1)),
+    asserta(isEnemyAlive(1)),!.
+
+
+cont3:- /* after defeating paimon, cont3 to ehem ehem */
     \+ isEnemyAlive(_),
     winEliteOne(_),
     winEliteTwo(_),
@@ -133,7 +146,7 @@ foundYourself :- /*Encountered final boss, yourself */
     asserta(isFightingBoss(1)),
     asserta(isEnemyAlive(1)),!.
 
-cont4 :-
+cont4 :- /* End the game, after defeating final boss */
     \+ isEnemyAlive(_),
     winEliteOne(_),
     winEliteOne(_),

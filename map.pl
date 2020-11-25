@@ -33,7 +33,7 @@ jumpTo(X,Y) :- godMode(_), (X<1;X>15;Y<1;Y>15), write('You can not teleport into
 jumpTo(X,Y) :- godMode(_), \+isTembok(X,Y), retract(posX(_)), retract(posY(_)), asserta(posX(X)), asserta(posY(Y)), map, 
 		( (isStore(X,Y) -> write('\n\nWrite `store.` to see store menu.\n')) ; 
 		  (isQuest(X,Y) -> write('\n\nWrite `quest.` to do a quest.\n')) ;
-		  (isBoss(X,Y) -> foundBoss) ; 
+		  (isBoss(X,Y) -> foundMiniBoss) ; 
 		  (isDungeon(X,Y) -> foundDungeon) ;
 		  (\+isTembok(X,Y))
 		), !.
@@ -71,7 +71,7 @@ teleportTo(X,Y) :- posX(Xx), posY(Yy), isTP(Xx,Yy), X>0, Y>0, \+isTembok(X,Y), r
 		write('You are successfully teleported into ('), write(X), write(','), write(Y), write(')!'), nl, nl,
 		( (isStore(X,Y) -> write('\n\nWrite `store.` to see store menu.\n')) ; 
 		  (isQuest(X,Y) -> write('\n\nWrite `quest.` to do a quest.\n')) ;
-		  (isBoss(X,Y) -> foundBoss) ; 
+		  (isBoss(X,Y) -> foundMiniBoss) ; 
 		  (isDungeon(X,Y) -> foundDungeon) ;
 		  (\+isTembok(X,Y))
 		), !.
@@ -101,7 +101,7 @@ w :- posX(X), posY(Y), Y2 is Y-1,\+ isEnemyAlive(_), isTP(X,Y2), retract(posY(_)
 w :- posX(X), posY(Y), Y2 is Y-1,\+ isEnemyAlive(_), isQuest1(_), isMedusa(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, write('\n\nYou just found Medusa, write `defeat.` to fight.\n'), !.
 w :- posX(X), posY(Y), Y2 is Y-1,\+ isEnemyAlive(_), isQuest1(_), isHydra(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, write('\n\nYou just found Hydra, write `defeat.` to fight.\n'), !.
 w :- posX(X), posY(Y), Y2 is Y-1,\+ isEnemyAlive(_), isQuest1(_), isCerberus(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, write('\n\nYou just found Cerberus, write `defeat.` to fight.\n'), !.
-w :- posX(X), posY(Y), Y2 is Y-1,\+ isEnemyAlive(_), isBoss(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, foundBoss, !.
+w :- posX(X), posY(Y), Y2 is Y-1,\+ isEnemyAlive(_), isBoss(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, foundMiniBoss, !.
 w :- posX(X), posY(Y), Y2 is Y-1,\+ isEnemyAlive(_), isDungeon(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, foundDungeon, !.
 w :- posX(X), posY(Y), Y2 is Y-1,\+ isEnemyAlive(_),\+isStore(X,Y2), \+isLimitBawah(X,Y2), \+isLimitAtas(X,Y), \+isLimitKiri(X,Y), \+isLimitKanan(X,Y), retract(posY(_)), asserta(posY(Y2)),map,enemySpawner, !.
 w :- isEnemyAlive(_),write('Oh no u cant, there is still an enemy to fight with. But lets try fleeing'),nl,flee,!.
@@ -114,7 +114,7 @@ s :- posX(X), posY(Y), Y2 is Y+1,\+ isEnemyAlive(_), isTP(X,Y2), retract(posY(_)
 s :- posX(X), posY(Y), Y2 is Y+1,\+ isEnemyAlive(_), isQuest1(_), isMedusa(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, write('\n\nYou just found Medusa, write `defeat.` to fight.\n'), !.
 s :- posX(X), posY(Y), Y2 is Y+1,\+ isEnemyAlive(_), isQuest1(_), isHydra(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, write('\n\nYou just found Hydra, write `defeat.` to fight.\n'), !.
 s :- posX(X), posY(Y), Y2 is Y+1,\+ isEnemyAlive(_), isQuest1(_), isCerberus(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, write('\n\nYou just found Cerberus, write `defeat.` to fight.\n'), !.
-s :- posX(X), posY(Y), Y2 is Y+1,\+ isEnemyAlive(_), isBoss(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, foundBoss, !.
+s :- posX(X), posY(Y), Y2 is Y+1,\+ isEnemyAlive(_), isBoss(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, foundMiniBoss, !.
 s :- posX(X), posY(Y), Y2 is Y+1,\+ isEnemyAlive(_), isDungeon(X,Y2), retract(posY(_)), asserta(posY(Y2)), map, foundDungeon, !.
 s :- posX(X), posY(Y), Y2 is Y+1,\+ isEnemyAlive(_), \+isStore(X,Y2), \+isLimitBawah(X,Y2), \+isLimitAtas(X,Y), \+isLimitKiri(X,Y), \+isLimitKanan(X,Y), retract(posY(_)), asserta(posY(Y2)),map,enemySpawner, !.
 s :- isEnemyAlive(_),write('Oh no u cant, there is still an enemy to fight with.  But lets try fleeing'),nl,flee,!.
@@ -127,7 +127,7 @@ a :- posX(X), posY(Y), X2 is X-1,\+ isEnemyAlive(_), isTP(X2,Y), retract(posX(_)
 a :- posX(X), posY(Y), X2 is X-1,\+ isEnemyAlive(_), isQuest1(_), isMedusa(X2,Y), retract(posX(_)), asserta(posX(X2)), map, write('\n\nYou just found Medusa, write `defeat.` to fight.\n'), !.
 a :- posX(X), posY(Y), X2 is X-1,\+ isEnemyAlive(_), isQuest1(_), isHydra(X2,Y), retract(posX(_)), asserta(posX(X2)), map, write('\n\nYou just found Hydra, write `defeat.` to fight.\n'), !.
 a :- posX(X), posY(Y), X2 is X-1,\+ isEnemyAlive(_), isQuest1(_), isCerberus(X2,Y), retract(posX(_)), asserta(posX(X2)), map, write('\n\nYou just found Cerberus, write `defeat.` to fight.\n'), !.
-a :- posX(X), posY(Y), X2 is X-1,\+ isEnemyAlive(_), isBoss(X2,Y), retract(posX(_)), asserta(posX(X2)), map, foundBoss, !.
+a :- posX(X), posY(Y), X2 is X-1,\+ isEnemyAlive(_), isBoss(X2,Y), retract(posX(_)), asserta(posX(X2)), map, foundMiniBoss, !.
 a :- posX(X), posY(Y), X2 is X-1,\+ isEnemyAlive(_), isDungeon(X2,Y), retract(posX(_)), asserta(posX(X2)), map, foundDungeon, !.
 a :- posX(X), posY(Y), X2 is X-1,\+ isEnemyAlive(_), \+isStore(X2,Y), \+isLimitBawah(X2,Y), \+isLimitAtas(X,Y), \+isLimitKiri(X,Y), \+isLimitKanan(X,Y), retract(posX(_)), asserta(posX(X2)),map,enemySpawner, !.
 a :- isEnemyAlive(_),write('Oh no u cant, there is still an enemy to fight with.  But lets try fleeing'),nl,flee,!.
@@ -140,7 +140,7 @@ d :- posX(X), posY(Y), X2 is X+1,\+ isEnemyAlive(_), isTP(X2,Y), retract(posX(_)
 d :- posX(X), posY(Y), X2 is X+1,\+ isEnemyAlive(_), isQuest1(_), isMedusa(X2,Y), retract(posY(_)), asserta(posX(X2)), map, write('\n\nYou just found Medusa, write `defeat.` to fight.\n'), !.
 d :- posX(X), posY(Y), X2 is X+1,\+ isEnemyAlive(_), isQuest1(_), isHydra(X2,Y), retract(posY(_)), asserta(posX(X2)), map, write('\n\nYou just found Hydra, write `defeat.` to fight.\n'), !.
 d :- posX(X), posY(Y), X2 is X+1,\+ isEnemyAlive(_), isQuest1(_), isCerberus(X2,Y), retract(posY(_)), asserta(posX(X2)), map, write('\n\nYou just found Cerberus, write `defeat.` to fight.\n'), !.
-d :- posX(X), posY(Y), X2 is X+1,\+ isEnemyAlive(_), isBoss(X2,Y), retract(posX(_)), asserta(posX(X2)), map, foundBoss, !.
+d :- posX(X), posY(Y), X2 is X+1,\+ isEnemyAlive(_), isBoss(X2,Y), retract(posX(_)), asserta(posX(X2)), map, foundMiniBoss, !.
 d :- posX(X), posY(Y), X2 is X+1,\+ isEnemyAlive(_), isDungeon(X2,Y), retract(posX(_)), asserta(posX(X2)), map, foundDungeon, !.
 d :- posX(X), posY(Y), X2 is X+1,\+ isEnemyAlive(_), \+isStore(X2,Y), \+isLimitBawah(X2,Y), \+isLimitAtas(X,Y), \+isLimitKiri(X,Y), \+isLimitKanan(X,Y), retract(posX(_)), asserta(posX(X2)),map,enemySpawner, !.
 d :- isEnemyAlive(_),write('Oh no u cant, there is still an enemy to fight with.  But lets try fleeing'),nl,flee,!.
