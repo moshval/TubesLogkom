@@ -334,7 +334,7 @@ specialAttack:- /*player special atk, can only be used every 3 turns, CD resets 
     isFighting(_),
     playerCanUseSkill(_),
     asserta(playerSkillCD(1)),
-    player(PJob, _, _, _, _, _, PSpecial, _, _),
+    player(PJob, _, PLevel, _, _, _, PSpecial, _, _),
     enemy(_,EName,_,_,_,EHealth,_,EDefense,_,_,_),
     TmpDamage is (PSpecial - EDefense),
     (TmpDamage >= 0 -> PDamage is TmpDamage
@@ -342,7 +342,10 @@ specialAttack:- /*player special atk, can only be used every 3 turns, CD resets 
     CurrEHealth is (EHealth - PDamage),
     retract(enemy(EID,EName,EType,EMaxHealth,ELevel,EHealth,EAttack,EDefense,ESpecial,EExp,EGold)),
     asserta(enemy(EID,EName,EType,EMaxHealth,ELevel,CurrEHealth,EAttack,EDefense,ESpecial,EExp,EGold)),
-    write('Player uses '),write(PJob),write(' special attack'),nl,
+    ((PLevel//10) > 3 -> Spreq is 3
+        ; Spreq is (PLevel//10)),
+    playerspecial(PJob,Spreq,SpName),
+    write('Player uses '),write('special attack : '),write(SpName),nl,
     write('Player dealt '),write(PDamage),write(' damage '),write('to '),write(EName),nl,
     retract(playerCanUseSkill(_)),
     enemyStats,!.

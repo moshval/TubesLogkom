@@ -54,5 +54,23 @@ specialdata(medusa,stone_gaze).
 specialdata(hydra,extra_heads).
 specialdata(cerberus,use_our_heads).
 
+/* playerspecial(Job,SpecialTreeLevelRequirement,SpecialName) */
+
+playerspecial(swordsman,0,triple_slash).
+playerspecial(archer,0,arrow_barrage).
+playerspecial(sorcerer,0,exproshon).
+
+playerspecial(swordsman,1,quintuple_slash).
+playerspecial(archer,1,rain_of_arrows).
+playerspecial(sorcerer,1,mega_exproshon).
+
+playerspecial(swordsman,2,quattuordecuple_slash).
+playerspecial(archer,2,meteor_of_arrows).
+playerspecial(sorcerer,2,super_mega_exproshon).
+
+playerspecial(swordsman,3,excalibur).
+playerspecial(archer,3,requiem_of_arrows).
+playerspecial(sorcerer,3,super_mega_exproshon_requiem).
+
 
 /* Secret boss diakhir abis ngalahin paimon bakalan mirror dari player itu sendiri */
