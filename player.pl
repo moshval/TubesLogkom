@@ -159,33 +159,38 @@ usePotion :-
     write('****************************************************\n'),
     enemyStats,!.
 
-
-/* BELOM WORK */
 /** Equip **/
 /*** equipped(ID, Name, Job, Type, Amount, Health, Attack, Defense) ***/
 equip(Name) :-
     \+ inventory(_, Name, _, _, _, _, _, _),
-    write('Equipment not found!\n'),
+    write('****************************************************\n'), 
+    write('!! Equipment not found !!\n'),
+    write('****************************************************\n'), 
     !, fail.
 
 equip(Name) :-
     player(PJob, _, _, _, _, _, _, _, _),
     inventory(_, Name, Job, _, _, _, _, _),
     PJob \== Job,
-    write('You are unable to equip this item!\n'),
+    write('****************************************************\n'), 
+    write('!! You are unable to equip '),write(Name),write(' !!\n'),
+    write('****************************************************\n'),
     !, fail.
 
 equip(Name) :-
-    player(_, MaxHealth, _, HP, Att, Def, _, _, _),
+    player(PJob, MaxHealth, PLevel, HP, Att, Def, Special, Exp, Gold),
     inventory(ID, Name, Job, Type, Amount, Health, Attack, Defense),
     NewHP is HP + Health,
     NewAtt is Att + Attack,
     NewDef is Def + Defense,
-    delItem(Name,Job),
-    retract(player(Job, MaxHealth, Level, HP, Attack, Defense, Sepcial, Exp, Gold)),
-    asserta(player(Job, MaxHealth, Level, NewHP, NewAtt, NewDef, Sepcial, Exp, Gold)),
     asserta(equipped(ID, Name, Job, Type, Amount, Health, Attack, Defense)),
-    write('Item successfully equipped.\n').
+    retract(player(PJob, MaxHealth, PLevel, HP, Att, Def, Special, Exp, Gold)),
+    asserta(player(PJob, MaxHealth, player, NewHP, NewAtt, NewDef, Special, Exp, Gold)),
+    delItem(Name,Job),
+    write('****************************************************\n'), 
+    write('!! '),write(Name),write(' successfully equipped !! \n'),
+    write('****************************************************\n'),
+    !.
 
 dismantle(Name) :-
     \+equipped(_,Name,_,_,_,_,_,_),
@@ -195,8 +200,37 @@ dismantle(Name) :-
     !,fail.
 
 dismantle(Name) :-
-    equipped(ID, Name, Job, _, Amount, _, _, _),
-    NewAmount is Amount - 1,
-    NewAmount > 0,
-    retract(inventory(_,Name,Job,_,_,_,_,_)),
-    addItem(ID,Job,Amount).
+    player(PJob, MaxHealth, PLevel, HP, Att, Def, Special, Exp, Gold),
+    equipped(ID, Name, Job, _, _, Health, Attack, Defense),
+    NewHP is HP - Health,
+    NewAtt is Att - Attack,
+    NewDef is Def - Defense,
+    retract(equipped(_,Name,Job,_,_,Health,Attack,Defense)),
+    retract(player(PJob, MaxHealth, PLevel, HP, Att, Def, Special, Exp, Gold)),
+    asserta(player(PJob, MaxHealth, player, NewHP, NewAtt, NewDef, Special, Exp, Gold)),
+    addItem(ID,Job,1),
+    write('****************************************************\n'), 
+    write('!! Successfully dismantle '),write(Name),write(' !!\n'),
+    write('****************************************************\n'),
+    !.
+
+listEquipped(ListName,ListHP,ListAtt,ListDef) :-
+    findall(Name, equipped(_,Name,_,_,_,_,_,_), ListName),
+    findall(HP, equipped(_,_,_,_,_,HP,_,_), ListHP),
+    findall(Att, equipped(_,_,_,_,_,_,Att,_), ListAtt),
+    findall(Def, equipped(_,_,_,_,_,_,_,Def), ListDef).
+
+showEquipped([],[],[],[]).
+showEquipped([Name|X],[HP|Y],[Att|Z],[Def|W]) :-
+    write(Name),write(' | '),
+    write(HP),write(' | '),
+    write(Att),write(' | '),
+    write(Def),nl,
+    showEquipped(X,Y,Z,W).
+
+equipment :-
+    init(_),
+    write('Your equipped items: '),nl,
+    write('Name | HP | Attack | Defense'),nl,nl,
+    listEquipped(ListName,ListHP,ListAtt,ListDef),
+    showEquipped(ListName,ListHP,ListAtt,ListDef).
