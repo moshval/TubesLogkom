@@ -90,7 +90,7 @@ cont2 :- /* after defeating elite two, cont2 to fight paimon */
     \+ isEnemyAlive(_),
     winEliteOne(_),
     retract(isFightingBoss(_)),
-    write('What a surprise, you can go this far. Now face me! '),nl,
+    write('What a surprise, you can go this far'),nl,write('NOW FACE ME!!!!!!!!!!! '),nl,
     asserta(winEliteTwo(1)),
     foundBoss,!.
 
@@ -124,12 +124,14 @@ cont3:- /* after defeating paimon, cont3 to ehem ehem */
     winEliteOne(_),
     winEliteTwo(_),
     retract(isFightingBoss(_)),
-    write('What....u can win against me...'),nl,
-    write('...............'),nl,
-    write('Echoing voice is being heard in the air. Suddenly someone claps'),nl,
-    write('<< Grreatt Jobbu >>'),nl,
-    write('That someone is....... yourself'),nl,
-    write('Now face yourself to win THIS GAME !'),nl,
+    write('*******************************************************************************\n'), 
+    write('                      What....u can win against me...'),nl,
+    write('                               ...............                   '),nl,
+    write('        Echoing voice is being heard in the air. Suddenly someone claps       '),nl,
+    write('                             << Grreatt Jobbu >>'),nl,
+    write('                      That someone is....... yourself'),nl,
+    write('                    Now face yourself to win THIS GAME !'),nl,
+    write('*******************************************************************************\n'),
     asserta(winEliteThree(1)),
     foundYourself,!.
 
@@ -155,8 +157,11 @@ cont4 :- /* End the game, after defeating final boss */
     winEliteTwo(_),
     winEliteThree(_),
     retract(isFightingBoss(_)),
-    write('YOU WIN. YOUVE COME THIS FAR TO THIS EXTENT TO THIS WORLD TO FACE YOURSELF IN THE END.'),nl,
-    write('NOW YOU ARE WORTHY'),nl,
+    write('****************************************************\n'), 
+    write('      CONGRATULATIONS. YOU HAVE WON THIS GAME\n       '),
+    write('****************************************************\n'),
+    write('YOUVE COME THIS FAR TO THIS EXTENT TO THIS WORLD TO FACE YOURSELF IN THE END.'),nl,
+    write('                NOW YOU ARE WORTHY'),nl,
     write('Zlrprpspspsps....(Teleporting back to original world)'),nl,
     quit,!.
 
@@ -176,6 +181,8 @@ notenterD:- /* not entering */
 enterD:- /* enter dungeon, masi blm fi fix krn ini baru sequencenya */
     posX(X), posY(Y), isDungeon(X,Y),
     write('Entering dungeon.......'),nl,
+    write('.......................\n'),
+    write('.......................'),nl,
     foundEliteOne,!.
 
 
@@ -211,7 +218,7 @@ flee:- /*Kaburr,flee successful , blm diapply move di map*/
     player(_, PMaxHealth, _, PHealth, _, _, _, _, _),
     F is (PMaxHealth * 0.1),
     PHealth > F,
-    write('You unleashed ur secret special technique : Nigerundayo '),nl,
+    write('You unleashed ur secret special technique : [Nigerundayo] '),nl,
     write('Flee successful'),nl,
     retract(enemy(_,_,_,_,_,_,_,_,_,_,_)),
     retract(isEnemyAlive(_)),!.
@@ -222,8 +229,8 @@ flee:- /*Kabur, but failed*/
     player(_, PMaxHealth, _, PHealth, _, _, _, _, _),
     F is (PMaxHealth * 0.1),
     PHealth =< F,
-    write('You unleashed ur secret special technique : Nigerundayo'),nl,
-    write('....but unssuccessful'),nl,
+    write('You unleashed ur secret special technique : [Nigerundayo]'),nl,
+    write('....but unsuccessful'),nl,
     fight,!.
 
 flee:- /*Kabur while blm ketemu enemy */
@@ -289,6 +296,7 @@ enemyStats :- /* if enemy s ded , not in dungeon*/
     enemy(_,EName,_,_,_,EHealth,_,_,_,EExp,EGold),
     EHealth =< 0,
     write(EName),write(' is now dead.'),nl,
+    write('Now you can continue exploring.'),nl,
     player(_, _, _, _, _, _, _, PExp, PGold),
     NewPExp is (PExp + EExp) , NewPGold is (PGold + EGold),
     retract(player(PJob, PMaxHealth, PLevel, PHealth, PAttack, PDefense, PSpecial, PExp, PGold)),
