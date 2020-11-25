@@ -15,7 +15,9 @@ isBoss(X,Y) :- X=:=5, Y=:=4.
 isBoss(X,Y) :- X=:=15, Y=:=3.
 isDungeon(X,Y) :- X=:=11, Y=:=12.
 isQuest(X,Y) :- X=:=9, Y=:=9.
-isTP(X,Y) :- X=:=7, Y=:=2.
+isTP(X,Y) :- X=:=7, Y=:=2,!.
+isTP(X,Y) :- X=:=3, Y=:=13,!.
+isTP(X,Y) :- X=:=14, Y=:=12,!.
 isMedusa(X,Y) :- isQuest1(_),X=:=3, Y=:=15.
 isHydra(X,Y) :- isQuest1(_),X=:=1, Y=:=4.
 isCerberus(X,Y) :- isQuest1(_),X=:=8, Y=:=1.
@@ -59,7 +61,7 @@ teleport :- posX(X), posY(Y), isTP(X,Y), player(_,_,_,_,_,_,_,_,Duit), NDuit is 
 teleportTo(_, _) :- posX(X), posY(Y), \+isTP(X,Y), write('You can not cast teleport outside Teleport Point, Traveler!'),!.
 teleportTo(_,_) :- posX(Xx), posY(Yy), isTP(Xx,Yy), player(_,_,_,_,_,_,_,_,Duit), NDuit is Duit-250, NDuit<0, write('==============================\nYou do not have enough Gold (250), Traveler!\n=============================='), !.
 teleportTo(X,Y) :- posX(Xx), posY(Yy), isTP(Xx,Yy), X=:=0, Y=:=0, write('==============================\nYou cancelled the teleport, Traveler!\n=============================='),!.
-teleportTo(X,Y) :- posX(Xx), posY(Yy), isTP(Xx,Yy), isTP(X,Y), write('==============================\nYou can not teleport into current Teleport Point, Traveler!\n=============================='), teleport,!.
+teleportTo(X,Y) :- posX(Xx), posY(Yy), isTP(Xx,Yy), isTP(X,Y), Xx =:= X, Yy =:= Y, write('==============================\nYou can not teleport into current Teleport Point, Traveler!\n=============================='), teleport,!.
 teleportTo(X,Y) :- posX(Xx), posY(Yy), isTP(Xx,Yy), isTembok(X,Y), write('==============================\nYou can not teleport into wall!\n=============================='), teleport,!.
 teleportTo(X,Y) :- posX(Xx), posY(Yy), isTP(Xx,Yy), (X<1;X>15;Y<1;Y>15), write('You can not teleport into outside of this world!'), teleport,!.
 teleportTo(X,Y) :- posX(Xx), posY(Yy), isTP(Xx,Yy), X>0, Y>0, \+isTembok(X,Y), retract(posX(_)), retract(posY(_)), asserta(posX(X)), asserta(posY(Y)), map,
