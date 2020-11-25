@@ -52,8 +52,12 @@ teleport :- posX(X), posY(Y), isTP(X,Y), player(_,_,_,_,_,_,_,_,Duit), NDuit is 
 	write(' Q = Quest (9,9)'), nl,
 	write(' B = Boss (5,4)|(15,3)'), nl,
 	write(' D = Dungeon (11,12)'), nl,
+	( (X=:=7,Y=:=2) -> (write(' T = Teleport Point 2 (3,13)'), nl, write(' T = Teleport Point 3 (14,12)'), nl) ;
+	  (X=:=3,Y=:=13) -> (write(' T = Teleport Point 1 (7,2)'), nl, write(' T = Teleport Point 3 (14,12)'), nl) ;
+	  (X=:=14,Y=:=12) -> (write(' T = Teleport Point 1 (7,2)'), nl, write(' T = Teleport Point 2 (3,13)'), nl)
+	),
 	write('===================================='), nl,
-	write('(input X and Y = 0. anytime if you want to cancel)'), nl, nl,
+	write('(input X and Y = 0. if you want to cancel the teleport)'), nl, nl,
 	write('Enter X: '), read(TX), nl,
 	write('Enter Y: '), read(TY), nl,
 	teleportTo(TX,TY),!.
