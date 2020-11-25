@@ -25,7 +25,7 @@ playerStatus :-
     write('Level    : '), write(Level), nl,
     write('Attack   : '), write(Attack), nl,
     write('Defense  : '), write(Defense), nl,
-    write('Special   : '), write(Special), nl,
+    write('Special  : '), write(Special), nl,
     write('Exp      : '), write(Exp), nl,
     write('Gold     : '), write(Gold), nl,!.
 
@@ -161,9 +161,10 @@ usePotion :-
 
 
 /* BELOM WORK */
+/** Equip **/
+/*** equipped(ID, Name, Job, Type, Amount, Health, Attack, Defense) ***/
 equip(Name) :-
-    inventory(_, Name, _, _, _, _, _, _),
-    \+ cekItemAda(Name,_),
+    \+ inventory(_, Name, _, _, _, _, _, _),
     write('Equipment not found!\n'),
     !, fail.
 
@@ -176,11 +177,26 @@ equip(Name) :-
 
 equip(Name) :-
     player(_, MaxHealth, _, HP, Att, Def, _, _, _),
-    inventory(_, Name, Job, _, _, Health, Attack, Defense),
+    inventory(ID, Name, Job, Type, Amount, Health, Attack, Defense),
     NewHP is HP + Health,
     NewAtt is Att + Attack,
     NewDef is Def + Defense,
     delItem(Name,Job),
     retract(player(Job, MaxHealth, Level, HP, Attack, Defense, Sepcial, Exp, Gold)),
     asserta(player(Job, MaxHealth, Level, NewHP, NewAtt, NewDef, Sepcial, Exp, Gold)),
+    asserta(equipped(ID, Name, Job, Type, Amount, Health, Attack, Defense)),
     write('Item successfully equipped.\n').
+
+dismantle(Name) :-
+    \+equipped(_,Name,_,_,_,_,_,_),
+    write('****************************************************\n'), 
+    write('!! '),write(Name),write(' is not equipped yet !! \n'),
+    write('****************************************************\n'),
+    !,fail.
+
+dismantle(Name) :-
+    equipped(ID, Name, Job, _, Amount, _, _, _),
+    NewAmount is Amount - 1,
+    NewAmount > 0,
+    retract(inventory(_,Name,Job,_,_,_,_,_)),
+    addItem(ID,Job,Amount).
