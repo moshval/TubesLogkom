@@ -34,7 +34,7 @@ title :-
 	write('You got hit by truck and dead, now you are reincarnated to another world!').
 
 help :-
-	write('------------------------------------\n'),
+	write('-------------------------------------\n'),
 	write('| start. - start the game           |\n'),
 	write('| help. - see the cmd               |\n'),
 	write('| w. a. s. d. - move                |\n'),
@@ -44,7 +44,7 @@ help :-
 	write('| unequip. - unequip item           |\n'),
 	write('| map. - open map                   |\n'),
 	write('| quit. - quit game                 |\n'),
-	write('------------------------------------\n').
+	write('-------------------------------------\n').
 
 /* loop ref: https://stackoverflow.com/questions/29857372/how-to-go-back-to-repeat-in-prolog */
 initPemain :-

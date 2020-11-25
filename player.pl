@@ -94,17 +94,23 @@ delItem(Name,Job) :-
     retract(inventory(_,Name,Job,_,_,_,_,_)),
     !.
 
-listInventory(ListItem,ListJob,ListAmount) :-
+listInventory(ListItem,ListJob,ListAmount,ListHP,ListAtt,ListDef) :-
     findall(Name, inventory(_,Name,_,_,_,_,_,_), ListItem),
     findall(Job, inventory(_,_,Job,_,_,_,_,_), ListJob),
-    findall(Amount, inventory(_,_,_,_,Amount,_,_,_), ListAmount).
+    findall(Amount, inventory(_,_,_,_,Amount,_,_,_), ListAmount),
+    findall(HP, inventory(_,_,_,_,_,HP,_,_), ListHP),
+    findall(Att, inventory(_,_,_,_,_,_,Att,_), ListAtt),
+    findall(Def, inventory(_,_,_,_,_,_,_,Def), ListDef).
 
-showInven([],[],[]).
-showInven([Name|X],[Job|Y],[Amount|Z]) :-
+showInven([],[],[],[],[],[]).
+showInven([Name|X],[Job|Y],[Amount|Z],[HP|P],[Att|Q],[Def|R]) :-
     write(Amount), write(' '),
     write(Name), write(' '),
-    write('('),write(Job),write(')'), nl,
-    showInven(X,Y,Z).
+    write('('),write(Job),write(')'),
+    write(HP),write(' | '),
+    write(Att),write(' | '),
+    write(Def), nl,
+    showInven(X,Y,Z,P,Q,R).
 
 showInventory :-
     init(_),
