@@ -111,10 +111,9 @@ showInventory :-
     write('Your inventory: '),nl,
     listInventory(ListItem,ListJob,ListAmount),
     showInven(ListItem,ListJob,ListAmount).
-/* BELOM WORK KALO AMER KOSONG */
+
 usePotion :-
-    inventory(99, Name, _, _, _, _, _, _),
-    \+ cekItemAda(Name,_),
+    \+ inventory(99, _, _, _, _, _, _, _),
     write('****************************************************\n'), 
     write('!! You have no AMER left, buy some more at Store !! \n'),
     write('****************************************************\n'), 
@@ -141,7 +140,7 @@ usePotion :-
     asserta(player(Job, MaxHealth, Level, NewHP, Attack, Defense, Sepcial, Exp, Gold)),
     write('****************************************************\n'), 
     write('!! By the power of AMER, you gained 80 extra HP... !! \n'),
-    write('****************************************************\n').
+    write('****************************************************\n'), !.
 
 
 usePotion :-
