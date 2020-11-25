@@ -178,6 +178,13 @@ equip(Name) :-
     !, fail.
 
 equip(Name) :-
+    inventory(99, Name, _, _, _, _, _, _),
+    write('****************************************************\n'), 
+    write('!! You are unable to equip '),write(Name),write(' !!\n'),
+    write('****************************************************\n'),
+    !, fail.
+
+equip(Name) :-
     player(PJob, MaxHealth, PLevel, HP, Att, Def, Special, Exp, Gold),
     inventory(ID, Name, Job, Type, Amount, Health, Attack, Defense),
     NewHP is HP + Health,
@@ -185,7 +192,7 @@ equip(Name) :-
     NewDef is Def + Defense,
     asserta(equipped(ID, Name, Job, Type, Amount, Health, Attack, Defense)),
     retract(player(PJob, MaxHealth, PLevel, HP, Att, Def, Special, Exp, Gold)),
-    asserta(player(PJob, MaxHealth, player, NewHP, NewAtt, NewDef, Special, Exp, Gold)),
+    asserta(player(PJob, MaxHealth, PLevel, NewHP, NewAtt, NewDef, Special, Exp, Gold)),
     delItem(Name,Job),
     write('****************************************************\n'), 
     write('!! '),write(Name),write(' successfully equipped !! \n'),
@@ -207,7 +214,7 @@ dismantle(Name) :-
     NewDef is Def - Defense,
     retract(equipped(_,Name,Job,_,_,Health,Attack,Defense)),
     retract(player(PJob, MaxHealth, PLevel, HP, Att, Def, Special, Exp, Gold)),
-    asserta(player(PJob, MaxHealth, player, NewHP, NewAtt, NewDef, Special, Exp, Gold)),
+    asserta(player(PJob, MaxHealth, PLevel, NewHP, NewAtt, NewDef, Special, Exp, Gold)),
     addItem(ID,Job,1),
     write('****************************************************\n'), 
     write('!! Successfully dismantle '),write(Name),write(' !!\n'),
@@ -234,3 +241,24 @@ equipment :-
     write('Name | HP | Attack | Defense'),nl,nl,
     listEquipped(ListName,ListHP,ListAtt,ListDef),
     showEquipped(ListName,ListHP,ListAtt,ListDef).
+
+equipItem :- 
+    inventory,nl,
+    write('What do yo want to equip, Traveler?'), nl,
+	write('Item name (lowercase) : '), read(ItemName), nl,
+    ( 
+		(\+cekItemAda(ItemName, _) -> write('There is no such item in your inventory!\nPlease check again!\n'));
+		(cekItemAda(ItemName, _) -> equip(ItemName))
+	).
+
+dismantleItem :-
+    equipment,nl,
+    write('What do yo want to unequip, Traveler?'), nl,
+	write('Item name (lowercase) : '), read(ItemName), nl,
+    ( 
+		(\+isEquipped(ItemName) -> write(ItemName),write(' is not being equipped!\nPlease check again!\n'));
+		(isEquipped(ItemName) -> dismantle(ItemName))
+	).
+
+isEquipped(Name) :-
+    equipped(_,Name,_,_,_,_,_,_).

@@ -34,15 +34,17 @@ title :-
 	write('You got hit by truck and dead, now you are reincarnated to another world!').
 
 help :-
-	write('------------------------------\n'),
-	write('| start. - start the game    |\n'),
-	write('| help. - see the cmd        |\n'),
-	write('| w. a. s. d. - move         |\n'),
-	write('| status. - see your status  |\n'),
-	write('| inventory. - open inventory|\n'),
-	write('| map. - open map            |\n'),
-	write('| quit. - quit game          |\n'),
-	write('------------------------------\n').
+	write('------------------------------------\n'),
+	write('| start. - start the game           |\n'),
+	write('| help. - see the cmd               |\n'),
+	write('| w. a. s. d. - move                |\n'),
+	write('| status. - see your status         |\n'),
+	write('| inventory. - open inventory       |\n'),
+	write('| equip. - equip item in inventory  |\n'),
+	write('| unequip. - unequip item           |\n'),
+	write('| map. - open map                   |\n'),
+	write('| quit. - quit game                 |\n'),
+	write('------------------------------------\n').
 
 /* loop ref: https://stackoverflow.com/questions/29857372/how-to-go-back-to-repeat-in-prolog */
 initPemain :-
@@ -86,6 +88,12 @@ status :- init(_), playerStatus,!.
 
 inventory :- \+init(_), write('Game has not started yet!'),!.
 inventory :- init(_), showInventory, !.
+
+equip :- \+init(_), write('Game has not started yet!'),!.
+equip :- init(_), equipItem, !.
+
+unequip :- \+init(_), write('Game has not started yet!'),!.
+unequip :- init(_), dismantleItem, !.
 
 /* forbidden technique */
 godMode :- \+init(_), write('Game has not started yet!'),!.
