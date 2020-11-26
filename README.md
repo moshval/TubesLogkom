@@ -9,10 +9,11 @@ Nama Kelompok	  : Sandbox
 Deliverable		  : Final
 
 Anggota Kelompok:
--Mohammad Sheva Almeyda Sofjan - 13519018
--Alif Bhadrika Parikesit - 13519186 
--Rezda Abdullah Fachrezzi - 13519194
--Farhan Yusuf Akbar - 13519202
+
+- Mohammad Sheva Almeyda Sofjan - 13519018
+- Alif Bhadrika Parikesit - 13519186 
+- Rezda Abdullah Fachrezzi - 13519194
+- Farhan Yusuf Akbar - 13519202
 
 ## Prerequisite
 - GNU Prolog
