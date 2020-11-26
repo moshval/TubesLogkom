@@ -44,6 +44,7 @@ help :-
 	write('| inventory. - open inventory       |\n'),
 	write('| equip. - equip item in inventory  |\n'),
 	write('| unequip. - unequip item           |\n'),
+	write('| questStatus. - show current quest |\n'),
 	write('| map. - open map                   |\n'),
 	write('| quit. - quit game                 |\n'),
 	write('-------------------------------------\n').

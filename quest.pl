@@ -77,6 +77,18 @@ dontcancel :-  write('****************************************************\n'),
                write('Go slay em !! Continue your quest \n'),
                write('****************************************************\n\n'),!.
 
+
+questStatus:- \+ isQuest1(_),write('No active quest right now. Go to Q (9,9) to receive quest'),nl,!.
+questStatus:- 
+    isQuest1(_),write('Your Quest Status is :'),nl,
+    (isMedusaAlive(_) -> (write('Medusa is still alive and well'),nl,Med is 1)
+        ; Med is 0),
+    (isHydraAlive(_) -> (write('Hydra is still alive and well'),nl,Hyd is 1)
+        ; Hyd is 0),
+    (isCerberusAlive(_) -> (write('Cerberus is still alive and well'),nl,Cerb is 1)
+        ; Cerb is 0),
+    write('Or in this notation <Medusa,Hydra,Cerberus>, 1 for alive and 0 if it is dead :'),nl,
+    write('< '),write(Med),write(' '),write(Hyd),write(' '),write(Cerb),write(' >'),nl,!.
 /*
 defeat
 

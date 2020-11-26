@@ -78,7 +78,7 @@ foundMedusa:- /* Self explanatory, in quest */
 
 foundMedusa:- /* dah ded */
     \+ isMedusaAlive(_),
-    write('Now all ypu see is the corpse of the legendary Medusa. Already defeated this thing'),nl,!.
+    write('Now all you see is the corpse of the legendary Medusa. Already defeated this thing'),nl,!.
 
 
 foundCerberus:- /* Self explanatory, in quest */
@@ -103,7 +103,7 @@ foundCerberus:- /* Self explanatory, in quest */
 
 foundCerberus:- /* dah ded */
     \+ isCerberusAlive(_),
-    write('Now all ypu see is the corpse of the legendary Cerberus. Already defeated this thing'),nl,!.
+    write('Now all you see is the corpse of the legendary Cerberus. Already defeated this thing'),nl,!.
 
 foundHydra:- /* Self explanatory, in quest */
     isHydraAlive(_),
@@ -127,7 +127,7 @@ foundHydra:- /* Self explanatory, in quest */
 
 foundHydra:- /* dah ded */
     \+ isHydraAlive(_),
-    write('Now all ypu see is the corpse of the legendary Hydra. Already defeated this thing'),nl,!.
+    write('Now all you see is the corpse of the legendary Hydra. Already defeated this thing'),nl,!.
 
 foundEliteOne:- /* Encountered elite enemy,wave 1 (in dungeon) */
     posX(X), posY(Y), isDungeon(X,Y),
