@@ -6,19 +6,19 @@
 mobdata(1,slime,mob,100,1,50,5,75,100,100).
 mobdata(2,hilichurl,mob,200,2,80,20,100,200,150).
 mobdata(3,richgoblin,mob,500,1,50,10,0,200,3000).
-mobdata(4,wolf,mob,250,3,90,30,120,200,200).
-mobdata(5,bandit,mob,400,5,100,40,110,210,250).
-mobdata(6,shaman,mob,300,5,120,30,150,250,200).
-mobdata(7,cultist,mob,400,5,120,40,200,250,200).
+mobdata(4,wolf,mob,250,3,60,30,120,200,200).
+mobdata(5,bandit,mob,400,5,70,40,110,210,250).
+mobdata(6,shaman,mob,300,5,70,30,150,250,200).
+mobdata(7,cultist,mob,400,5,60,40,200,250,200).
 mobdata(8,orc,mob,400,5,120,40,150,250,200).
 mobdata(9,boar,mob,100,1,60,10,150,150,150).
 mobdata(10,bonus_enemy,mob,5,1,0,0,0,0,0).
 
 
 /* Quest Enemy */
-mobdata(101,medusa,boss,700,5,200,60,250,400,750).
-mobdata(102,hydra,boss,800,5,150,40,300,500,800).
-mobdata(103,cerberus,boss,600,5,200,60,300,600,900).
+mobdata(101,medusa,boss,500,5,100,60,250,400,750).
+mobdata(102,hydra,boss,400,5,110,40,300,500,800).
+mobdata(103,cerberus,boss,600,5,150,60,300,600,900).
 
 /* TBA */
 /* BOSSU Lv 10 for example */
