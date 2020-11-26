@@ -158,7 +158,7 @@ cont4 :- /* End the game, after defeating final boss */
     winEliteThree(_),
     retract(isFightingBoss(_)),
     write('****************************************************\n'), 
-    write('      CONGRATULATIONS. YOU HAVE WON THIS GAME\n       '),
+    write('      CONGRATULATIONS. YOU HAVE WON THIS GAME      '),nl,
     write('****************************************************\n'),
     write('YOUVE COME THIS FAR TO THIS EXTENT TO THIS WORLD TO FACE YOURSELF IN THE END.'),nl,
     write('                NOW YOU ARE WORTHY'),nl,
@@ -177,6 +177,14 @@ foundDungeon:- /* Encountered a dungeon */
 notenterD:- /* not entering */
     posX(X), posY(Y), isDungeon(X,Y),
     a,!.
+
+notenterD:- /* not entering */
+    posX(X), posY(Y), \+ isDungeon(X,Y),
+    write('You have to reach dungeon first to use this command'),nl,!.
+
+enterD:- /* entering but not in dungeon coordinates */
+    posX(X), posY(Y), \+ isDungeon(X,Y),
+    write('You have to reach dungeon first to use this command'),nl,!.
 
 enterD:- /* enter dungeon, masi blm fi fix krn ini baru sequencenya */
     posX(X), posY(Y), isDungeon(X,Y),
@@ -214,6 +222,7 @@ fight:- /* Blm ketemu enemy */
 
 flee:- /*Kaburr,flee successful , blm diapply move di map*/
     isEnemyAlive(_),
+    \+ isFighting(_),
     \+ isFightingBoss(_),
     player(_, PMaxHealth, _, PHealth, _, _, _, _, _),
     F is (PMaxHealth * 0.1),
@@ -222,6 +231,18 @@ flee:- /*Kaburr,flee successful , blm diapply move di map*/
     write('Flee successful'),nl,
     retract(enemy(_,_,_,_,_,_,_,_,_,_,_)),
     retract(isEnemyAlive(_)),!.
+
+flee:- /*Kaburr,flee successful , in battle*/
+    isEnemyAlive(_),
+    isFighting(_),
+    \+ isFightingBoss(_),
+    player(_, PMaxHealth, _, PHealth, _, _, _, _, _),
+    F is (PMaxHealth * 0.1),
+    PHealth > F,
+    write('You unleashed ur secret special technique : [Nigerundayo] '),nl,
+    write('Flee successful'),nl,
+    retract(enemy(_,_,_,_,_,_,_,_,_,_,_)),
+    retract(isEnemyAlive(_)),retract(isFighting(_)),!.
 
 flee:- /*Kabur, but failed*/
     isEnemyAlive(_),
@@ -236,17 +257,17 @@ flee:- /*Kabur, but failed*/
 flee:- /*Kabur while blm ketemu enemy */
     \+ isEnemyAlive(_),
     \+ isFighting(_),
-    write('Running from this sekai? No u dont, even if u r a dead man'),!.
+    write('Running from this sekai? No u dont, even if u r a dead man'),nl,!.
 
 flee:- /* flee while fighting boss */
     isFightingBoss(_),
-    write('CANT RUN. MUST FACE.'),
+    write('CANT RUN. MUST FACE.'),nl,
     fight,!.
 
 attack :- /* if someone accidentally uses attack instead of fight */
     isEnemyAlive(_),
     \+ isFighting(_),
-    write('Press fight first'),!.
+    write('Press fight first'),nl,!.
 
 attack:- /*Blm ada yg bisa di attack */
     \+ isEnemyAlive(_),

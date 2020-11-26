@@ -146,4 +146,8 @@ quit :- init(_),
 	retract(inventory(_,_,_,_,_,_,_,_)),
 	retract(equipped(_,_,_,_,_,_,_,_)),
 	retract(player(_,_,_,_,_,_,_,_,_)),
+	(isFighting(_)-> retract(isFighting(_))
+		; Ayam is 1 ),
+	(isEnemyAlive(_)->retract(isEnemyAlive(_))
+		; Ayam is 2	),
 	!.
