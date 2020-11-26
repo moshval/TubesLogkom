@@ -108,6 +108,18 @@ godMode :- init(_),
 	 asserta(godMode(1)),
 	 write('You have reached God Mode!'), !.
 
+cheatDuit(X) :- init(_),
+	 player(_,_,_,_,_,_,_,_,Duit),
+	 Nduit is Duit+X,
+	 retract(player(Job, MaxHealth, Level, Health, Attack, Defense, Sepcial, Exp, _)),
+         asserta(player(Job, MaxHealth, Level, Health, Attack, Defense, Sepcial, Exp, Nduit)),!.
+
+cheatDarah(X) :- init(_),
+	 player(_,MH,_,_,_,_,_,_,_),
+	 MH2 is MH+X,
+	 retract(player(Job, _, Level, _, Attack, Defense, Sepcial, Exp, Duit)),
+         asserta(player(Job, MH2, Level, MH2, Attack, Defense, Sepcial, Exp, Duit)),!.
+
 instaKill :- /* Might be buggy, enter next command to continue */
 	godMode(_),
 	isEnemyAlive(_),

@@ -17,7 +17,7 @@ isDungeon(X,Y) :- X=:=11, Y=:=12.
 isQuest(X,Y) :- X=:=9, Y=:=9.
 isTP(X,Y) :- X=:=7, Y=:=2,!.
 isTP(X,Y) :- X=:=3, Y=:=13,!.
-isTP(X,Y) :- X=:=14, Y=:=12,!.
+isTP(X,Y) :- X=:=11, Y=:=8,!.
 isMedusa(X,Y) :- isQuest1(_),X=:=3, Y=:=15.
 isHydra(X,Y) :- isQuest1(_),X=:=1, Y=:=4.
 isCerberus(X,Y) :- isQuest1(_),X=:=8, Y=:=1.
