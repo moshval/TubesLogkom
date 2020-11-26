@@ -40,11 +40,9 @@ jumpTo(X,Y) :- godMode(_), \+isTembok(X,Y), retract(posX(_)), retract(posY(_)), 
 
 /* teleport dari teleport point */
 teleport :- posX(X), posY(Y), \+isTP(X,Y), write('You are not in the Teleport Point, Traveler!'),!.
-teleport :- posX(X), posY(Y), isTP(X,Y), player(_,_,_,_,_,_,_,_,Duit), NDuit is Duit-250, NDuit<0, write('==============================\nYou do not have enough Gold (250), Traveler!\n=============================='), !.
-teleport :- posX(X), posY(Y), isTP(X,Y), player(_,_,_,_,_,_,_,_,Duit), NDuit is Duit-250, NDuit>=0,
+teleport :- posX(X), posY(Y), isTP(X,Y),
 	nl, nl,
 	write('Welcome to Teleport Point, Traveler!'), nl,
-	write('This is gonna cost 250 Gold.'), nl,
 	write('Where do you want to teleport?'), nl, nl,
 	write('===================================='), nl,
 	write(' Useful Coordinates (X,Y):'), nl,
@@ -62,17 +60,26 @@ teleport :- posX(X), posY(Y), isTP(X,Y), player(_,_,_,_,_,_,_,_,Duit), NDuit is 
 	write('Enter Y: '), read(TY), nl,
 	teleportTo(TX,TY),!.
 
+teleportPrice(X,Y,Price) :- posX(Xx), posY(Yy), X2 is X-Xx, Y2 is Y-Yy, X3 is X2*X2, Y3 is Y2*Y2, Z is X3+Y3, Z2 is sqrt(Z), Z3 is round(Z2), Price is Z3*25.
+
 teleportTo(_, _) :- posX(X), posY(Y), \+isTP(X,Y), write('You can not cast teleport outside Teleport Point, Traveler!'),!.
-teleportTo(_,_) :- posX(Xx), posY(Yy), isTP(Xx,Yy), player(_,_,_,_,_,_,_,_,Duit), NDuit is Duit-250, NDuit<0, write('==============================\nYou do not have enough Gold (250), Traveler!\n=============================='), !.
 teleportTo(X,Y) :- posX(Xx), posY(Yy), isTP(Xx,Yy), X=:=0, Y=:=0, write('==============================\nYou cancelled the teleport, Traveler!\n=============================='),!.
 teleportTo(X,Y) :- posX(Xx), posY(Yy), isTP(Xx,Yy), isTP(X,Y), Xx =:= X, Yy =:= Y, write('==============================\nYou can not teleport into current Teleport Point, Traveler!\n=============================='), teleport,!.
 teleportTo(X,Y) :- posX(Xx), posY(Yy), isTP(Xx,Yy), isTembok(X,Y), write('==============================\nYou can not teleport into wall!\n=============================='), teleport,!.
 teleportTo(X,Y) :- posX(Xx), posY(Yy), isTP(Xx,Yy), (X<1;X>15;Y<1;Y>15), write('You can not teleport into outside of this world!'), teleport,!.
-teleportTo(X,Y) :- posX(Xx), posY(Yy), isTP(Xx,Yy), X>0, Y>0, \+isTembok(X,Y), retract(posX(_)), retract(posY(_)), asserta(posX(X)), asserta(posY(Y)), map,
-		player(_,_,_,_,_,_,_,_,Duit), NDuit is Duit-250, NDuit>=0, 
+teleportTo(X,Y) :- posX(Xx), posY(Yy), isTP(Xx,Yy), 
+		teleportPrice(X,Y,Z), player(_,_,_,_,_,_,_,_,Duit), NDuit is Duit-Z, NDuit<0, 
+		write('=============================='), nl,
+		write('You do not have enough Gold, Traveler!'), nl,
+		write('You need '), write(Z), write(' Gold to teleport into ('), write(X), write(','), write(Y), write(')!'), nl,
+		write('=============================='), !.
+teleportTo(X,Y) :- posX(Xx), posY(Yy), isTP(Xx,Yy), X>0, Y>0, \+isTembok(X,Y), 
+		teleportPrice(X,Y,Z),
+		retract(posX(_)), retract(posY(_)), asserta(posX(X)), asserta(posY(Y)), map,
+		player(_,_,_,_,_,_,_,_,Duit), NDuit is Duit-Z, NDuit>=0, 
 		retract(player(Job, MaxHealth, Level, Health, Attack, Defense, Sepcial, Exp, _)),
          	asserta(player(Job, MaxHealth, Level, Health, Attack, Defense, Sepcial, Exp, NDuit)),
-		write('You are successfully teleported into ('), write(X), write(','), write(Y), write(')!'), nl, nl,
+		write('You are successfully teleported into ('), write(X), write(','), write(Y), write(')!\nCost: '), write(Z), write(' Gold'), nl, nl,
 		( (isStore(X,Y) -> write('\n\nWrite `store.` to see store menu.\n')) ; 
 		  (isQuest(X,Y) -> write('\n\nWrite `quest.` to do a quest.\n')) ;
 		  (isBoss(X,Y) -> foundMiniBoss) ; 
