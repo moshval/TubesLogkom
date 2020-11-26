@@ -48,6 +48,7 @@ help :-
 
 /* loop ref: https://stackoverflow.com/questions/29857372/how-to-go-back-to-repeat-in-prolog */
 initPemain :-
+	init(_),
 	write('\n\nWrite your name, traveler!\nName (lowercase): '),
 	read(Nama),
 	asserta(pemain(Nama)),
@@ -71,6 +72,7 @@ initPemain :-
 	!.
 
 initGame :- 
+	init(_),
 	initMap,
 	initP,!.
 	
