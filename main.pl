@@ -2,6 +2,8 @@
 :- dynamic(init/1).
 :- dynamic(godMode/1).
 
+:- initialization(start).
+
 :- include('map.pl').
 :- include('mobdata.pl').
 :- include('role.pl').
