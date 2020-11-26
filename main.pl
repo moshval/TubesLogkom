@@ -141,4 +141,8 @@ quit :- init(_),
 	retract(lebar(_)),
 	retract(panjang(_)),
 	retract(pemain(_)),
-	retract(init(_)),!.
+	retract(init(_)),
+	retract(inventory(_,_,_,_,_,_,_,_)),
+	retract(equipped(_,_,_,_,_,_,_,_)),
+	retract(player(_,_,_,_,_,_,_,_,_)),
+	!.
