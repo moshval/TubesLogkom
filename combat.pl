@@ -517,9 +517,9 @@ enemyStats :- /* Defeating Hydra*/
     retract(isEnemyAlive(_)),retract(isFighting(_)),retract(isHydraAlive(_)),retract(isFightingHydra(_)),levelUp,!.
 
 enemyStats :- /* Defeating Cerberus*/
-    isFightingCerberus(_),
     isCerberusAlive(_),
-    isEnemyAlive(_),\+ isFightingMedusa(_),\+ isFightingHydra(_),
+    isEnemyAlive(_),
+    \+ isFightingMedusa(_), isFightingCerberus(_), \+ isFightingHydra(_),
     posX(X), posY(Y), \+ isDungeon(X,Y),
     enemy(_,EName,_,_,_,EHealth,_,_,_,EExp,EGold),
     EHealth =< 0,
