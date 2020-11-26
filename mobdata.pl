@@ -16,9 +16,9 @@ mobdata(10,bonus_enemy,mob,5,1,0,0,0,0,0).
 
 
 /* Quest Enemy */
-mobdata(101,medusa,quest,700,5,200,60,250,400,750).
-mobdata(102,hydra,quest,800,5,150,40,300,500,800).
-mobdata(103,cerberus,quest,600,5,200,60,300,600,900).
+mobdata(101,medusa,boss,700,5,200,60,250,400,750).
+mobdata(102,hydra,boss,800,5,150,40,300,500,800).
+mobdata(103,cerberus,boss,600,5,200,60,300,600,900).
 
 /* TBA */
 /* BOSSU Lv 10 for example */
