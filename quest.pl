@@ -52,6 +52,7 @@ accept :- write('| ----------------------------------------------------------|\n
           write('| Find three ancient opponent on the map : Medusa, Hydra    |\n'),
           write('| and Cerberus and defeat them all. After you succeed come- |\n'),
           write('| back to receive the reward                                |\n'),
+          write('| questStatus. - Use this to show current quest             |\n'),
           write('| ----------------------------------------------------------|\n'),
           asserta(isQuest1(1)),
           asserta(isMedusaAlive(1)),
