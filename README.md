@@ -16,6 +16,7 @@ Anggota Kelompok:
 
 ## Prerequisite
 - GNU Prolog
+
 Dapat diunduh di [sini](http://www.gprolog.org/#download)
 
 ## Cara Menjalankan Program
