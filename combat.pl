@@ -482,6 +482,7 @@ enemyStats :- /* if enemy s ded, after defeating ehem ehem */
 
 enemyStats :- /* Defeating Medusa*/
     isMedusaAlive(_),
+    isEnemyAlive(_),
     isFightingMedusa(_),\+ isFightingCerberus(_),\+ isFightingHydra(_),
     posX(X), posY(Y), \+ isDungeon(X,Y),
     enemy(_,EName,_,_,_,EHealth,_,_,_,EExp,EGold),
@@ -499,6 +500,7 @@ enemyStats :- /* Defeating Medusa*/
 
 enemyStats :- /* Defeating Hydra*/
     isHydraAlive(_),
+    isEnemyAlive(_),
     \+ isFightingMedusa(_),\+ isFightingCerberus(_), isFightingHydra(_),
     posX(X), posY(Y), \+ isDungeon(X,Y),
     enemy(_,EName,_,_,_,EHealth,_,_,_,EExp,EGold),
@@ -515,8 +517,9 @@ enemyStats :- /* Defeating Hydra*/
     retract(isEnemyAlive(_)),retract(isFighting(_)),retract(isHydraAlive(_)),retract(isFightingHydra(_)),levelUp,!.
 
 enemyStats :- /* Defeating Cerberus*/
+    isFightingCerberus(_),
     isCerberusAlive(_),
-    \+ isFightingMedusa(_),isFightingCerberus(_),\+ isFightingHydra(_),
+    isEnemyAlive(_),\+ isFightingMedusa(_),\+ isFightingHydra(_),
     posX(X), posY(Y), \+ isDungeon(X,Y),
     enemy(_,EName,_,_,_,EHealth,_,_,_,EExp,EGold),
     EHealth =< 0,
