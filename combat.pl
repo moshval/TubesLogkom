@@ -396,6 +396,63 @@ enemyStats :- /* Stats enemy abis player attack, continuing to enemy turn if ene
     write('Now tis enemy turn'),nl,
     enemyTurn,!.
 
+enemyStats :- /* Defeating Medusa*/
+    isQuest1(_),
+    isMedusaAlive(_),
+    isEnemyAlive(_),
+    isFightingMedusa(_),\+ isFightingCerberus(_),\+ isFightingHydra(_),
+    posX(X), posY(Y), \+ isDungeon(X,Y),
+    enemy(_,EName,_,_,_,EHealth,_,_,_,EExp,EGold),
+    EHealth =< 0,
+    write(EName),write(' is now dead.'),nl,
+    write('A part of your quest is completed. Now you can continue exploring.'),nl,
+    player(_, _, _, _, _, _, _, PExp, PGold),
+    NewPExp is (PExp + EExp) , NewPGold is (PGold + EGold),
+    retract(player(PJob, PMaxHealth, PLevel, PHealth, PAttack, PDefense, PSpecial, PExp, PGold)),
+    asserta(player(PJob, PMaxHealth, PLevel, PHealth, PAttack, PDefense, PSpecial, NewPExp, NewPGold)),
+    retract(enemy(_,_,_,_,_,_,_,_,_,_,_)),
+    (playerCanUseSkill(_)-> retract(playerCanUseSkill(_))
+        ; EHealth is EHealth),
+    retract(isEnemyAlive(_)),retract(isFighting(_)),retract(isMedusaAlive(_)),retract(isFightingMedusa(_)),levelUp,!.
+
+enemyStats :- /* Defeating Hydra*/
+    isQuest1(_),
+    isHydraAlive(_),
+    isEnemyAlive(_),
+    \+ isFightingMedusa(_),\+ isFightingCerberus(_), isFightingHydra(_),
+    posX(X), posY(Y), \+ isDungeon(X,Y),
+    enemy(_,EName,_,_,_,EHealth,_,_,_,EExp,EGold),
+    EHealth =< 0,
+    write(EName),write(' is now dead.'),nl,
+    write('A part of your quest is completed. Now you can continue exploring.'),nl,
+    player(_, _, _, _, _, _, _, PExp, PGold),
+    NewPExp is (PExp + EExp) , NewPGold is (PGold + EGold),
+    retract(player(PJob, PMaxHealth, PLevel, PHealth, PAttack, PDefense, PSpecial, PExp, PGold)),
+    asserta(player(PJob, PMaxHealth, PLevel, PHealth, PAttack, PDefense, PSpecial, NewPExp, NewPGold)),
+    retract(enemy(_,_,_,_,_,_,_,_,_,_,_)),
+    (playerCanUseSkill(_)-> retract(playerCanUseSkill(_))
+        ; EHealth is EHealth),
+    retract(isEnemyAlive(_)),retract(isFighting(_)),retract(isHydraAlive(_)),retract(isFightingHydra(_)),levelUp,!.
+
+enemyStats :- /* Defeating Cerberus*/
+    isQuest1(_),
+    isCerberusAlive(_),
+    isEnemyAlive(_),
+    \+ isFightingMedusa(_), isFightingCerberus(_), \+ isFightingHydra(_),
+    posX(X), posY(Y), \+ isDungeon(X,Y),
+    enemy(_,EName,_,_,_,EHealth,_,_,_,EExp,EGold),
+    EHealth =< 0,
+    write(EName),write(' is now dead.'),nl,
+    write('A part of your quest is completed. Now you can continue exploring.'),nl,
+    player(_, _, _, _, _, _, _, PExp, PGold),
+    NewPExp is (PExp + EExp) , NewPGold is (PGold + EGold),
+    retract(player(PJob, PMaxHealth, PLevel, PHealth, PAttack, PDefense, PSpecial, PExp, PGold)),
+    asserta(player(PJob, PMaxHealth, PLevel, PHealth, PAttack, PDefense, PSpecial, NewPExp, NewPGold)),
+    retract(enemy(_,_,_,_,_,_,_,_,_,_,_)),
+    (playerCanUseSkill(_)-> retract(playerCanUseSkill(_))
+        ; EHealth is EHealth),
+    retract(isEnemyAlive(_)),retract(isFighting(_)),retract(isCerberusAlive(_)),retract(isFightingCerberus(_)),levelUp,!.
+
 enemyStats :- /* if enemy s ded , not in dungeon*/
     posX(X), posY(Y), \+ isDungeon(X,Y),
     \+ isFightingMedusa(_),\+ isFightingCerberus(_),\+ isFightingHydra(_),
@@ -479,60 +536,6 @@ enemyStats :- /* if enemy s ded, after defeating ehem ehem */
     (playerCanUseSkill(_)-> retract(playerCanUseSkill(_))
         ; EHealth is EHealth),
     retract(isEnemyAlive(_)),retract(isFighting(_)),cont4,!.
-
-enemyStats :- /* Defeating Medusa*/
-    isMedusaAlive(_),
-    isEnemyAlive(_),
-    isFightingMedusa(_),\+ isFightingCerberus(_),\+ isFightingHydra(_),
-    posX(X), posY(Y), \+ isDungeon(X,Y),
-    enemy(_,EName,_,_,_,EHealth,_,_,_,EExp,EGold),
-    EHealth =< 0,
-    write(EName),write(' is now dead.'),nl,
-    write('A part of your quest is completed. Now you can continue exploring.'),nl,
-    player(_, _, _, _, _, _, _, PExp, PGold),
-    NewPExp is (PExp + EExp) , NewPGold is (PGold + EGold),
-    retract(player(PJob, PMaxHealth, PLevel, PHealth, PAttack, PDefense, PSpecial, PExp, PGold)),
-    asserta(player(PJob, PMaxHealth, PLevel, PHealth, PAttack, PDefense, PSpecial, NewPExp, NewPGold)),
-    retract(enemy(_,_,_,_,_,_,_,_,_,_,_)),
-    (playerCanUseSkill(_)-> retract(playerCanUseSkill(_))
-        ; EHealth is EHealth),
-    retract(isEnemyAlive(_)),retract(isFighting(_)),retract(isMedusaAlive(_)),retract(isFightingMedusa(_)),levelUp,!.
-
-enemyStats :- /* Defeating Hydra*/
-    isHydraAlive(_),
-    isEnemyAlive(_),
-    \+ isFightingMedusa(_),\+ isFightingCerberus(_), isFightingHydra(_),
-    posX(X), posY(Y), \+ isDungeon(X,Y),
-    enemy(_,EName,_,_,_,EHealth,_,_,_,EExp,EGold),
-    EHealth =< 0,
-    write(EName),write(' is now dead.'),nl,
-    write('A part of your quest is completed. Now you can continue exploring.'),nl,
-    player(_, _, _, _, _, _, _, PExp, PGold),
-    NewPExp is (PExp + EExp) , NewPGold is (PGold + EGold),
-    retract(player(PJob, PMaxHealth, PLevel, PHealth, PAttack, PDefense, PSpecial, PExp, PGold)),
-    asserta(player(PJob, PMaxHealth, PLevel, PHealth, PAttack, PDefense, PSpecial, NewPExp, NewPGold)),
-    retract(enemy(_,_,_,_,_,_,_,_,_,_,_)),
-    (playerCanUseSkill(_)-> retract(playerCanUseSkill(_))
-        ; EHealth is EHealth),
-    retract(isEnemyAlive(_)),retract(isFighting(_)),retract(isHydraAlive(_)),retract(isFightingHydra(_)),levelUp,!.
-
-enemyStats :- /* Defeating Cerberus*/
-    isCerberusAlive(_),
-    isEnemyAlive(_),
-    \+ isFightingMedusa(_), isFightingCerberus(_), \+ isFightingHydra(_),
-    posX(X), posY(Y), \+ isDungeon(X,Y),
-    enemy(_,EName,_,_,_,EHealth,_,_,_,EExp,EGold),
-    EHealth =< 0,
-    write(EName),write(' is now dead.'),nl,
-    write('A part of your quest is completed. Now you can continue exploring.'),nl,
-    player(_, _, _, _, _, _, _, PExp, PGold),
-    NewPExp is (PExp + EExp) , NewPGold is (PGold + EGold),
-    retract(player(PJob, PMaxHealth, PLevel, PHealth, PAttack, PDefense, PSpecial, PExp, PGold)),
-    asserta(player(PJob, PMaxHealth, PLevel, PHealth, PAttack, PDefense, PSpecial, NewPExp, NewPGold)),
-    retract(enemy(_,_,_,_,_,_,_,_,_,_,_)),
-    (playerCanUseSkill(_)-> retract(playerCanUseSkill(_))
-        ; EHealth is EHealth),
-    retract(isEnemyAlive(_)),retract(isFighting(_)),retract(isCerberusAlive(_)),retract(isFightingCerberus(_)),levelUp,!.
 
 enemyTurn :- /* Turn enemy , enemy bisa ngeskill bebas berapa kalipun , dengan proc rate 16% */
     random(1,6,Skillgakya),

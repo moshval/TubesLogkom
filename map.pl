@@ -51,8 +51,8 @@ teleport :- posX(X), posY(Y), isTP(X,Y),
 	write(' B = Boss (5,4)|(15,3)'), nl,
 	write(' D = Dungeon (11,12)'), nl,
 	( (X=:=7,Y=:=2) -> (write(' T = Teleport Point 2 (11,8)'), nl, write(' T = Teleport Point 3 (3,13)'), nl) ;
-	  (X=:=3,Y=:=13) -> (write(' T = Teleport Point 1 (7,2)'), nl, write(' T = Teleport Point 3 (3,13)'), nl) ;
-	  (X=:=14,Y=:=12) -> (write(' T = Teleport Point 1 (7,2)'), nl, write(' T = Teleport Point 2 (11,8)'), nl)
+	  (X=:=11,Y=:=8) -> (write(' T = Teleport Point 1 (7,2)'), nl, write(' T = Teleport Point 3 (3,13)'), nl) ;
+	  (X=:=3,Y=:=13) -> (write(' T = Teleport Point 1 (7,2)'), nl, write(' T = Teleport Point 2 (11,8)'), nl)
 	),
 	write('===================================='), nl,
 	write('(input X and Y = 0. if you want to cancel the teleport)'), nl, nl,
