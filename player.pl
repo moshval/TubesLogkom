@@ -106,7 +106,7 @@ showInven([],[],[],[],[],[]).
 showInven([Name|X],[Job|Y],[Amount|Z],[HP|P],[Att|Q],[Def|R]) :-
     write(Amount), write(' '),
     write(Name), write(' '),
-    write('('),write(Job),write(')'),
+    write('('),write(Job),write(') |'),
     write(HP),write(' | '),
     write(Att),write(' | '),
     write(Def), nl,
@@ -115,8 +115,9 @@ showInven([Name|X],[Job|Y],[Amount|Z],[HP|P],[Att|Q],[Def|R]) :-
 showInventory :-
     init(_),
     write('Your inventory: '),nl,
-    listInventory(ListItem,ListJob,ListAmount),
-    showInven(ListItem,ListJob,ListAmount).
+    write('Amount Name (Job) | HP | Attack | Defense'),nl,nl,
+    listInventory(ListItem,ListJob,ListAmount,ListHP,ListAtt,ListDef),
+    showInven(ListItem,ListJob,ListAmount,ListHP,ListAtt,ListDef).
 
 usePotion :-
     \+ inventory(99, _, _, _, _, _, _, _),
