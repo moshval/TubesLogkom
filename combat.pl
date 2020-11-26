@@ -10,6 +10,9 @@
 :- dynamic(winPaimon/1).
 :- dynamic(playerCanUseSkill/1).
 :- dynamic(playerSkillCD/1).
+:- dynamic(isFightingCerberus/1).
+:- dynamic(isFightingMedusa/1).
+:- dynamic(isFightingHydra/1).
 
 /* Help gan combat banyak betul */
 /* TBA :potion , dll yg sekiranya kurang */
@@ -51,6 +54,80 @@ foundEnemy:- /* Encountered an enemy ,enemy stats can scale (without even leveli
     write('- fight.'),nl,
     write('- flee.'),nl,
     asserta(isEnemyAlive(1)),!.
+
+
+foundMedusa:- /* Self explanatory, in quest */
+    isMedusaAlive(_),
+    player(_,_,PLevel,_, _, _, _, _, _),
+    mobdata(101,Name,Type,MaxHealth,Level,Attack,Defense,Special,Exp,Gold),
+    NMaxHealth is (MaxHealth + 80*(PLevel-1)),
+    NLevel is (Level + (PLevel//5)),
+    Health is NMaxHealth,
+    NAttack is (Attack + 20*(PLevel-1)),
+    NDefense is (Defense + 20*(PLevel-1)),
+    NSpecial is (Special + 20*(PLevel-1)),
+    NExp is (Exp + 20*(PLevel-1)),
+    NGold is (Gold + 20*(PLevel-1)),
+    asserta(enemy(101,Name,Type,NMaxHealth,NLevel,Health,NAttack,NDefense,NSpecial,NExp,NGold)),nl,
+    write('The Legendary '),write(Name),write(' is approaching you'),nl,
+    write('Defeat this thing to complete a part of your quest'),nl,
+    write('What will u do? '),nl,
+    write('- fight.'),nl,
+    write('- flee.'),
+    asserta(isEnemyAlive(1)),asserta(isFightingMedusa(1)),nl,!.
+
+foundMedusa:- /* dah ded */
+    \+ isMedusaAlive(_),
+    write('Now all ypu see is the corpse of the legendary Medusa. Already defeated this thing'),nl,!.
+
+
+foundCerberus:- /* Self explanatory, in quest */
+    isCerberusAlive(_),
+    player(_,_,PLevel,_, _, _, _, _, _),
+    mobdata(103,Name,Type,MaxHealth,Level,Attack,Defense,Special,Exp,Gold),
+    NMaxHealth is (MaxHealth + 80*(PLevel-1)),
+    NLevel is (Level + (PLevel//5)),
+    Health is NMaxHealth,
+    NAttack is (Attack + 20*(PLevel-1)),
+    NDefense is (Defense + 20*(PLevel-1)),
+    NSpecial is (Special + 20*(PLevel-1)),
+    NExp is (Exp + 20*(PLevel-1)),
+    NGold is (Gold + 20*(PLevel-1)),
+    asserta(enemy(103,Name,Type,NMaxHealth,NLevel,Health,NAttack,NDefense,NSpecial,NExp,NGold)),nl,
+    write('The Legendary '),write(Name),write(' is approaching you'),nl,
+    write('Defeat this thing to complete a part of your quest'),nl,
+    write('What will u do? '),nl,
+    write('- fight.'),nl,
+    write('- flee.'),
+    asserta(isEnemyAlive(1)),asserta(isFightingCerberus(1)),nl,!.
+
+foundCerberus:- /* dah ded */
+    \+ isCerberusAlive(_),
+    write('Now all ypu see is the corpse of the legendary Cerberus. Already defeated this thing'),nl,!.
+
+foundHydra:- /* Self explanatory, in quest */
+    isHydraAlive(_),
+    player(_,_,PLevel,_, _, _, _, _, _),
+    mobdata(102,Name,Type,MaxHealth,Level,Attack,Defense,Special,Exp,Gold),
+    NMaxHealth is (MaxHealth + 80*(PLevel-1)),
+    NLevel is (Level + (PLevel//5)),
+    Health is NMaxHealth,
+    NAttack is (Attack + 20*(PLevel-1)),
+    NDefense is (Defense + 20*(PLevel-1)),
+    NSpecial is (Special + 20*(PLevel-1)),
+    NExp is (Exp + 20*(PLevel-1)),
+    NGold is (Gold + 20*(PLevel-1)),
+    asserta(enemy(102,Name,Type,NMaxHealth,NLevel,Health,NAttack,NDefense,NSpecial,NExp,NGold)),nl,
+    write('The Legendary '),write(Name),write(' is approaching you'),nl,
+    write('Defeat this thing to complete a part of your quest'),nl,
+    write('What will u do? '),nl,
+    write('- fight.'),nl,
+    write('- flee.'),
+    asserta(isEnemyAlive(1)),asserta(isFightingHydra(1)),nl,!.
+
+foundHydra:- /* dah ded */
+    \+ isHydraAlive(_),
+    write('Now all ypu see is the corpse of the legendary Hydra. Already defeated this thing'),nl,!.
 
 foundEliteOne:- /* Encountered elite enemy,wave 1 (in dungeon) */
     posX(X), posY(Y), isDungeon(X,Y),
@@ -314,6 +391,7 @@ enemyStats :- /* Stats enemy abis player attack, continuing to enemy turn if ene
 
 enemyStats :- /* if enemy s ded , not in dungeon*/
     posX(X), posY(Y), \+ isDungeon(X,Y),
+    \+ isFightingMedusa(_),\+ isFightingCerberus(_),\+ isFightingHydra(_),
     enemy(_,EName,_,_,_,EHealth,_,_,_,EExp,EGold),
     EHealth =< 0,
     write(EName),write(' is now dead.'),nl,
@@ -394,6 +472,57 @@ enemyStats :- /* if enemy s ded, after defeating ehem ehem */
     (playerCanUseSkill(_)-> retract(playerCanUseSkill(_))
         ; EHealth is EHealth),
     retract(isEnemyAlive(_)),retract(isFighting(_)),cont4,!.
+
+enemyStats :- /* Defeating Medusa*/
+    isMedusaAlive(_),
+    isFightingMedusa(_),\+ isFightingCerberus(_),\+ isFightingHydra(_),
+    posX(X), posY(Y), \+ isDungeon(X,Y),
+    enemy(_,EName,_,_,_,EHealth,_,_,_,EExp,EGold),
+    EHealth =< 0,
+    write(EName),write(' is now dead.'),nl,
+    write('A part of your quest is completed. Now you can continue exploring.'),nl,
+    player(_, _, _, _, _, _, _, PExp, PGold),
+    NewPExp is (PExp + EExp) , NewPGold is (PGold + EGold),
+    retract(player(PJob, PMaxHealth, PLevel, PHealth, PAttack, PDefense, PSpecial, PExp, PGold)),
+    asserta(player(PJob, PMaxHealth, PLevel, PHealth, PAttack, PDefense, PSpecial, NewPExp, NewPGold)),
+    retract(enemy(_,_,_,_,_,_,_,_,_,_,_)),
+    (playerCanUseSkill(_)-> retract(playerCanUseSkill(_))
+        ; EHealth is EHealth),
+    retract(isEnemyAlive(_)),retract(isFighting(_)),retract(isMedusaAlive(_)),retract(isFightingMedusa(_)),levelUp,!.
+
+enemyStats :- /* Defeating Hydra*/
+    isHydraAlive(_),
+    \+ isFightingMedusa(_),\+ isFightingCerberus(_), isFightingHydra(_),
+    posX(X), posY(Y), \+ isDungeon(X,Y),
+    enemy(_,EName,_,_,_,EHealth,_,_,_,EExp,EGold),
+    EHealth =< 0,
+    write(EName),write(' is now dead.'),nl,
+    write('A part of your quest is completed. Now you can continue exploring.'),nl,
+    player(_, _, _, _, _, _, _, PExp, PGold),
+    NewPExp is (PExp + EExp) , NewPGold is (PGold + EGold),
+    retract(player(PJob, PMaxHealth, PLevel, PHealth, PAttack, PDefense, PSpecial, PExp, PGold)),
+    asserta(player(PJob, PMaxHealth, PLevel, PHealth, PAttack, PDefense, PSpecial, NewPExp, NewPGold)),
+    retract(enemy(_,_,_,_,_,_,_,_,_,_,_)),
+    (playerCanUseSkill(_)-> retract(playerCanUseSkill(_))
+        ; EHealth is EHealth),
+    retract(isEnemyAlive(_)),retract(isFighting(_)),retract(isHydraAlive(_)),retract(isFightingHydra(_)),levelUp,!.
+
+enemyStats :- /* Defeating Cerberus*/
+    isCerberusAlive(_),
+    \+ isFightingMedusa(_),isFightingCerberus(_),\+ isFightingHydra(_),
+    posX(X), posY(Y), \+ isDungeon(X,Y),
+    enemy(_,EName,_,_,_,EHealth,_,_,_,EExp,EGold),
+    EHealth =< 0,
+    write(EName),write(' is now dead.'),nl,
+    write('A part of your quest is completed. Now you can continue exploring.'),nl,
+    player(_, _, _, _, _, _, _, PExp, PGold),
+    NewPExp is (PExp + EExp) , NewPGold is (PGold + EGold),
+    retract(player(PJob, PMaxHealth, PLevel, PHealth, PAttack, PDefense, PSpecial, PExp, PGold)),
+    asserta(player(PJob, PMaxHealth, PLevel, PHealth, PAttack, PDefense, PSpecial, NewPExp, NewPGold)),
+    retract(enemy(_,_,_,_,_,_,_,_,_,_,_)),
+    (playerCanUseSkill(_)-> retract(playerCanUseSkill(_))
+        ; EHealth is EHealth),
+    retract(isEnemyAlive(_)),retract(isFighting(_)),retract(isCerberusAlive(_)),retract(isFightingCerberus(_)),levelUp,!.
 
 enemyTurn :- /* Turn enemy , enemy bisa ngeskill bebas berapa kalipun , dengan proc rate 16% */
     random(1,6,Skillgakya),
@@ -476,6 +605,10 @@ specialAttack:- /* player special atk is in CD */
 specialAttack:- /*outside combat */
     \+ isEnemyAlive(_),
     write('Nothing to be attacked. U cannot attack urself (especially if u r dead)'),nl,!.
+
+
+
+
 
 
 

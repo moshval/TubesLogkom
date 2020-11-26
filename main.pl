@@ -148,6 +148,8 @@ quit :- init(_),
 	retract(player(_,_,_,_,_,_,_,_,_)),
 	(isFighting(_)-> retract(isFighting(_))
 		; Ayam is 1 ),
+	(isFightingBoss(_)-> retract(isFightingBoss(_))
+		; Ayam is 3 ),
 	(isEnemyAlive(_)->retract(isEnemyAlive(_))
 		; Ayam is 2	),
 	!.
