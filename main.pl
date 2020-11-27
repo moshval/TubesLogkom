@@ -102,7 +102,8 @@ unequip :- init(_), dismantleItem, !.
 
 /* forbidden technique */
 godMode :- \+init(_), write('Game has not started yet!'),!.
-godMode :- init(_),
+godMode :- init(_), godMode(_), write('You are only allowed to use godMode once!'),!.
+godMode :- init(_), \+godMode(_),
 	 retract(player(Job, _, _, _, _, _, _, _, _)),
          asserta(player(Job, 9999999, 99, 9999999, 99999, 99999, 999999, 0, 99999999)),
 	 asserta(godMode(1)),
