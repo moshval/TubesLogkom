@@ -2,16 +2,16 @@
 :- dynamic(init/1).
 :- dynamic(godMode/1).
 
-:- initialization(start).
+:- initialization(start). /* start permainan saat fail dibuka */
 
-:- include('map.pl').
-:- include('mobdata.pl').
-:- include('role.pl').
-:- include('player.pl').
-:- include('store.pl').
-:- include('combat.pl').
-:- include('level.pl').
-:- include('quest.pl').
+:- include('src/map.pl').
+:- include('src/mobdata.pl').
+:- include('src/role.pl').
+:- include('src/player.pl').
+:- include('src/store.pl').
+:- include('src/combat.pl').
+:- include('src/level.pl').
+:- include('src/quest.pl').
 
 title :-
 	write('-------------------------------------------------------------'),nl,
