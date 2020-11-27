@@ -109,13 +109,13 @@ godMode :- init(_), \+godMode(_),
 	 asserta(godMode(1)),
 	 write('You have reached God Mode!'), !.
 
-cheatDuit(X) :- init(_),
+cheatDuit(X) :- init(_), X>=0,
 	 player(_,_,_,_,_,_,_,_,Duit),
 	 Nduit is Duit+X,
 	 retract(player(Job, MaxHealth, Level, Health, Attack, Defense, Sepcial, Exp, _)),
          asserta(player(Job, MaxHealth, Level, Health, Attack, Defense, Sepcial, Exp, Nduit)),!.
 
-cheatDarah(X) :- init(_),
+cheatDarah(X) :- init(_), X>=0,
 	 player(_,MH,_,_,_,_,_,_,_),
 	 MH2 is MH+X,
 	 retract(player(Job, _, Level, _, Attack, Defense, Sepcial, Exp, Duit)),
