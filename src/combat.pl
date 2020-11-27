@@ -594,6 +594,17 @@ enemySpecial :- /* enemy special atk */
     write(EName),write(' dealt '),write(EDamage),write(' damage '),write('to player'),nl,
     playerStats,!.
 
+specialAttack:- /*outside combat */
+    \+ isEnemyAlive(_),
+    write('Nothing to be attacked. U cannot attack urself (especially if u r dead)'),nl,!.
+
+specialAttack:- /* player special atk is in CD */
+    isEnemyAlive(_),
+    isFighting(_),
+    \+ playerCanUseSkill(_),
+    write('Special attack is in cooldown'),nl,
+    fight,!.
+
 specialAttack:- /*player special atk, can only be used every 3 turns, CD resets after leaving combat */
     isEnemyAlive(_),
     isFighting(_),
@@ -614,19 +625,6 @@ specialAttack:- /*player special atk, can only be used every 3 turns, CD resets 
     write('Player dealt '),write(PDamage),write(' damage '),write('to '),write(EName),nl,
     retract(playerCanUseSkill(_)),
     enemyStats,!.
-
-specialAttack:- /* player special atk is in CD */
-    isEnemyAlive(_),
-    isFighting(_),
-    \+ playerCanUseSkill(_),
-    write('Special attack is in cooldown'),nl,
-    fight,!.
-
-specialAttack:- /*outside combat */
-    \+ isEnemyAlive(_),
-    write('Nothing to be attacked. U cannot attack urself (especially if u r dead)'),nl,!.
-
-
 
 
 
